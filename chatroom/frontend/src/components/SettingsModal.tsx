@@ -211,6 +211,56 @@ export default function SettingsModal({
           )}
         </div>
 
+        {/* ── 聊天背景 ── */}
+        <div className="mt-4 pt-4 border-t border-black/5">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium text-black/50">聊天背景</span>
+            <button
+              onClick={() => {
+                document.body.style.backgroundImage = "";
+                document.body.style.backgroundSize = "";
+                document.body.style.backgroundPosition = "";
+                document.body.style.backgroundAttachment = "";
+              }}
+              className="text-[10px] text-black/30 hover:text-red-500 transition"
+            >
+              移除背景
+            </button>
+          </div>
+          <label className="flex items-center gap-2 cursor-pointer bg-white/60 border border-black/10 rounded-lg px-3 py-2 hover:border-purple-300 transition">
+            <span className="text-xs text-black/40">选择图片</span>
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                try {
+                  const formData = new FormData();
+                  formData.append("file", file);
+                  const res = await fetch("/api/upload-background", {
+                    method: "POST",
+                    body: formData,
+                  });
+                  const data = await res.json();
+                  if (data.url) {
+                    document.body.style.backgroundImage = `url(${data.url})`;
+                    document.body.style.backgroundSize = "cover";
+                    document.body.style.backgroundPosition = "center";
+                    document.body.style.backgroundAttachment = "fixed";
+                  }
+                } catch {
+                  alert("背景上传失败，请检查服务器连接");
+                }
+              }}
+            />
+          </label>
+          <p className="text-[10px] text-black/20 mt-1">
+            图片上传到服务器，重启后不丢失
+          </p>
+        </div>
+
         <div className="flex justify-end pt-4">
           <button
             onClick={handleSave}

@@ -23,6 +23,7 @@ def _clean_env(key: str, default: str) -> str:
     return _ANSI_CLEAN.sub('', os.environ.get(key, default))
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import File, UploadFile
 from fastapi.staticfiles import StaticFiles
 
 from config import CHARACTER_NAMES, load_character_skill, get_character_api_config
@@ -69,6 +70,103 @@ DEMO_RESPONSES = {
 def get_demo_response(character: str, user_message: str) -> str:
     replies = DEMO_RESPONSES.get(character, ["……"])
     return replies[sum(ord(c) for c in user_message) % len(replies)]
+
+
+# ── LLM 回复清洗 ──
+
+_SANITIZE_NAMES = sorted(CHARACTER_NAMES, key=len, reverse=True)
+_SANITIZE_PATTERN = re.compile(
+    r'^(?:'
+    rf'【(?:{"|".join(re.escape(n) for n in _SANITIZE_NAMES)})】[：:]?\s*|'
+    rf'(?:{"|".join(re.escape(n) for n in _SANITIZE_NAMES)})[：:]\s*|'
+    r'【[^】]+】[：:]?\s*|'
+    r'[—\-]\s*'
+    r')'
+)
+
+
+def sanitize_llm_reply(text: str) -> str:
+    """Strip character-name and bracket prefixes from LLM output."""
+    return _SANITIZE_PATTERN.sub('', text).strip()
+
+
+# ── 工具功能 ──
+
+_TOOLS = [
+    {"id": "boredom_checker", "name": "反无聊审查器", "icon": "🔍",
+     "desc": "分析待办清单，区分真该做的事和你在拖的事"},
+    {"id": "intuition_booster", "name": "直觉加速器", "icon": "⚡",
+     "desc": "给你一个直觉判断和行动方案，不用再纠结"},
+    {"id": "action_tester", "name": "行动力测试", "icon": "💪",
+     "desc": "给你的计划打分，看看春日来做要多久"},
+]
+
+# 加载春日 SKILL.md 作为工具的角色参考
+_HARUHI_SKILL = load_character_skill("凉宫春日")
+
+_TOOL_PROMPTS = {
+    "boredom_checker": _HARUHI_SKILL + """
+
+你现在是凉宫春日——SOS团团长。用你的风格分析这份待办清单。
+
+任务：
+1. 区分「真无聊但必须做」的事和「用户单纯在拖延」的事
+2. 每项加简短理由
+3. 给一个春日的行动建议
+
+记住：你就是凉宫春日本人。用「我」第一人称说话，用感叹号，直接下判断。
+
+输出格式：
+🔥 真无聊但必须做的：
+- XXX：理由
+
+💤 你在拖延的：
+- XXX：真相
+
+💡 我的建议：XXX""",
+
+    "intuition_booster": _HARUHI_SKILL + """
+
+你现在是凉宫春日——SOS团团长。用你的风格帮用户做决定。
+
+任务：
+1. 直觉判断（3秒内给出答案）
+2. 行动方案（3步以内）
+3. 可选理性分析
+
+记住：你就是凉宫春日本人。用「我」第一人称说话，直觉判断要干脆。
+
+输出格式：
+我的直觉：XXX
+
+行动方案：
+1. XXX
+2. XXX
+3. XXX""",
+
+    "action_tester": _HARUHI_SKILL + """
+
+你现在是凉宫春日——SOS团团长。用你的风格评估这个计划。
+
+任务：
+1. 行动力评分 1-10
+2. 我（春日）来做预计要多久
+3. 分析为什么你做不到
+4. 给春日的建议
+
+记住：你就是凉宫春日本人。用「我」第一人称说话，评分要干脆直接。
+
+输出格式：
+行动力评分：X/10
+
+我来做的话预计：XXX
+
+为什么你做不到：
+- XXX
+- XXX
+
+我的建议：XXX""",
+}
 
 
 # ── WebSocket 连接管理 ──
@@ -124,7 +222,7 @@ async def call_llm(api_key: str, api_url: str, model: str,
                 client = anthropic.Anthropic(api_key=api_key, base_url=api_url)
                 resp = client.messages.create(
                     model=model, system=system_prompt, messages=messages,
-                    max_tokens=500, temperature=0.8,
+                    max_tokens=2000, temperature=0.8,
                 )
                 return resp.content[0].text.strip()
 
@@ -136,7 +234,7 @@ async def call_llm(api_key: str, api_url: str, model: str,
                 msgs = [{"role": "system", "content": system_prompt}] + messages
                 resp = client.chat.completions.create(
                     model=model, messages=msgs,
-                    max_tokens=500, temperature=0.8,
+                    max_tokens=2000, temperature=0.8,
                 )
                 return resp.choices[0].message.content.strip()
 
@@ -177,7 +275,7 @@ async def style_transfer(api_key: str, api_url: str, model: str,
                     return client.messages.create(
                         model=model, system=system,
                         messages=[{"role": "user", "content": text}],
-                        max_tokens=500, temperature=0.8, timeout=15,
+                        max_tokens=2000, temperature=0.8, timeout=15,
                     ).content[0].text.strip()
                 return await asyncio.to_thread(_call)
             else:
@@ -188,7 +286,7 @@ async def style_transfer(api_key: str, api_url: str, model: str,
                         model=model,
                         messages=[{"role": "system", "content": system},
                                   {"role": "user", "content": text}],
-                        max_tokens=500, temperature=0.8,
+                        max_tokens=2000, temperature=0.8,
                     ).choices[0].message.content.strip()
                 return await asyncio.to_thread(_call)
         except Exception:
@@ -197,11 +295,62 @@ async def style_transfer(api_key: str, api_url: str, model: str,
     fn = DEMO_PREFIXES.get(character, lambda t: t)
     return fn(text)
 
+# ── 上传目录 ──
+
+UPLOAD_DIR = Path(__file__).resolve().parent / "uploads"
+UPLOAD_DIR.mkdir(exist_ok=True)
+_BG_PATH = UPLOAD_DIR / "background.jpg"
+
+
 # ── API 路由 ──
 
 @app.get("/api/characters")
 async def get_characters():
     return {"characters": [{"name": n} for n in CHARACTER_NAMES]}
+
+
+@app.get("/api/tools")
+async def get_tools():
+    return {"tools": _TOOLS}
+
+
+@app.post("/api/save-config")
+async def save_config(data: dict):
+    """Save API config to .env file on disk."""
+    env_path = Path(__file__).resolve().parents[2] / ".env"
+    existing = {}
+    if env_path.exists():
+        for line in env_path.read_text(encoding="utf-8").strip().splitlines():
+            if "=" in line:
+                k, v = line.split("=", 1)
+                existing[k.strip()] = v.strip()
+
+    if "api_key" in data and data["api_key"]:
+        existing["ANTHROPIC_API_KEY"] = data["api_key"]
+    if "api_url" in data and data["api_url"]:
+        existing["ANTHROPIC_API_URL"] = data["api_url"]
+    if "model" in data and data["model"]:
+        existing["ANTHROPIC_MODEL"] = data["model"]
+
+    lines = [f"{k}={v}" for k, v in existing.items()]
+    env_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return {"status": "ok"}
+
+
+@app.post("/api/upload-background")
+async def upload_background(file: UploadFile = File(...)):
+    """Save uploaded background image, return its URL."""
+    content = await file.read()
+    _BG_PATH.write_bytes(content)
+    return {"url": "/uploads/background.jpg"}
+
+
+@app.get("/api/background")
+async def get_background():
+    """Return the current background URL or empty."""
+    if _BG_PATH.exists():
+        return {"url": "/uploads/background.jpg"}
+    return {"url": ""}
 
 
 @app.websocket("/ws")
@@ -289,6 +438,29 @@ async def websocket_endpoint(ws: WebSocket):
                     "transformed": transformed,
                 })
 
+            # ── 工具调用（结果只在调用者的连接中显示）──
+            elif msg_type == "tool_invoke":
+                tool_id = data.get("tool_id", "")
+                content = data.get("content", "").strip()
+                prompt = _TOOL_PROMPTS.get(tool_id)
+                if not tool_id or not content or not prompt:
+                    continue
+
+                reply = await call_llm(
+                    session["api_key"], session["api_url"], session["model"],
+                    prompt, [{"role": "user", "content": content}],
+                )
+                if reply is None:
+                    reply = "（工具调用失败，请检查 API 配置后重试）"
+                else:
+                    reply = sanitize_llm_reply(reply)
+
+                await ws.send_json({
+                    "type": "tool_result",
+                    "tool_id": tool_id,
+                    "result": reply,
+                })
+
             # ── 发送消息 ──
             elif msg_type == "message":
                 user_char = session.get("character")
@@ -336,15 +508,15 @@ async def websocket_endpoint(ws: WebSocket):
                     })
 
                     style_instruction = build_style_instruction(responder, user_char)
-                    system_prompt = build_system_prompt(responder, session["history"])
+                    system_prompt = build_system_prompt(responder)
                     if style_instruction:
                         system_prompt += f"\n\n{style_instruction}"
 
-                    # 2. 构建 context —— 角色信息在 system prompt 的对话记录中
+                    # 2. 构建 context —— 角色信息嵌入在每条消息 content 中
                     ctx = build_conversation_context(session["history"])
                     ctx.append({
                         "role": "user",
-                        "content": text,
+                        "content": f"【{user_char}】{text}",
                     })
 
                     # 检查角色独立API配置（优先级：会话独立配置 > 文件配置 > 全局默认）
@@ -362,7 +534,13 @@ async def websocket_endpoint(ws: WebSocket):
                         system_prompt, ctx,
                     )
                     if reply is None:
+                        await manager.broadcast({
+                            "type": "system",
+                            "text": f"AI 回复失败（{responder}），已切换为演示模式回复",
+                        })
                         reply = get_demo_response(responder, text)
+                    else:
+                        reply = sanitize_llm_reply(reply)
 
                     # 3. 清除思考中
                     await manager.broadcast({
@@ -396,6 +574,9 @@ async def websocket_endpoint(ws: WebSocket):
 
 
 # ── 静态文件 ──
+
+# Serve uploaded files (background images etc.)
+app.mount("/uploads", StaticFiles(directory=str(UPLOAD_DIR)), name="uploads")
 
 # Try dist (built React app) first, fall back to frontend/ (old single-page)
 FRONTEND_DIST = Path(__file__).resolve().parent.parent / "frontend" / "dist"

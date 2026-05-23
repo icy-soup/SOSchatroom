@@ -28,4 +28,5 @@ export type WsMessage =
   | { type: "error"; text: string }
   | { type: "api_key_status"; has_api_key: boolean; demo_mode: boolean }
   | { type: "thinking"; character: string }
-  | { type: "thinking_clear"; character: string };
+  | { type: "thinking_clear"; character: string }
+  | { type: "tool_result"; tool_id: string; result: string };

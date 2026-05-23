@@ -1,10 +1,11 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import type { Message, ChatConfig, WsMessage } from "./types";
 import { useWebSocket } from "./hooks/useWebSocket";
 import Sidebar from "./components/Sidebar";
 import ChatArea from "./components/ChatArea";
 import InputArea from "./components/InputArea";
 import SettingsModal from "./components/SettingsModal";
+import ToolPanel from "./components/ToolPanel";
 
 let msgCounter = 0;
 function nextId() {
@@ -21,13 +22,46 @@ export default function App() {
     model: "deepseek-v4-flash",
   });
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [toolLoading, setToolLoading] = useState(false);
+  const [toolSession, setToolSession] = useState<{ toolId: string; userInput: string } | null>(null);
+  const [toolResult, setToolResult] = useState("");
   const [transformedText, setTransformedText] = useState<string | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [thinkingCharacters, setThinkingCharacters] = useState<string[]>([]);
   const myCharRef = useRef<string | null>(null);
 
+  // 从服务器加载聊天背景
+  useEffect(() => {
+    fetch("/api/background")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.url) {
+          document.body.style.backgroundImage = `url(${data.url})`;
+          document.body.style.backgroundSize = "cover";
+          document.body.style.backgroundPosition = "center";
+          document.body.style.backgroundAttachment = "fixed";
+        }
+      })
+      .catch(() => {});
+    return () => {
+      document.body.style.backgroundImage = "";
+      document.body.style.backgroundSize = "";
+      document.body.style.backgroundPosition = "";
+      document.body.style.backgroundAttachment = "";
+    };
+  }, []);
+
   // Keep ref in sync
   myCharRef.current = myCharacter;
+
+  const [styleLoading, setStyleLoading] = useState(false);
+
+  function addSystemMsg(text: string) {
+    setMessages((prev) => [
+      ...prev,
+      { id: nextId(), character: "__system__", text, isBot: false },
+    ]);
+  }
 
   const onWsMessage = useCallback((msg: WsMessage) => {
     switch (msg.type) {
@@ -63,12 +97,7 @@ export default function App() {
       case "message":
         setMessages((prev) => [
           ...prev,
-          {
-            id: nextId(),
-            character: msg.character,
-            text: msg.text,
-            isBot: msg.is_bot,
-          },
+          { id: nextId(), character: msg.character, text: msg.text, isBot: msg.is_bot },
         ]);
         break;
 
@@ -92,17 +121,15 @@ export default function App() {
       case "error":
         addSystemMsg(`⚠ ${msg.text}`);
         break;
+
+      case "tool_result":
+        setToolResult(msg.result);
+        setToolLoading(false);
+        break;
     }
   }, []);
 
   const { send } = useWebSocket(onWsMessage);
-
-  function addSystemMsg(text: string) {
-    setMessages((prev) => [
-      ...prev,
-      { id: nextId(), character: "__system__", text, isBot: false },
-    ]);
-  }
 
   const handleSelectCharacter = useCallback(
     (name: string) => {
@@ -112,13 +139,10 @@ export default function App() {
     [send]
   );
 
-  const [styleLoading, setStyleLoading] = useState(false);
-
   const handleSend = useCallback(
     (text: string) => {
       if (!myCharRef.current) return;
       send({ type: "message", text });
-      // 不乐观添加，等服务器广播回来统一显示（防止双发）
     },
     [send]
   );
@@ -137,7 +161,6 @@ export default function App() {
       if (!myCharRef.current) return;
       send({ type: "message", text });
       setTransformedText(null);
-      // 不乐观添加，等服务器广播
     },
     [send]
   );
@@ -155,9 +178,50 @@ export default function App() {
         model: data.model,
         character_config: data.characterConfig,
       });
+      fetch("/api/save-config", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          api_key: data.apiKey || undefined,
+          api_url: data.apiUrl || undefined,
+          model: data.model || undefined,
+        }),
+      }).catch(() => {});
     },
     [send]
   );
+
+  // ── 工具流程 ──
+
+  const handleToolSelect = useCallback((toolId: string) => {
+    setToolSession({ toolId, userInput: "" });
+    setToolResult("");
+    setToolLoading(false);
+  }, []);
+
+  const handleToolSubmit = useCallback(
+    (toolId: string, content: string) => {
+      setToolLoading(true);
+      setToolResult("");
+      setToolSession({ toolId, userInput: content });
+      send({ type: "tool_invoke", tool_id: toolId, content });
+    },
+    [send]
+  );
+
+  const handleToolBack = useCallback(() => {
+    setToolSession(null);
+    setToolResult("");
+    setToolLoading(false);
+  }, []);
+
+  const handleToolRetry = useCallback(() => {
+    if (toolSession) {
+      setToolResult("");
+      setToolSession({ toolId: toolSession.toolId, userInput: "" });
+      setToolLoading(false);
+    }
+  }, [toolSession]);
 
   return (
     <div className="h-screen flex flex-col">
@@ -196,25 +260,36 @@ export default function App() {
         <Sidebar
           currentCharacter={myCharacter}
           onSelect={handleSelectCharacter}
+          onToolSelect={handleToolSelect}
         />
 
-        <main className="flex-1 flex flex-col min-w-0">
-          <ChatArea messages={messages} myCharacter={myCharacter} thinkingCharacters={thinkingCharacters} />
-
-          <InputArea
-            myCharacter={myCharacter}
-            connected={isConnected}
-            onSend={handleSend}
-            onStyleTransfer={handleStyleTransfer}
-            transformedText={transformedText}
-            onSendStyled={handleSendStyled}
-            onCancelStyle={handleCancelStyle}
-            styleLoading={styleLoading}
+        {toolSession ? (
+          <ToolPanel
+            toolId={toolSession.toolId}
+            userInput={toolSession.userInput}
+            result={toolResult}
+            loading={toolLoading}
+            onBack={handleToolBack}
+            onSubmit={handleToolSubmit}
+            onRetry={handleToolRetry}
           />
-        </main>
+        ) : (
+          <main className="flex-1 flex flex-col min-w-0">
+            <ChatArea messages={messages} myCharacter={myCharacter} thinkingCharacters={thinkingCharacters} />
+            <InputArea
+              myCharacter={myCharacter}
+              connected={isConnected}
+              onSend={handleSend}
+              onStyleTransfer={handleStyleTransfer}
+              transformedText={transformedText}
+              onSendStyled={handleSendStyled}
+              onCancelStyle={handleCancelStyle}
+              styleLoading={styleLoading}
+            />
+          </main>
+        )}
       </div>
 
-      {/* Settings modal */}
       <SettingsModal
         open={settingsOpen}
         onClose={() => setSettingsOpen(false)}
