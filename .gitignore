@@ -1,8 +1,8 @@
-# 计划文档（本地）
-/plans/
-
 # Claude Code 本地设置
 .claude/
+
+# 项目规划文档（本地）
+/plan/
 
 # Reference papers & docs — not for public upload
 reference/
