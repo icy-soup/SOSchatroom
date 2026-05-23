@@ -2,8 +2,20 @@
 .claude/
 
 # 项目规划文档（本地）
-/plan/
+plan/
+
+aris/
 
 # Reference papers & docs — not for public upload
 reference/
 docs/
+
+# 环境变量（含API Key）
+.env
+
+# Node 依赖
+node_modules/
+
+# Python 缓存
+__pycache__/
+*.pyc

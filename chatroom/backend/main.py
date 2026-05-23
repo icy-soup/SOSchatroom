@@ -1,0 +1,467 @@
+"""SOS聊天室 - 后端服务"""
+
+import asyncio
+import json
+import os
+import random
+import sys
+
+from pathlib import Path
+
+import re
+
+from dotenv import load_dotenv
+# 从项目根目录加载 .env（override=True 覆盖被 ANSI 码污染的 shell 环境变量）
+_env_path = Path(__file__).resolve().parents[2] / ".env"
+load_dotenv(dotenv_path=_env_path, override=True)
+
+# 清除 ANSI 转义码（防止终端粘贴导致模型名/URL 被污染）
+_ANSI_CLEAN = re.compile(r'\x1b\[[0-9;]*[a-zA-Z]')
+
+
+def _clean_env(key: str, default: str) -> str:
+    return _ANSI_CLEAN.sub('', os.environ.get(key, default))
+
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi.staticfiles import StaticFiles
+
+from config import CHARACTER_NAMES, load_character_skill, get_character_api_config
+from engine.trigger import select_responders
+from engine.character import build_system_prompt, build_conversation_context
+from engine.style import build_style_instruction
+
+app = FastAPI(title="SOS聊天室")
+
+# ── 演示模式固定回复 ──
+
+DEMO_RESPONSES = {
+    "凉宫春日": [
+        "啊——？你刚说什么？",
+        "哼，你这人真没劲。",
+        "哦？然后呢然后呢？说下去！",
+        "切，无聊死了。",
+        "决定了！就这么办！",
+    ],
+    "阿虚": [
+        "……是是是，你说得都对。",
+        "唉，我就知道会这样。",
+        "喂喂，你认真的吗……算了。",
+        "啊——（打哈欠）随你便吧。",
+        "……我说什么都改变不了吧。",
+    ],
+    "朝比奈实玖瑠": [
+        "啊，那个……",
+        "对、对不起……",
+        "是、是这样吗……？",
+        "那个……我该怎么做呢……",
+        "好、好的……",
+    ],
+    "古泉一树": [
+        "嗯……这倒是有趣。",
+        "呵呵，你注意到了啊。",
+        "恐怕没那么简单——不过这只是我的推测。",
+        "——开玩笑的。",
+        "嗯，我赞同你的看法。",
+    ],
+}
+
+
+def get_demo_response(character: str, user_message: str) -> str:
+    replies = DEMO_RESPONSES.get(character, ["……"])
+    return replies[sum(ord(c) for c in user_message) % len(replies)]
+
+
+# ── WebSocket 连接管理 ──
+
+class ConnectionManager:
+    def __init__(self):
+        self.active: dict[str, WebSocket] = {}
+
+    async def connect(self, client_id: str, ws: WebSocket):
+        await ws.accept()
+        self.active[client_id] = ws
+
+    def disconnect(self, client_id: str):
+        self.active.pop(client_id, None)
+
+    async def broadcast(self, message: dict):
+        dead = []
+        for cid, ws in self.active.items():
+            try:
+                await ws.send_json(message)
+            except Exception:
+                dead.append(cid)
+        for cid in dead:
+            self.active.pop(cid, None)
+
+
+manager = ConnectionManager()
+sessions: dict[str, dict] = {}
+
+# 全局默认配置
+DEFAULT_API_KEY = _clean_env("ANTHROPIC_API_KEY", "")
+DEFAULT_API_URL = _clean_env("ANTHROPIC_API_URL", "https://api.deepseek.com")
+DEFAULT_MODEL = _clean_env("ANTHROPIC_MODEL", "deepseek-v4-flash")
+
+
+def is_anthropic_api(api_url: str) -> bool:
+    return "anthropic" in api_url.lower()
+
+
+async def call_llm(api_key: str, api_url: str, model: str,
+                   system_prompt: str, messages: list[dict]) -> str | None:
+    """支持 Anthropic SDK 和 OpenAI SDK（DeepSeek等兼容），失败返回None。
+
+    同步 SDK 调用跑在 to_thread 中，避免阻塞事件循环（否则 thinking 信号发不出去）。
+    """
+    if not api_key:
+        return None
+
+    try:
+        if is_anthropic_api(api_url):
+            def _call():
+                import anthropic
+                client = anthropic.Anthropic(api_key=api_key, base_url=api_url)
+                resp = client.messages.create(
+                    model=model, system=system_prompt, messages=messages,
+                    max_tokens=500, temperature=0.8,
+                )
+                return resp.content[0].text.strip()
+
+            return await asyncio.to_thread(_call)
+        else:
+            def _call():
+                from openai import OpenAI
+                client = OpenAI(api_key=api_key, base_url=api_url, timeout=30)
+                msgs = [{"role": "system", "content": system_prompt}] + messages
+                resp = client.chat.completions.create(
+                    model=model, messages=msgs,
+                    max_tokens=500, temperature=0.8,
+                )
+                return resp.choices[0].message.content.strip()
+
+            return await asyncio.to_thread(_call)
+    except Exception:
+        return None  # caller负责fallback到demo
+
+
+# ── 风格转化 ──
+
+DEMO_PREFIXES = {
+    "凉宫春日": lambda t: t.replace("。", "嘛！"),
+    "阿虚": lambda t: t + "……唉。",
+    "长门有希": lambda t: t,
+    "朝比奈实玖瑠": lambda t: t.replace("。", "……吧？"),
+    "古泉一树": lambda t: t + "——大概吧。",
+}
+
+
+async def style_transfer(api_key: str, api_url: str, model: str,
+                         character: str, text: str) -> str:
+    """Rewrite text in character's tone while preserving meaning exactly."""
+    skill_text = load_character_skill(character)
+    rules = (
+        "Rules: 1. NEVER change the core meaning. 2. Only adjust tone and wording. "
+        "3. NEVER add new content, opinions, or suggestions. "
+        "4. You are rewriting, not responding. 5. Output only the rewritten text, no prefixes. "
+        "6. Preserve the full length of the original text - don't shorten it."
+    )
+    system = f"Rewrite this sentence in {character}'s tone. {rules}\n\nCharacter reference:\n{skill_text[:1500]}"
+
+    if api_key:
+        try:
+            if is_anthropic_api(api_url):
+                def _call():
+                    import anthropic
+                    client = anthropic.Anthropic(api_key=api_key, base_url=api_url)
+                    return client.messages.create(
+                        model=model, system=system,
+                        messages=[{"role": "user", "content": text}],
+                        max_tokens=500, temperature=0.8, timeout=15,
+                    ).content[0].text.strip()
+                return await asyncio.to_thread(_call)
+            else:
+                def _call():
+                    from openai import OpenAI
+                    client = OpenAI(api_key=api_key, base_url=api_url, timeout=15)
+                    return client.chat.completions.create(
+                        model=model,
+                        messages=[{"role": "system", "content": system},
+                                  {"role": "user", "content": text}],
+                        max_tokens=500, temperature=0.8,
+                    ).choices[0].message.content.strip()
+                return await asyncio.to_thread(_call)
+        except Exception:
+            pass
+
+    fn = DEMO_PREFIXES.get(character, lambda t: t)
+    return fn(text)
+
+# ── API 路由 ──
+
+@app.get("/api/characters")
+async def get_characters():
+    return {"characters": [{"name": n} for n in CHARACTER_NAMES]}
+
+
+@app.websocket("/ws")
+async def websocket_endpoint(ws: WebSocket):
+    client_id = f"user_{random.randint(10000, 99999)}"
+    await manager.connect(client_id, ws)
+
+    sessions[client_id] = {
+        "character": None,
+        "history": [],
+        "last_speaker": None,
+        "api_key": DEFAULT_API_KEY,
+        "api_url": DEFAULT_API_URL,
+        "model": DEFAULT_MODEL,
+        "character_api_config": {},
+    }
+
+    s = sessions[client_id]
+    await ws.send_json({
+        "type": "config",
+        "demo_mode": not bool(s["api_key"]),
+        "has_api_key": bool(s["api_key"]),
+        "api_url": s["api_url"],
+        "model": s["model"],
+    })
+
+    try:
+        while True:
+            data = await ws.receive_json()
+            msg_type = data.get("type", "")
+            session = sessions[client_id]
+
+            # ── 设置配置（API Key / URL / 模型 / 角色独立配置） ──
+            if msg_type == "set_config":
+                if "api_key" in data:
+                    session["api_key"] = (data["api_key"] or "").strip()
+                if "api_url" in data:
+                    session["api_url"] = (data["api_url"] or DEFAULT_API_URL).strip()
+                if "model" in data:
+                    session["model"] = (data["model"] or DEFAULT_MODEL).strip()
+                if "character_config" in data:
+                    session["character_api_config"] = data["character_config"]
+                has = bool(session["api_key"])
+                await ws.send_json({
+                    "type": "config_updated",
+                    "has_api_key": has,
+                    "demo_mode": not has,
+                    "api_url": session["api_url"],
+                    "model": session["model"],
+                })
+                await manager.broadcast({
+                    "type": "system",
+                    "text": "API 配置已更新" if has else "已切换为演示模式",
+                })
+
+            # ── 选择角色 ──
+            elif msg_type == "join":
+                char = data.get("character", "")
+                if char in CHARACTER_NAMES:
+                    session["character"] = char
+                    session["history"] = []
+                    session["last_speaker"] = None
+                    await manager.broadcast({
+                        "type": "system",
+                        "text": f"{char} 加入了聊天室",
+                    })
+                    await ws.send_json({
+                        "type": "character_ready",
+                        "character": char,
+                    })
+
+            # ── 风格转化 ──
+            elif msg_type == "style_transfer":
+                char = session.get("character")
+                text = data.get("text", "").strip()
+                if not char or not text:
+                    continue
+                transformed = await style_transfer(
+                    session["api_key"], session["api_url"], session["model"],
+                    char, text,
+                )
+                await ws.send_json({
+                    "type": "style_transferred",
+                    "original": text,
+                    "transformed": transformed,
+                })
+
+            # ── 发送消息 ──
+            elif msg_type == "message":
+                user_char = session.get("character")
+                if not user_char:
+                    await ws.send_json({
+                        "type": "error",
+                        "text": "请先在左侧选择角色",
+                    })
+                    continue
+
+                text = data.get("text", "").strip()
+                if not text:
+                    continue
+
+                # 记录并广播用户消息
+                user_msg = {"character": user_char, "text": text, "is_bot": False}
+                session["history"].append(user_msg)
+                session["last_speaker"] = user_char
+                await manager.broadcast({
+                    "type": "message",
+                    "character": user_char,
+                    "text": text,
+                    "is_bot": False,
+                })
+
+                # 选择自动回复角色（已按概率降序排列）
+                existing = set()
+                responders = select_responders(
+                    last_speaker=session.get("last_speaker"),
+                    message_text=text,
+                    user_character=user_char,
+                    existing_responders=existing,
+                    conversation_history=session.get("history", []),
+                )
+
+                # 串行回复：每个响应者依次思考、回复，
+                # 先回复的人的输出作为后面回复者的语料
+                for responder in responders:
+                    existing.add(responder)
+
+                    # 1. 广播思考中提示
+                    await manager.broadcast({
+                        "type": "thinking",
+                        "character": responder,
+                    })
+
+                    style_instruction = build_style_instruction(responder, user_char)
+                    system_prompt = build_system_prompt(responder, session["history"])
+                    if style_instruction:
+                        system_prompt += f"\n\n{style_instruction}"
+
+                    # 2. 构建 context —— 角色信息在 system prompt 的对话记录中
+                    ctx = build_conversation_context(session["history"])
+                    ctx.append({
+                        "role": "user",
+                        "content": text,
+                    })
+
+                    # 检查角色独立API配置（优先级：会话独立配置 > 文件配置 > 全局默认）
+                    char_api = get_character_api_config(responder)
+                    session_char = session.get("character_api_config", {}).get(responder, {})
+                    char_api_url = (session_char.get("api_url")
+                                    or char_api.get("api_url")
+                                    or session["api_url"])
+                    char_model = (session_char.get("model")
+                                  or char_api.get("model")
+                                  or session["model"])
+
+                    reply = await call_llm(
+                        session["api_key"], char_api_url, char_model,
+                        system_prompt, ctx,
+                    )
+                    if reply is None:
+                        reply = get_demo_response(responder, text)
+
+                    # 3. 清除思考中
+                    await manager.broadcast({
+                        "type": "thinking_clear",
+                        "character": responder,
+                    })
+
+                    # 4. 追加到历史（后续响应者能看到这条回复）
+                    bot_msg = {"character": responder, "text": reply, "is_bot": True}
+                    session["history"].append(bot_msg)
+                    session["last_speaker"] = responder
+
+                    # 5. 广播最终回复
+                    await manager.broadcast({
+                        "type": "message",
+                        "character": responder,
+                        "text": reply,
+                        "is_bot": True,
+                    })
+
+            # ── 清除对话 ──
+            elif msg_type == "clear":
+                session["history"] = []
+                session["last_speaker"] = None
+                await ws.send_json({"type": "system", "text": "对话已清除"})
+
+    except WebSocketDisconnect:
+        manager.disconnect(client_id)
+        char = sessions.get(client_id, {}).get("character", "某人")
+        await manager.broadcast({"type": "system", "text": f"{char} 离开了聊天室"})
+
+
+# ── 静态文件 ──
+
+# Try dist (built React app) first, fall back to frontend/ (old single-page)
+FRONTEND_DIST = Path(__file__).resolve().parent.parent / "frontend" / "dist"
+FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
+if FRONTEND_DIST.exists():
+    app.mount("/", StaticFiles(directory=str(FRONTEND_DIST), html=True), name="frontend")
+elif FRONTEND_DIR.exists():
+    app.mount("/", StaticFiles(directory=str(FRONTEND_DIR), html=True), name="frontend")
+
+
+# ── 启动 ──
+
+def find_free_port(start: int = 8000, max_attempts: int = 10) -> int:
+    import socket
+    for port in range(start, start + max_attempts):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            try:
+                s.bind(("0.0.0.0", port))
+                return port
+            except OSError:
+                continue
+    return start
+
+
+def free_port(port: int):
+    """Kill any process using the given port (Windows)."""
+    import subprocess, time
+    try:
+        result = subprocess.run(
+            f'netstat -ano | findstr :{port} | findstr LISTENING',
+            shell=True, capture_output=True, text=True, timeout=5,
+        )
+        for line in result.stdout.strip().split('\n'):
+            line = line.strip()
+            if line:
+                parts = line.split()
+                if len(parts) >= 5:
+                    pid = parts[-1]
+                    subprocess.run(['taskkill', '/f', '/pid', pid],
+                                   capture_output=True, timeout=5)
+    except Exception:
+        pass
+    time.sleep(0.5)
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
+
+    free_port(8000)
+    port = find_free_port(8000)
+    if port != 8000:
+        print(f"[SOS] 端口8000被占用，改用 {port}")
+
+    # 自动打开浏览器
+    import webbrowser
+    webbrowser.open(f"http://localhost:{port}")
+
+    print(f"[SOS] 启动完成")
+    print(f"  前端地址: http://localhost:{port}")
+    if DEFAULT_API_KEY:
+        print(f"  状态: 已配置API Key（AI模式）")
+    else:
+        print(f"  状态: 演示模式（请在页面右上角设置API Key）")
+    print()
+
+    uvicorn.run("main:app", host="0.0.0.0", port=port)

@@ -1,0 +1,253 @@
+{
+  "source": "凉宫春日系列全13卷 小说对话数据",
+  "description": "SOS团聊天室 响应概率引擎配置 —— 控制角色发言概率和语气风格",
+  "data_version": "2026-05-23",
+
+  "base_probability": {
+    "description": "基础发言概率（无触发条件时，每轮各角色主动说话的概率）",
+    "凉宫春日": 0.447,
+    "阿虚": 0.245,
+    "古泉一树": 0.128,
+    "长门有希": 0.097,
+    "朝比奈实玖瑠": 0.084
+  },
+
+  "conditional_probability_matrix": {
+    "description": "条件概率矩阵 P(响应者 | 上一位说话者) —— 上一位说话后，各角色接话的概率",
+    "source": "novel_probability_result.json",
+    "matrix": {
+      "凉宫春日": {
+        "凉宫春日": 0.515,
+        "阿虚": 0.282,
+        "长门有希": 0.023,
+        "朝比奈实玖瑠": 0.069,
+        "古泉一树": 0.108
+      },
+      "阿虚": {
+        "凉宫春日": 0.473,
+        "阿虚": 0.150,
+        "长门有希": 0.168,
+        "朝比奈实玖瑠": 0.096,
+        "古泉一树": 0.114
+      },
+      "长门有希": {
+        "凉宫春日": 0.227,
+        "阿虚": 0.333,
+        "长门有希": 0.318,
+        "朝比奈实玖瑠": 0.030,
+        "古泉一树": 0.091
+      },
+      "朝比奈实玖瑠": {
+        "凉宫春日": 0.351,
+        "阿虚": 0.263,
+        "长门有希": 0.070,
+        "朝比奈实玖瑠": 0.211,
+        "古泉一树": 0.105
+      },
+      "古泉一树": {
+        "凉宫春日": 0.379,
+        "阿虚": 0.218,
+        "长门有希": 0.069,
+        "朝比奈实玖瑠": 0.069,
+        "古泉一树": 0.264
+      }
+    }
+  },
+
+  "must_reply_rules": {
+    "description": "必回规则 —— 满足任一条件时，override基础概率强制发言",
+    "rules": [
+      {"condition": "被@角色名", "probability_boost": "100%"},
+      {"condition": "直接提问（带？/吗/呢/吧结尾）", "probability_boost": "100%"},
+      {"condition": "凉宫春日发言 → 全员", "probability_boost": "+30%"},
+      {"condition": "角色核心话题", "probability_boost": "+50%", "note": "核心话题见各角色话题映射表"}
+    ]
+  },
+
+  "character_baseline_style": {
+    "description": "各角色基准语气风格（对全体/无特定对象时的默认值）",
+    "source": "addressee_analysis_result.json baseline",
+    "凉宫春日": {
+      "avg_char_count": 27.2,
+      "question_ratio": 0.325,
+      "exclamation_ratio": 0.567,
+      "command_ratio": 0.013,
+      "politeness": 0.013,
+      "softening": 0.210,
+      "certain_high": 0.085,
+      "certain_low": 0.052,
+      "intimate_term_ratio": 0.223,
+      "style_label": "高感叹+高亲密度词+低敬语"
+    },
+    "阿虚": {
+      "avg_char_count": 18.3,
+      "question_ratio": 0.575,
+      "exclamation_ratio": 0.162,
+      "command_ratio": 0.006,
+      "politeness": 0.054,
+      "softening": 0.174,
+      "certain_high": 0.036,
+      "certain_low": 0.054,
+      "intimate_term_ratio": 0.036,
+      "style_label": "高提问+低感叹+少亲密度词"
+    },
+    "长门有希": {
+      "avg_char_count": 18.7,
+      "question_ratio": 0.076,
+      "exclamation_ratio": 0.030,
+      "command_ratio": 0.015,
+      "politeness": 0.121,
+      "softening": 0.045,
+      "certain_high": 0.030,
+      "certain_low": 0.045,
+      "intimate_term_ratio": 0.015,
+      "style_label": "极低感叹+极少提问+低亲密度词"
+    },
+    "朝比奈实玖瑠": {
+      "avg_char_count": 23.0,
+      "question_ratio": 0.193,
+      "exclamation_ratio": 0.140,
+      "command_ratio": 0.0,
+      "politeness": 0.123,
+      "softening": 0.070,
+      "certain_high": 0.018,
+      "certain_low": 0.053,
+      "intimate_term_ratio": 0.105,
+      "style_label": "中感叹+有敬语+低肯定性"
+    },
+    "古泉一树": {
+      "avg_char_count": 32.4,
+      "question_ratio": 0.241,
+      "exclamation_ratio": 0.046,
+      "command_ratio": 0.0,
+      "politeness": 0.115,
+      "softening": 0.138,
+      "certain_high": 0.034,
+      "certain_low": 0.253,
+      "intimate_term_ratio": 0.034,
+      "style_label": "长句+中等提问+极高不确定性"
+    }
+  },
+
+  "addressee_style_adjustment": {
+    "description": "对象别语气调整 —— 说话对象不同时，语气指标的变化系数",
+    "source": "addressee_relationship_matrix.json",
+    "凉宫春日": {
+      "阿虚": {
+        "label": "疏离",
+        "adjust": {"command_ratio": -0.001, "exclamation_ratio": -0.027, "politeness": -0.001, "intimate_term": -0.186}
+      },
+      "长门有希": {
+        "label": "亲近",
+        "adjust": {"command_ratio": 0.021, "exclamation_ratio": -0.050, "politeness": 0.021, "intimate_term": 0.432}
+      },
+      "朝比奈实玖瑠": {
+        "label": "亲近",
+        "adjust": {"command_ratio": 0.011, "exclamation_ratio": 0.028, "politeness": -0.013, "intimate_term": 0.420}
+      },
+      "古泉一树": {
+        "label": "亲近/热烈",
+        "adjust": {"command_ratio": -0.013, "exclamation_ratio": 0.066, "politeness": -0.013, "intimate_term": 0.144}
+      }
+    },
+    "阿虚": {
+      "凉宫春日": {
+        "label": "疏离",
+        "adjust": {"command_ratio": -0.006, "exclamation_ratio": -0.023, "politeness": -0.003, "intimate_term": -0.036}
+      },
+      "长门有希": {
+        "label": "冷静/敬语",
+        "adjust": {"command_ratio": -0.006, "exclamation_ratio": -0.059, "politeness": 0.084, "intimate_term": -0.002}
+      },
+      "朝比奈实玖瑠": {
+        "label": "亲近/热烈",
+        "adjust": {"command_ratio": -0.006, "exclamation_ratio": 0.116, "politeness": -0.054, "intimate_term": 0.075}
+      },
+      "古泉一树": {
+        "label": "亲近/热烈",
+        "adjust": {"command_ratio": -0.006, "exclamation_ratio": 0.073, "politeness": 0.005, "intimate_term": 0.140}
+      }
+    },
+    "长门有希": {
+      "凉宫春日": {
+        "label": "亲近/热烈",
+        "adjust": {"command_ratio": -0.015, "exclamation_ratio": 0.053, "politeness": -0.121, "intimate_term": 0.068}
+      },
+      "阿虚": {
+        "label": "中性",
+        "adjust": {"command_ratio": 0.009, "exclamation_ratio": -0.030, "politeness": -0.002, "intimate_term": -0.015}
+      },
+      "朝比奈实玖瑠": {
+        "label": "敬语",
+        "adjust": {"command_ratio": -0.015, "exclamation_ratio": -0.030, "politeness": 0.129, "intimate_term": -0.015}
+      },
+      "古泉一树": {
+        "label": "敬语",
+        "adjust": {"command_ratio": -0.015, "exclamation_ratio": -0.030, "politeness": 0.079, "intimate_term": -0.015}
+      }
+    },
+    "朝比奈实玖瑠": {
+      "凉宫春日": {
+        "label": "热烈",
+        "adjust": {"command_ratio": 0.0, "exclamation_ratio": 0.100, "politeness": -0.003, "intimate_term": 0.015}
+      },
+      "阿虚": {
+        "label": "疏离/冷静",
+        "adjust": {"command_ratio": 0.0, "exclamation_ratio": -0.063, "politeness": 0.031, "intimate_term": -0.028}
+      },
+      "长门有希": {
+        "label": "亲近/冷静",
+        "adjust": {"command_ratio": 0.0, "exclamation_ratio": -0.140, "politeness": -0.123, "intimate_term": 0.095}
+      },
+      "古泉一树": {
+        "label": "亲近/冷静/敬语",
+        "adjust": {"command_ratio": 0.0, "exclamation_ratio": -0.140, "politeness": 0.127, "intimate_term": 0.095}
+      }
+    },
+    "古泉一树": {
+      "凉宫春日": {
+        "label": "中性",
+        "adjust": {"command_ratio": 0.0, "exclamation_ratio": 0.039, "politeness": -0.009, "intimate_term": -0.013}
+      },
+      "阿虚": {
+        "label": "亲近/敬语",
+        "adjust": {"command_ratio": 0.0, "exclamation_ratio": -0.046, "politeness": 0.179, "intimate_term": 0.025}
+      },
+      "长门有希": {
+        "label": "疏离",
+        "adjust": {"command_ratio": 0.0, "exclamation_ratio": -0.046, "politeness": -0.115, "intimate_term": -0.034}
+      },
+      "朝比奈实玖瑠": {
+        "label": "疏离",
+        "adjust": {"command_ratio": 0.0, "exclamation_ratio": -0.046, "politeness": -0.115, "intimate_term": -0.034}
+      }
+    }
+  },
+
+  "topic_triggers": {
+    "description": "角色核心话题映射表 —— 出现关键词时，对应角色发言概率+50%",
+    "凉宫春日": ["外星人", "未来人", "超能力者", "SOS团", "有趣", "无聊", "新活动", "暑假", "学园祭", "寻找", "谜团", "UFO", "神秘"],
+    "阿虚": ["吐槽", "麻烦", "正常", "日常", "普通人", "叹气", "无奈", "妹妹", "谷口", "国木田"],
+    "长门有希": ["书", "阅读", "图书馆", "资讯", "数据", "分析", "调查", "安静", "宇宙", "程序"],
+    "朝比奈实玖瑠": ["点心", "茶水", "女仆", "可爱", "害怕", "怎么办", "时间", "未来", "抱歉", "对不起"],
+    "古泉一树": ["机关", "闭锁空间", "神人", "超能力", "棋盘", "策略", "推测", "理论", "人类原理", "春日的状态"]
+  },
+
+  "character_api_config": {
+    "description": "各角色独立API配置（可选 —— 不配置则使用会话默认值）",
+    "凉宫春日": {"api_url": null, "model": null},
+    "阿虚": {"api_url": null, "model": null},
+    "长门有希": {"api_url": null, "model": null},
+    "朝比奈实玖瑠": {"api_url": null, "model": null},
+    "古泉一树": {"api_url": null, "model": null}
+  },
+
+  "psp_supplement": {
+    "description": "PSP游戏《凉宫春日的约定》对话数据（10497条），作为小说数据的补充参考",
+    "key_differences_from_novel_notes": [
+      "PSP中阿虚的对话量远超其他角色（5222/10497），因游戏主角视角",
+      "PSP条件概率显示所有人对阿虚的接话率都极高（50-67%），与游戏机制有关",
+      "小说数据（682条）更准确反映天然对话模式，PSP数据仅供参考"
+    ]
+  }
+}
