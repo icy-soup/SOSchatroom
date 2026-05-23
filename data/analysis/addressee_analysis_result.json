@@ -1,0 +1,2206 @@
+{
+  "source": "凉宫春日系列全13卷 对话对象分析",
+  "total_dialogues": 791,
+  "baseline": {
+    "凉宫春日": {
+      "total_dialogues": 305,
+      "avg_char_count": 27.17377049180328,
+      "question_ratio": 0.32459016393442625,
+      "exclamation_ratio": 0.5672131147540984,
+      "command_ratio": 0.013114754098360656,
+      "politeness_per_dialogue": 0.013114754098360656,
+      "softening_per_dialogue": 0.2098360655737705,
+      "certain_high_ratio": 0.08524590163934426,
+      "certain_low_ratio": 0.05245901639344262,
+      "intimate_term_ratio": 0.22295081967213115
+    },
+    "阿虚": {
+      "total_dialogues": 167,
+      "avg_char_count": 18.311377245508982,
+      "question_ratio": 0.5748502994011976,
+      "exclamation_ratio": 0.16167664670658682,
+      "command_ratio": 0.005988023952095809,
+      "politeness_per_dialogue": 0.05389221556886228,
+      "softening_per_dialogue": 0.17365269461077845,
+      "certain_high_ratio": 0.03592814371257485,
+      "certain_low_ratio": 0.05389221556886228,
+      "intimate_term_ratio": 0.03592814371257485
+    },
+    "长门有希": {
+      "total_dialogues": 66,
+      "avg_char_count": 18.651515151515152,
+      "question_ratio": 0.07575757575757576,
+      "exclamation_ratio": 0.030303030303030304,
+      "command_ratio": 0.015151515151515152,
+      "politeness_per_dialogue": 0.12121212121212122,
+      "softening_per_dialogue": 0.045454545454545456,
+      "certain_high_ratio": 0.030303030303030304,
+      "certain_low_ratio": 0.045454545454545456,
+      "intimate_term_ratio": 0.015151515151515152
+    },
+    "朝比奈实玖瑠": {
+      "total_dialogues": 57,
+      "avg_char_count": 22.964912280701753,
+      "question_ratio": 0.19298245614035087,
+      "exclamation_ratio": 0.14035087719298245,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.12280701754385964,
+      "softening_per_dialogue": 0.07017543859649122,
+      "certain_high_ratio": 0.017543859649122806,
+      "certain_low_ratio": 0.05263157894736842,
+      "intimate_term_ratio": 0.10526315789473684
+    },
+    "古泉一树": {
+      "total_dialogues": 87,
+      "avg_char_count": 32.39080459770115,
+      "question_ratio": 0.2413793103448276,
+      "exclamation_ratio": 0.04597701149425287,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.11494252873563218,
+      "softening_per_dialogue": 0.13793103448275862,
+      "certain_high_ratio": 0.034482758620689655,
+      "certain_low_ratio": 0.25287356321839083,
+      "intimate_term_ratio": 0.034482758620689655
+    }
+  },
+  "per_pair_analysis": {
+    "凉宫春日→冈部老师": {
+      "dialogue_count": 1,
+      "avg_char_count": 15.0,
+      "question_ratio": 0.0,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {},
+      "top_openers": {
+        "我毕": 1
+      },
+      "representative_dialogues": [
+        "我毕业于东国中，叫做凉宫春日。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -12.174,
+        "question_delta": -0.325,
+        "exclamation_delta": -0.567,
+        "command_delta": -0.013,
+        "politeness_delta": -0.013,
+        "softening_delta": -0.21,
+        "intimate_term_delta": -0.223
+      },
+      "relationship_label": "疏离/冷静"
+    },
+    "凉宫春日→全体": {
+      "dialogue_count": 21,
+      "avg_char_count": 38.76190476190476,
+      "question_ratio": 0.23809523809523808,
+      "exclamation_ratio": 0.9047619047619048,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.047619047619047616,
+      "softening_per_dialogue": 0.3333333333333333,
+      "certain_high_ratio": 0.19047619047619047,
+      "certain_low_ratio": 0.047619047619047616,
+      "intimate_term_ratio": 0.09523809523809523,
+      "top_particles": {
+        "吗": 6,
+        "吧": 5,
+        "喔": 3,
+        "哦": 3,
+        "啊": 3
+      },
+      "top_openers": {
+        "这个": 3,
+        "你们": 2,
+        "很好": 2,
+        "大家": 2,
+        "我对": 1
+      },
+      "representative_dialogues": [
+        "明天星期六放假，大家一早就要集合。九点到北口车站前面碰面！",
+        "很好，大家都到齐了哦！因为今天是开重要会议的日子。",
+        "杀青了！各位辛苦了！现在全部的摄影工作都结束了！",
+        "连那种无聊的电影都有了。那我一定可以拍得比他更好！你们有什么意见吗？",
+        "好慢喔，要罚钱!就罚你请大家喝饮料吧。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": 11.588,
+        "question_delta": -0.086,
+        "exclamation_delta": 0.338,
+        "command_delta": -0.013,
+        "politeness_delta": 0.035,
+        "softening_delta": 0.123,
+        "intimate_term_delta": -0.128
+      },
+      "relationship_label": "疏离/热烈"
+    },
+    "阿虚→凉宫春日": {
+      "dialogue_count": 79,
+      "avg_char_count": 18.151898734177216,
+      "question_ratio": 0.6455696202531646,
+      "exclamation_ratio": 0.13924050632911392,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.05063291139240506,
+      "softening_per_dialogue": 0.17721518987341772,
+      "certain_high_ratio": 0.0379746835443038,
+      "certain_low_ratio": 0.0759493670886076,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {
+        "吗": 15,
+        "啊": 13,
+        "吧": 10,
+        "啦": 4,
+        "呢": 3
+      },
+      "top_openers": {
+        "为什": 3,
+        "这是": 3,
+        "你真": 2,
+        "等一": 2,
+        "你不": 2
+      },
+      "representative_dialogues": [
+        "我啊…其实是…那个…你愿意听我说吗?",
+        "我有重要的事情要跟你说，你好好听著。",
+        "所谓的意思意思，请问你到底去了几天？",
+        "话说你也太重了吧，是吃了多少年糕啊？",
+        "你白痴啊？是打出莫名其妙暗号的你不对。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -0.159,
+        "question_delta": 0.071,
+        "exclamation_delta": -0.022,
+        "command_delta": -0.006,
+        "politeness_delta": -0.003,
+        "softening_delta": 0.004,
+        "intimate_term_delta": -0.036
+      },
+      "relationship_label": "疏离"
+    },
+    "凉宫春日→阿虚": {
+      "dialogue_count": 163,
+      "avg_char_count": 25.404907975460123,
+      "question_ratio": 0.38650306748466257,
+      "exclamation_ratio": 0.5398773006134969,
+      "command_ratio": 0.012269938650306749,
+      "politeness_per_dialogue": 0.012269938650306749,
+      "softening_per_dialogue": 0.2147239263803681,
+      "certain_high_ratio": 0.04294478527607362,
+      "certain_low_ratio": 0.06748466257668712,
+      "intimate_term_ratio": 0.03680981595092025,
+      "top_particles": {
+        "啊": 31,
+        "吧": 22,
+        "吗": 20,
+        "啦": 12,
+        "呢": 10
+      },
+      "top_openers": {
+        "现在": 5,
+        "什么": 4,
+        "当然": 4,
+        "干嘛": 4,
+        "你是": 3
+      },
+      "representative_dialogues": [
+        "就颜色来说，礼拜一是黄色，礼拜二是红色，礼拜三是蓝色。",
+        "气死我了!搞什么鬼啊，臭老师!就只会妨碍我做事，可恶!",
+        "嗯，这样就无可挑剔了，还是用兔女郎来介绍商品最适合了。",
+        "答对了，十分。那么，你知道织女和牛郎星是指哪两颗星吗？",
+        "倒是你过来看看这个。我觉得很奇怪，会是电脑出了问题吗？"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -1.769,
+        "question_delta": 0.062,
+        "exclamation_delta": -0.027,
+        "command_delta": -0.001,
+        "politeness_delta": -0.001,
+        "softening_delta": 0.005,
+        "intimate_term_delta": -0.186
+      },
+      "relationship_label": "疏离"
+    },
+    "阿虚→自言自语": {
+      "dialogue_count": 3,
+      "avg_char_count": 7.0,
+      "question_ratio": 0.3333333333333333,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.3333333333333333,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {
+        "嘛": 1
+      },
+      "top_openers": {
+        "……": 3
+      },
+      "representative_dialogues": [
+        "……不，没干嘛。",
+        "……你在看什么?",
+        "……不是。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -11.311,
+        "question_delta": -0.242,
+        "exclamation_delta": -0.162,
+        "command_delta": -0.006,
+        "politeness_delta": -0.054,
+        "softening_delta": 0.16,
+        "intimate_term_delta": -0.036
+      },
+      "relationship_label": "疏离/冷静"
+    },
+    "凉宫春日→女同学": {
+      "dialogue_count": 3,
+      "avg_char_count": 4.0,
+      "question_ratio": 0.0,
+      "exclamation_ratio": 0.3333333333333333,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {},
+      "top_openers": {
+        "没有": 1,
+        "我不": 1,
+        "吵死": 1
+      },
+      "representative_dialogues": [
+        "我不知道。",
+        "吵死了!",
+        "没有。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -23.174,
+        "question_delta": -0.325,
+        "exclamation_delta": -0.234,
+        "command_delta": -0.013,
+        "politeness_delta": -0.013,
+        "softening_delta": -0.21,
+        "intimate_term_delta": -0.223
+      },
+      "relationship_label": "疏离/冷静"
+    },
+    "阿虚→谷口": {
+      "dialogue_count": 7,
+      "avg_char_count": 12.857142857142858,
+      "question_ratio": 0.5714285714285714,
+      "exclamation_ratio": 0.14285714285714285,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.14285714285714285,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {
+        "吗": 2,
+        "吧": 1
+      },
+      "top_openers": {
+        "你是": 2,
+        "犯人": 1,
+        "那她": 1,
+        "我带": 1,
+        "你还": 1
+      },
+      "representative_dialogues": [
+        "你是特地为见外星人每天变换发型的吗?",
+        "你还很高兴的跟我说你圣诞夜有约了。",
+        "我带念小学的妹妹回乡下的奶奶家。",
+        "你是说那个外星人之类的东西吗?",
+        "那她到底为什么做那种事?"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -5.454,
+        "question_delta": -0.003,
+        "exclamation_delta": -0.019,
+        "command_delta": -0.006,
+        "politeness_delta": -0.054,
+        "softening_delta": -0.031,
+        "intimate_term_delta": -0.036
+      },
+      "relationship_label": "疏离"
+    },
+    "阿虚→国木田": {
+      "dialogue_count": 1,
+      "avg_char_count": 4.0,
+      "question_ratio": 1.0,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {},
+      "top_openers": {
+        "什么": 1
+      },
+      "representative_dialogues": [
+        "什么事?"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -14.311,
+        "question_delta": 0.425,
+        "exclamation_delta": -0.162,
+        "command_delta": -0.006,
+        "politeness_delta": -0.054,
+        "softening_delta": -0.174,
+        "intimate_term_delta": -0.036
+      },
+      "relationship_label": "疏离/冷静"
+    },
+    "阿虚→朝仓凉子": {
+      "dialogue_count": 4,
+      "avg_char_count": 15.75,
+      "question_ratio": 0.75,
+      "exclamation_ratio": 0.25,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {
+        "吗": 2,
+        "啦": 1,
+        "啊": 1
+      },
+      "top_openers": {
+        "你别": 1,
+        "原来": 1,
+        "你…": 1,
+        "朝仓": 1
+      },
+      "representative_dialogues": [
+        "原来是你啊……有什么事吗?",
+        "你别说那种吓死人的话啦!",
+        "你…你怎么会在这里？",
+        "朝仓，你是真的不记得，还是在装傻？你真的没想过要杀我吗？"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -2.561,
+        "question_delta": 0.175,
+        "exclamation_delta": 0.088,
+        "command_delta": -0.006,
+        "politeness_delta": -0.054,
+        "softening_delta": -0.174,
+        "intimate_term_delta": -0.036
+      },
+      "relationship_label": "疏离/热烈"
+    },
+    "长门有希→凉宫春日": {
+      "dialogue_count": 12,
+      "avg_char_count": 28.083333333333332,
+      "question_ratio": 0.0,
+      "exclamation_ratio": 0.08333333333333333,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.08333333333333333,
+      "softening_per_dialogue": 0.08333333333333333,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.25,
+      "intimate_term_ratio": 0.08333333333333333,
+      "top_particles": {
+        "吧": 1
+      },
+      "top_openers": {
+        "凉宫": 3,
+        "长门": 1,
+        "我的": 1,
+        "请相": 1,
+        "没关": 1
+      },
+      "representative_dialogues": [
+        "加速变更属性资料。自动导航模式。",
+        "还是出去比较好。发现次元断层。有人启动了位相变换。",
+        "请相信我。因为你被凉宫春日挑中了。你是个重要的关键人物。",
+        "没关系。开枪吧！",
+        "我的工作就是观察凉宫春日，将得到的资讯上传给资讯统合思念体。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": 9.432,
+        "question_delta": -0.076,
+        "exclamation_delta": 0.053,
+        "command_delta": -0.015,
+        "politeness_delta": -0.038,
+        "softening_delta": 0.038,
+        "intimate_term_delta": 0.068
+      },
+      "relationship_label": "亲近/热烈"
+    },
+    "阿虚→长门有希": {
+      "dialogue_count": 29,
+      "avg_char_count": 19.413793103448278,
+      "question_ratio": 0.5172413793103449,
+      "exclamation_ratio": 0.10344827586206896,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.13793103448275862,
+      "softening_per_dialogue": 0.13793103448275862,
+      "certain_high_ratio": 0.06896551724137931,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.034482758620689655,
+      "top_particles": {
+        "吗": 5,
+        "啊": 3,
+        "吧": 2,
+        "喔": 1,
+        "呢": 1
+      },
+      "top_openers": {
+        "长门": 6,
+        "这家": 1,
+        "你喜": 1,
+        "要玩": 1,
+        "你该": 1
+      },
+      "representative_dialogues": [
+        "长门，你有没有看到朝比奈的隐形眼镜？",
+        "我就直说了，我完全不懂你在说什么。",
+        "喂!长门，振作点!我马上叫救护车。",
+        "知道了啦。既然你这么说我就照办咯。",
+        "我才要问你知不知道自己为什么会在这里呢。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": 1.102,
+        "question_delta": -0.058,
+        "exclamation_delta": -0.058,
+        "command_delta": -0.006,
+        "politeness_delta": 0.084,
+        "softening_delta": -0.036,
+        "intimate_term_delta": -0.001
+      },
+      "relationship_label": "冷静/敬语"
+    },
+    "长门有希→阿虚": {
+      "dialogue_count": 42,
+      "avg_char_count": 15.166666666666666,
+      "question_ratio": 0.11904761904761904,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.023809523809523808,
+      "politeness_per_dialogue": 0.11904761904761904,
+      "softening_per_dialogue": 0.047619047619047616,
+      "certain_high_ratio": 0.047619047619047616,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {
+        "耶": 2,
+        "吗": 2,
+        "吧": 2,
+        "嗯": 1
+      },
+      "top_openers": {
+        "可以": 1,
+        "很特": 1,
+        "非常": 1,
+        "没有": 1,
+        "借给": 1
+      },
+      "representative_dialogues": [
+        "雷射。具有高指向性的不可见同调光。",
+        "我家。放心，我家里没人。进去吧。",
+        "不用了。肉体的损伤根本不算什么。",
+        "这一次是第一万五千四百九十八次。",
+        "情报生命体。这个空间的创造者。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -3.485,
+        "question_delta": 0.043,
+        "exclamation_delta": -0.03,
+        "command_delta": 0.009,
+        "politeness_delta": -0.002,
+        "softening_delta": 0.002,
+        "intimate_term_delta": -0.015
+      },
+      "relationship_label": "中性"
+    },
+    "凉宫春日→长门有希": {
+      "dialogue_count": 29,
+      "avg_char_count": 32.44827586206897,
+      "question_ratio": 0.41379310344827586,
+      "exclamation_ratio": 0.5172413793103449,
+      "command_ratio": 0.034482758620689655,
+      "politeness_per_dialogue": 0.034482758620689655,
+      "softening_per_dialogue": 0.2413793103448276,
+      "certain_high_ratio": 0.20689655172413793,
+      "certain_low_ratio": 0.06896551724137931,
+      "intimate_term_ratio": 0.6551724137931034,
+      "top_particles": {
+        "啊": 9,
+        "呢": 5,
+        "吗": 4,
+        "喔": 3,
+        "啦": 2
+      },
+      "top_openers": {
+        "有希": 5,
+        "等一": 2,
+        "以后": 1,
+        "怎样": 1,
+        "不要": 1
+      },
+      "representative_dialogues": [
+        "有希简直是十项全能！我去找她时，她二话不说就跟我走了。",
+        "我们可是来帮有希的啊，绝对不是来劝别人加入SOS团的！",
+        "好厉害的才能啊！将来一定很有发展性！你可望进入大联盟哦！",
+        "我想见见那位长门同学和朝比奈。我也想去那间社团教室看看。",
+        "以后放学后，就在这间教室集合。一定要来喔!否则你就死定了!"
+      ],
+      "vs_baseline": {
+        "avg_char_count": 5.275,
+        "question_delta": 0.089,
+        "exclamation_delta": -0.05,
+        "command_delta": 0.021,
+        "politeness_delta": 0.021,
+        "softening_delta": 0.032,
+        "intimate_term_delta": 0.432
+      },
+      "relationship_label": "亲近"
+    },
+    "凉宫春日→朝比奈实玖瑠": {
+      "dialogue_count": 42,
+      "avg_char_count": 26.214285714285715,
+      "question_ratio": 0.11904761904761904,
+      "exclamation_ratio": 0.5952380952380952,
+      "command_ratio": 0.023809523809523808,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.16666666666666666,
+      "certain_high_ratio": 0.14285714285714285,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.6428571428571429,
+      "top_particles": {
+        "吧": 4,
+        "啊": 4,
+        "喔": 2,
+        "呢": 2,
+        "吗": 2
+      },
+      "top_openers": {
+        "实玖": 11,
+        "角色": 2,
+        "跟大": 1,
+        "像她": 1,
+        "社团": 1
+      },
+      "representative_dialogues": [
+        "实玖瑠，这里也有你想玩的捞金鱼摊喔。你就拼命地去捞。",
+        "不用担心，我会好好地指导你的。导演的命令是绝对的！",
+        "实玖瑠，你过来一下，咬紧你的牙关。这是惩罚！惩罚！",
+        "你这个笨蛋，到底在做什么啊?以为现在几点了!立刻给我滚过来!",
+        "实玖瑠！别那么害羞！抛开自我！只要把自己融入角色当中就好了！"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -0.959,
+        "question_delta": -0.206,
+        "exclamation_delta": 0.028,
+        "command_delta": 0.011,
+        "politeness_delta": -0.013,
+        "softening_delta": -0.043,
+        "intimate_term_delta": 0.42
+      },
+      "relationship_label": "亲近"
+    },
+    "朝比奈实玖瑠→凉宫春日": {
+      "dialogue_count": 25,
+      "avg_char_count": 20.12,
+      "question_ratio": 0.12,
+      "exclamation_ratio": 0.24,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.12,
+      "softening_per_dialogue": 0.04,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.08,
+      "intimate_term_ratio": 0.12,
+      "top_particles": {
+        "啊": 8,
+        "吗": 3,
+        "喔": 1,
+        "呢": 1
+      },
+      "top_openers": {
+        "那、": 2,
+        "救，": 1,
+        "小女": 1,
+        "我，": 1,
+        "不…": 1
+      },
+      "representative_dialogues": [
+        "求求你，请你现在什么都不要问，只要说好就好了。",
+        "那、那个……凉、凉宫同学，我想起来我还有事。",
+        "是出书吗？是我们吗？写什么样的书才好呢……？",
+        "思君苦无期～～断肠悬泪亦今宵，若能共长久～～",
+        "其实，我并不是这个时代的人。我是从未来的时代来的。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -2.845,
+        "question_delta": -0.073,
+        "exclamation_delta": 0.1,
+        "politeness_delta": -0.003,
+        "softening_delta": -0.03,
+        "intimate_term_delta": 0.015
+      },
+      "relationship_label": "热烈"
+    },
+    "朝比奈实玖瑠→全体": {
+      "dialogue_count": 2,
+      "avg_char_count": 38.5,
+      "question_ratio": 0.0,
+      "exclamation_ratio": 0.5,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.5,
+      "certain_high_ratio": 0.5,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {},
+      "top_openers": {
+        "我会": 1,
+        "不…": 1
+      },
+      "representative_dialogues": [
+        "我会退出书法社，加入你们社团的……不过，我并不清楚文艺社是在做什么的。",
+        "不……不要！不行不行！不能打架……唔………大家一定要和睦相处……否则……会被禁足的。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": 15.535,
+        "question_delta": -0.193,
+        "exclamation_delta": 0.36,
+        "politeness_delta": -0.123,
+        "softening_delta": 0.43,
+        "intimate_term_delta": -0.105
+      },
+      "relationship_label": "疏离/热烈"
+    },
+    "阿虚→朝比奈实玖瑠": {
+      "dialogue_count": 18,
+      "avg_char_count": 23.61111111111111,
+      "question_ratio": 0.6111111111111112,
+      "exclamation_ratio": 0.2777777777777778,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.2777777777777778,
+      "certain_high_ratio": 0.05555555555555555,
+      "certain_low_ratio": 0.05555555555555555,
+      "intimate_term_ratio": 0.1111111111111111,
+      "top_particles": {
+        "吧": 3,
+        "啊": 2,
+        "啦": 1,
+        "呢": 1,
+        "嘛": 1
+      },
+      "top_openers": {
+        "朝比": 5,
+        "你在": 1,
+        "对了": 1,
+        "你到": 1,
+        "你真": 1
+      },
+      "representative_dialogues": [
+        "对了，朝比奈，没想到你今天还会来呢!",
+        "你真的是朝比奈学姐?从未来来的?",
+        "像位完美的魔法师。没人会认错的。",
+        "怎么浮起来的？除了浮力之外还能有什么办法？",
+        "所谓的我们，是包括我跟朝比奈还有长门跟古泉？"
+      ],
+      "vs_baseline": {
+        "avg_char_count": 5.3,
+        "question_delta": 0.036,
+        "exclamation_delta": 0.116,
+        "command_delta": -0.006,
+        "politeness_delta": -0.054,
+        "softening_delta": 0.104,
+        "intimate_term_delta": 0.075
+      },
+      "relationship_label": "亲近/热烈"
+    },
+    "朝比奈实玖瑠→长门有希": {
+      "dialogue_count": 5,
+      "avg_char_count": 31.2,
+      "question_ratio": 0.2,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.2,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.2,
+      "top_particles": {
+        "呢": 1
+      },
+      "top_openers": {
+        "没关": 1,
+        "我被": 1,
+        "长门": 1,
+        "现在": 1,
+        "我还": 1
+      },
+      "representative_dialogues": [
+        "没关系，我要加入。而且，我对长门的存在也有点兴趣……",
+        "我被咬了。被长门同学注射纳米机械……",
+        "现在是十二月十八日的凌晨四点十八分。大约再五分钟，世界就会起变化。",
+        "长门同学——让时间静止了。把我们的时间冻结了三年之久，一直到今天才解开。",
+        "我还是不明白。为什么阿虚的要求轻轻松松就通过了呢?上司反而还命令我说，让长门也一块去。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": 8.235,
+        "question_delta": 0.007,
+        "exclamation_delta": -0.14,
+        "politeness_delta": -0.123,
+        "softening_delta": 0.13,
+        "intimate_term_delta": 0.095
+      },
+      "relationship_label": "亲近/冷静"
+    },
+    "凉宫春日→电脑社长": {
+      "dialogue_count": 2,
+      "avg_char_count": 23.5,
+      "question_ratio": 0.0,
+      "exclamation_ratio": 0.5,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {
+        "啊": 1
+      },
+      "top_openers": {
+        "你是": 1,
+        "我用": 1
+      },
+      "representative_dialogues": [
+        "你是没带耳朵啊，我刚刚明明就讲过了。一台电脑给我。",
+        "我用SOS团的名义号令你，马上交出一台电脑!"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -3.674,
+        "question_delta": -0.325,
+        "exclamation_delta": -0.067,
+        "command_delta": -0.013,
+        "politeness_delta": -0.013,
+        "softening_delta": -0.21,
+        "intimate_term_delta": -0.223
+      },
+      "relationship_label": "疏离/冷静"
+    },
+    "凉宫春日→自言自语": {
+      "dialogue_count": 2,
+      "avg_char_count": 40.0,
+      "question_ratio": 0.0,
+      "exclamation_ratio": 0.5,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {
+        "呀": 2
+      },
+      "top_openers": {
+        "唉呀": 1,
+        "哼，": 1
+      },
+      "representative_dialogues": [
+        "哼，又在说莫名其妙的话了。不过算了，反正SOS团还会继续下去的。",
+        "唉呀呀!我们可是拍到你性骚扰我们社员的画面啰!要是不想让这张照片在校内流传的话，就快点交出电脑!"
+      ],
+      "vs_baseline": {
+        "avg_char_count": 12.826,
+        "question_delta": -0.325,
+        "exclamation_delta": -0.067,
+        "command_delta": -0.013,
+        "politeness_delta": -0.013,
+        "softening_delta": -0.21,
+        "intimate_term_delta": -0.223
+      },
+      "relationship_label": "疏离/冷静"
+    },
+    "凉宫春日→朝仓凉子": {
+      "dialogue_count": 1,
+      "avg_char_count": 10.0,
+      "question_ratio": 1.0,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {},
+      "top_openers": {
+        "为什": 1
+      },
+      "representative_dialogues": [
+        "为什么都没人寄信来?"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -17.174,
+        "question_delta": 0.675,
+        "exclamation_delta": -0.567,
+        "command_delta": -0.013,
+        "politeness_delta": -0.013,
+        "softening_delta": -0.21,
+        "intimate_term_delta": -0.223
+      },
+      "relationship_label": "疏离/冷静"
+    },
+    "阿虚→全体": {
+      "dialogue_count": 2,
+      "avg_char_count": 33.0,
+      "question_ratio": 0.0,
+      "exclamation_ratio": 0.5,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.5,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.5,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {
+        "吧": 1,
+        "啊": 1
+      },
+      "top_openers": {
+        "昨天": 1,
+        "《大": 1
+      },
+      "representative_dialogues": [
+        "《大家穿和服的样子》啊……",
+        "昨天没人寄，今天也没有!或许大家都有什么不可告人的谜样体验，只是无法信任我们这种看起来可疑到极点的社团吧。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": 14.689,
+        "question_delta": -0.575,
+        "exclamation_delta": 0.338,
+        "command_delta": -0.006,
+        "politeness_delta": -0.054,
+        "softening_delta": 0.326,
+        "intimate_term_delta": -0.036
+      },
+      "relationship_label": "疏离/热烈"
+    },
+    "朝比奈实玖瑠→阿虚": {
+      "dialogue_count": 13,
+      "avg_char_count": 19.615384615384617,
+      "question_ratio": 0.23076923076923078,
+      "exclamation_ratio": 0.07692307692307693,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.15384615384615385,
+      "softening_per_dialogue": 0.07692307692307693,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.07692307692307693,
+      "top_particles": {
+        "啊": 4,
+        "呢": 1,
+        "嗯": 1,
+        "吗": 1
+      },
+      "top_openers": {
+        "凉宫": 1,
+        "以目": 1,
+        "无可": 1,
+        "没关": 1,
+        "啊…": 1
+      },
+      "representative_dialogues": [
+        "未来？请问你在说什么啊？不过…请你先放开我好吗？",
+        "没关系……真是的，老让你看到我丢脸的一面。",
+        "以目前的状况来说，这是最好的办法了。",
+        "对不起。如果我的朋友可以的话……没问题的。是我在班上认识的朋友。",
+        "是的。因为这是既定事项。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -3.35,
+        "question_delta": 0.038,
+        "exclamation_delta": -0.063,
+        "politeness_delta": 0.031,
+        "softening_delta": 0.007,
+        "intimate_term_delta": -0.028
+      },
+      "relationship_label": "疏离/冷静"
+    },
+    "古泉一树→阿虚": {
+      "dialogue_count": 17,
+      "avg_char_count": 28.58823529411765,
+      "question_ratio": 0.17647058823529413,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.29411764705882354,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.058823529411764705,
+      "certain_low_ratio": 0.29411764705882354,
+      "intimate_term_ratio": 0.058823529411764705,
+      "top_particles": {
+        "啊": 1,
+        "吗": 1
+      },
+      "top_openers": {
+        "我叫": 1,
+        "抱歉": 1,
+        "没错": 1,
+        "对不": 1,
+        "是啊": 1
+      },
+      "representative_dialogues": [
+        "我们必须防止虚构对现实生活的侵蚀。要让凉宫同学了解到虚拟终究只是虚拟。",
+        "有可能。而且她身边的人和机关不同，他们主张的是另一套理念。",
+        "说实话我也无法确定。我在意识到之前就置身于那个觐见室了。",
+        "这串数字没什么特别的意思，就只是我心血来潮想到的数字。",
+        "没错。闭锁空间是因凉宫同学的情绪产生的。如果放任不管，最终会覆盖整个现实世界。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -3.803,
+        "question_delta": -0.065,
+        "exclamation_delta": -0.046,
+        "politeness_delta": 0.179,
+        "softening_delta": -0.138,
+        "intimate_term_delta": 0.024
+      },
+      "relationship_label": "亲近/敬语"
+    },
+    "凉宫春日→古泉一树": {
+      "dialogue_count": 30,
+      "avg_char_count": 28.233333333333334,
+      "question_ratio": 0.3333333333333333,
+      "exclamation_ratio": 0.6333333333333333,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.2,
+      "certain_high_ratio": 0.03333333333333333,
+      "certain_low_ratio": 0.06666666666666667,
+      "intimate_term_ratio": 0.36666666666666664,
+      "top_particles": {
+        "吧": 3,
+        "呢": 3,
+        "吗": 3,
+        "啊": 2,
+        "耶": 1
+      },
+      "top_openers": {
+        "古泉": 4,
+        "我们": 3,
+        "阿虚": 2,
+        "这里": 1,
+        "就让": 1
+      },
+      "representative_dialogues": [
+        "好了，这样我们就有五个人了。这么一来，学校就无话可说了!",
+        "决定场所了！拍摄外景的场所。古泉家附近好像有一座大池子。",
+        "阿虚，你先说，你刚刚两个人偷偷在外头做了什么？从实招来！",
+        "事件最好还是发生在孤岛上！古泉，我的期望不会落空吧？",
+        "为什么那么心神不定啊？一副简直像是要被谁传唤的样子。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": 1.06,
+        "question_delta": 0.009,
+        "exclamation_delta": 0.066,
+        "command_delta": -0.013,
+        "politeness_delta": -0.013,
+        "softening_delta": -0.01,
+        "intimate_term_delta": 0.144
+      },
+      "relationship_label": "亲近/热烈"
+    },
+    "古泉一树→凉宫春日": {
+      "dialogue_count": 47,
+      "avg_char_count": 35.148936170212764,
+      "question_ratio": 0.2553191489361702,
+      "exclamation_ratio": 0.0851063829787234,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.10638297872340426,
+      "softening_per_dialogue": 0.19148936170212766,
+      "certain_high_ratio": 0.0425531914893617,
+      "certain_low_ratio": 0.3191489361702128,
+      "intimate_term_ratio": 0.02127659574468085,
+      "top_particles": {
+        "啊": 7,
+        "吧": 6,
+        "吗": 3,
+        "呢": 3,
+        "呀": 2
+      },
+      "top_openers": {
+        "凉宫": 3,
+        "啊，": 2,
+        "我们": 2,
+        "佐佐": 2,
+        "要我": 1
+      },
+      "representative_dialogues": [
+        "闭锁空间的发生率最近增加了，和凉宫同学进入高中前后的数值差不多。",
+        "原来如此。也就是说，我们自行拍摄电影，然后吸引客人前来观赏，对吧？",
+        "如果有就好罗。不知道是幸或不幸，圣诞节前后，我的行程都是一片空白。",
+        "佐佐木身边的人自称『机关』的对立组织。他们的目的是解放春日的力量。",
+        "你对她而言是非常重要的存在。你的行动可能才是解决问题的关键。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": 2.758,
+        "question_delta": 0.014,
+        "exclamation_delta": 0.039,
+        "politeness_delta": -0.009,
+        "softening_delta": 0.054,
+        "intimate_term_delta": -0.013
+      },
+      "relationship_label": "中性"
+    },
+    "阿虚→古泉一树": {
+      "dialogue_count": 17,
+      "avg_char_count": 17.235294117647058,
+      "question_ratio": 0.47058823529411764,
+      "exclamation_ratio": 0.23529411764705882,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.058823529411764705,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.17647058823529413,
+      "top_particles": {
+        "啊": 4,
+        "吗": 2,
+        "耶": 1
+      },
+      "top_openers": {
+        "你是": 2,
+        "也帮": 1,
+        "既然": 1,
+        "对不": 1,
+        "所以": 1
+      },
+      "representative_dialogues": [
+        "所以你所谓的能力就是在这个世界里战斗?",
+        "我的情况，自从进高中以来就没有正常过。",
+        "你对『机关』这个组织，有没有什么印象？",
+        "同样的两周时间，我们循环了多少次？",
+        "等下，为什么我也要去，又没有点名让我去。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -1.076,
+        "question_delta": -0.104,
+        "exclamation_delta": 0.074,
+        "command_delta": -0.006,
+        "politeness_delta": 0.005,
+        "softening_delta": -0.174,
+        "intimate_term_delta": 0.141
+      },
+      "relationship_label": "亲近/热烈"
+    },
+    "古泉一树→自言自语": {
+      "dialogue_count": 2,
+      "avg_char_count": 31.0,
+      "question_ratio": 0.0,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {
+        "呀": 1
+      },
+      "top_openers": {
+        "唉呀": 1,
+        "这个": 1
+      },
+      "representative_dialogues": [
+        "这个房间让我有种奇怪的异样感。很类似封闭空间，但是本质上却是不相同的……",
+        "唉呀，看你这种反应，可见她们两人已经先跟你接触过了。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -1.391,
+        "question_delta": -0.241,
+        "exclamation_delta": -0.046,
+        "politeness_delta": -0.115,
+        "softening_delta": -0.138,
+        "intimate_term_delta": -0.034
+      },
+      "relationship_label": "疏离"
+    },
+    "长门有希→朝仓凉子": {
+      "dialogue_count": 2,
+      "avg_char_count": 19.0,
+      "question_ratio": 0.0,
+      "exclamation_ratio": 0.5,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {},
+      "top_openers": {
+        "每个": 1,
+        "资讯": 1
+      },
+      "representative_dialogues": [
+        "资讯连结解除，开始!",
+        "每个程式都太简单了。天花板附近的空间与资讯封锁并不周全。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": 0.348,
+        "question_delta": -0.076,
+        "exclamation_delta": 0.47,
+        "command_delta": -0.015,
+        "politeness_delta": -0.121,
+        "softening_delta": -0.045,
+        "intimate_term_delta": -0.015
+      },
+      "relationship_label": "热烈"
+    },
+    "凉宫春日→谷口": {
+      "dialogue_count": 1,
+      "avg_char_count": 46.0,
+      "question_ratio": 0.0,
+      "exclamation_ratio": 1.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 2.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 1.0,
+      "top_particles": {},
+      "top_openers": {
+        "阿虚": 1
+      },
+      "representative_dialogues": [
+        "阿虚，这肯定是灵异事件。先是有谜样的转学生，现在又出现了莫名其妙转学的女生。这其中一定有鬼!"
+      ],
+      "vs_baseline": {
+        "avg_char_count": 18.826,
+        "question_delta": -0.325,
+        "exclamation_delta": 0.433,
+        "command_delta": -0.013,
+        "politeness_delta": -0.013,
+        "softening_delta": -0.21,
+        "intimate_term_delta": 0.777
+      },
+      "relationship_label": "亲近/热烈"
+    },
+    "古泉一树→大朝比奈": {
+      "dialogue_count": 1,
+      "avg_char_count": 42.0,
+      "question_ratio": 0.0,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {},
+      "top_openers": {
+        "终于": 1
+      },
+      "representative_dialogues": [
+        "终于到了我得向你展示超能力的时刻了。凉宫同学制造了闭锁空间，那是她精神不安定的产物。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": 9.609,
+        "question_delta": -0.241,
+        "exclamation_delta": -0.046,
+        "politeness_delta": -0.115,
+        "softening_delta": -0.138,
+        "intimate_term_delta": -0.034
+      },
+      "relationship_label": "疏离"
+    },
+    "凉宫春日→大朝比奈": {
+      "dialogue_count": 1,
+      "avg_char_count": 29.0,
+      "question_ratio": 1.0,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 1.0,
+      "top_particles": {},
+      "top_openers": {
+        "阿虚": 1
+      },
+      "representative_dialogues": [
+        "阿虚，你昨天和今天放学后都跑到哪里去了?社团活动也没参加。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": 1.826,
+        "question_delta": 0.675,
+        "exclamation_delta": -0.567,
+        "command_delta": -0.013,
+        "politeness_delta": -0.013,
+        "softening_delta": -0.21,
+        "intimate_term_delta": 0.777
+      },
+      "relationship_label": "亲近/冷静"
+    },
+    "古泉一树→全体": {
+      "dialogue_count": 1,
+      "avg_char_count": 43.0,
+      "question_ratio": 0.0,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {},
+      "top_openers": {
+        "看来": 1
+      },
+      "representative_dialogues": [
+        "看来我是最后一个到的。如果因为我的迟到而使得会议无法开始进行，那我在此郑重向各位道歉。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": 10.609,
+        "question_delta": -0.241,
+        "exclamation_delta": -0.046,
+        "politeness_delta": -0.115,
+        "softening_delta": -0.138,
+        "intimate_term_delta": -0.034
+      },
+      "relationship_label": "疏离"
+    },
+    "古泉一树→谷口": {
+      "dialogue_count": 1,
+      "avg_char_count": 28.0,
+      "question_ratio": 1.0,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {
+        "吗": 1
+      },
+      "top_openers": {
+        "这样": 1
+      },
+      "representative_dialogues": [
+        "这样不是很好吗？我对凉宫同学想拍什么电影倒是挺有兴趣的。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -4.391,
+        "question_delta": 0.759,
+        "exclamation_delta": -0.046,
+        "politeness_delta": -0.115,
+        "softening_delta": -0.138,
+        "intimate_term_delta": -0.034
+      },
+      "relationship_label": "疏离"
+    },
+    "朝比奈实玖瑠→自言自语": {
+      "dialogue_count": 7,
+      "avg_char_count": 31.571428571428573,
+      "question_ratio": 0.2857142857142857,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.14285714285714285,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {
+        "啊": 1
+      },
+      "top_openers": {
+        "啊，": 1,
+        "TP": 1,
+        "太好": 1,
+        "真是": 1,
+        "什么": 1
+      },
+      "representative_dialogues": [
+        "啊，凉宫同学……这件衣服对我来说好像小了一点……",
+        "真是不敢相信……通过了。这，为什么……？这么简单就……",
+        "这里不是主题乐园么？我以为我们到了一个游乐园之类的地方进了某个房间……",
+        "我已经绞尽脑汁了……",
+        "太好了，我们回来了。我们出发的时间是七月七日的晚上九点半过后。真是太好了……"
+      ],
+      "vs_baseline": {
+        "avg_char_count": 8.607,
+        "question_delta": 0.093,
+        "exclamation_delta": -0.14,
+        "politeness_delta": -0.123,
+        "softening_delta": -0.07,
+        "intimate_term_delta": -0.105
+      },
+      "relationship_label": "疏离/冷静"
+    },
+    "古泉一树→朝比奈实玖瑠": {
+      "dialogue_count": 7,
+      "avg_char_count": 23.857142857142858,
+      "question_ratio": 0.2857142857142857,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.14285714285714285,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.14285714285714285,
+      "intimate_term_ratio": 0.14285714285714285,
+      "top_particles": {
+        "吗": 1,
+        "吧": 1
+      },
+      "top_openers": {
+        "雷射": 1,
+        "本来": 1,
+        "其实": 1,
+        "我们": 1,
+        "真是": 1
+      },
+      "representative_dialogues": [
+        "我们被困在永不终止的暑假当中了。从八月十七日到三十一日这段时间。",
+        "其实不只有凉宫同学，就连我们也都一直在改变。你和我，还有朝比奈都是。大概长门同学也是。",
+        "雷射光从朝比奈同学的左眼射出来吗？",
+        "真是一篇旷世奇文。具体的描述予人好感。虽然作者一时丧失了自我，但从字里行间可以读出他澎湃的情感。",
+        "本来看你是一个比较冷静的人。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -8.534,
+        "question_delta": 0.044,
+        "exclamation_delta": -0.046,
+        "politeness_delta": -0.115,
+        "softening_delta": 0.005,
+        "intimate_term_delta": 0.108
+      },
+      "relationship_label": "亲近"
+    },
+    "长门有希→古泉一树": {
+      "dialogue_count": 5,
+      "avg_char_count": 21.6,
+      "question_ratio": 0.0,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.2,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {},
+      "top_openers": {
+        "是的": 1,
+        "请现": 1,
+        "这个": 1,
+        "他一": 1,
+        "《绿": 1
+      },
+      "representative_dialogues": [
+        "《绿胶囊之谜》。",
+        "请现身。",
+        "他一见钟情的对象，并不是我。他看到的我并不是我，而是资讯统合思念体。",
+        "是的。",
+        "这个情报生命体就是这样增殖的，非常幼稚而笨拙。这是一种把自身情报Copy到看过网站的人的脑内，促使限定空间产生的机制。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": 2.948,
+        "question_delta": -0.076,
+        "exclamation_delta": -0.03,
+        "command_delta": -0.015,
+        "politeness_delta": 0.079,
+        "softening_delta": -0.045,
+        "intimate_term_delta": -0.015
+      },
+      "relationship_label": "敬语"
+    },
+    "古泉一树→长门有希": {
+      "dialogue_count": 6,
+      "avg_char_count": 33.333333333333336,
+      "question_ratio": 0.5,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.3333333333333333,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {
+        "吧": 2,
+        "啊": 1,
+        "呢": 1
+      },
+      "top_openers": {
+        "那是": 1,
+        "难道": 1,
+        "好高": 1,
+        "凉宫": 1,
+        "没错": 1
+      },
+      "representative_dialogues": [
+        "好高的几率啊。信手捻来的徽章竟然就完全符合，真不愧是凉宫同学。",
+        "那是像单纤维一样的东西吧？不过那种单分子刀既看不到也没有质量，对吧？",
+        "凉宫同学的演唱和长门同学的吉他在水准之上，甚至超越了一般高中轻音乐社的程度。",
+        "至今看过的本格推理小说里，觉得最棒的是哪本呢？",
+        "难道说，社长就在这只巨大的蟋蟀里面？"
+      ],
+      "vs_baseline": {
+        "avg_char_count": 0.943,
+        "question_delta": 0.259,
+        "exclamation_delta": -0.046,
+        "politeness_delta": -0.115,
+        "softening_delta": 0.195,
+        "intimate_term_delta": -0.034
+      },
+      "relationship_label": "疏离"
+    },
+    "朝比奈实玖瑠→古泉一树": {
+      "dialogue_count": 4,
+      "avg_char_count": 18.75,
+      "question_ratio": 0.5,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.25,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.25,
+      "top_particles": {
+        "吗": 1
+      },
+      "top_openers": {
+        "刚刚": 1,
+        "对、": 1,
+        "晚安": 1,
+        "深秋": 1
+      },
+      "representative_dialogues": [
+        "深秋稻岸处～～夙夜孤守一陋……呃……淹？",
+        "对、对不起，我希望你跟我到一个地方去。",
+        "刚刚你在我手上注进了什么东西吗……？",
+        "晚安，阿虚。『和你』真是许久不见了。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -4.215,
+        "question_delta": 0.307,
+        "exclamation_delta": -0.14,
+        "politeness_delta": 0.127,
+        "softening_delta": -0.07,
+        "intimate_term_delta": 0.145
+      },
+      "relationship_label": "亲近/冷静/敬语"
+    },
+    "长门有希→朝比奈实玖瑠": {
+      "dialogue_count": 4,
+      "avg_char_count": 26.5,
+      "question_ratio": 0.0,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.25,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {},
+      "top_openers": {
+        "次元": 1,
+        "将选": 1,
+        "想求": 1,
+        "庵。": 1
+      },
+      "representative_dialogues": [
+        "想求你一件事。请你不要跟那段时间内的我说任何话。",
+        "次元振动周期经过相位转换后，便可在物体表面产生足以置换成重力波的力场。",
+        "庵。",
+        "将选择时空间内的液体结合情报冻结，置于已知时空间连续体的符合点，然后解除冻结。那就是现在。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": 7.848,
+        "question_delta": -0.076,
+        "exclamation_delta": -0.03,
+        "command_delta": -0.015,
+        "politeness_delta": 0.129,
+        "softening_delta": -0.045,
+        "intimate_term_delta": -0.015
+      },
+      "relationship_label": "敬语"
+    },
+    "古泉一树→三味线": {
+      "dialogue_count": 1,
+      "avg_char_count": 24.0,
+      "question_ratio": 0.0,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 1.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {},
+      "top_openers": {
+        "目前": 1
+      },
+      "representative_dialogues": [
+        "目前的状况好像不太妙。我们好像太小看凉宫同学了。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -8.391,
+        "question_delta": -0.241,
+        "exclamation_delta": -0.046,
+        "politeness_delta": -0.115,
+        "softening_delta": -0.138,
+        "intimate_term_delta": -0.034
+      },
+      "relationship_label": "疏离"
+    },
+    "阿虚→凉宫春日(国中)": {
+      "dialogue_count": 5,
+      "avg_char_count": 7.8,
+      "question_ratio": 0.4,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.4,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.2,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {
+        "吧": 2,
+        "啊": 1
+      },
+      "top_openers": {
+        "应该": 1,
+        "唔，": 1,
+        "我想": 1,
+        "我还": 1,
+        "约翰": 1
+      },
+      "representative_dialogues": [
+        "唔，就算有也不奇怪啊。",
+        "我还没认识这种人。",
+        "我想到处都有吧？",
+        "约翰史密斯。",
+        "应该有吧？"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -10.511,
+        "question_delta": -0.175,
+        "exclamation_delta": -0.162,
+        "command_delta": -0.006,
+        "politeness_delta": -0.054,
+        "softening_delta": 0.226,
+        "intimate_term_delta": -0.036
+      },
+      "relationship_label": "疏离/冷静"
+    },
+    "凉宫春日→喜绿江美里": {
+      "dialogue_count": 1,
+      "avg_char_count": 15.0,
+      "question_ratio": 0.0,
+      "exclamation_ratio": 1.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {
+        "嗯": 1
+      },
+      "top_openers": {
+        "嗯！": 1
+      },
+      "representative_dialogues": [
+        "嗯！我知道了！我们会想办法的。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -12.174,
+        "question_delta": -0.325,
+        "exclamation_delta": 0.433,
+        "command_delta": -0.013,
+        "politeness_delta": -0.013,
+        "softening_delta": -0.21,
+        "intimate_term_delta": -0.223
+      },
+      "relationship_label": "疏离/热烈"
+    },
+    "朝比奈实玖瑠→鹤屋": {
+      "dialogue_count": 1,
+      "avg_char_count": 22.0,
+      "question_ratio": 0.0,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 1.0,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {},
+      "top_openers": {
+        "不不": 1
+      },
+      "representative_dialogues": [
+        "不不…我不认识。请、请问，你是不是认错人了…"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -0.965,
+        "question_delta": -0.193,
+        "exclamation_delta": -0.14,
+        "politeness_delta": 0.877,
+        "softening_delta": -0.07,
+        "intimate_term_delta": -0.105
+      },
+      "relationship_label": "疏离/冷静/敬语"
+    },
+    "长门有希→全体": {
+      "dialogue_count": 1,
+      "avg_char_count": 5.0,
+      "question_ratio": 0.0,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {},
+      "top_openers": {
+        "我等": 1
+      },
+      "representative_dialogues": [
+        "我等你们。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -13.652,
+        "question_delta": -0.076,
+        "exclamation_delta": -0.03,
+        "command_delta": -0.015,
+        "politeness_delta": -0.121,
+        "softening_delta": -0.045,
+        "intimate_term_delta": -0.015
+      },
+      "relationship_label": "中性"
+    },
+    "古泉一树→鹤屋": {
+      "dialogue_count": 2,
+      "avg_char_count": 24.0,
+      "question_ratio": 0.0,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {},
+      "top_openers": {
+        "据说": 1,
+        "我就": 1
+      },
+      "representative_dialogues": [
+        "我就是凶手一角。这次推理剧原本就是为了取悦凉宫同学才上演的。",
+        "据说那边的天气晴朗，是绝佳的滑雪日。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -8.391,
+        "question_delta": -0.241,
+        "exclamation_delta": -0.046,
+        "politeness_delta": -0.115,
+        "softening_delta": -0.138,
+        "intimate_term_delta": -0.034
+      },
+      "relationship_label": "疏离"
+    },
+    "凉宫春日→鹤屋": {
+      "dialogue_count": 1,
+      "avg_char_count": 42.0,
+      "question_ratio": 0.0,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {},
+      "top_openers": {
+        "我在": 1
+      },
+      "representative_dialogues": [
+        "我在校门口发电影传单发完了，发现有人在鞋柜附近争吵。原来轻音乐社的主唱兼吉他手病了。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": 14.826,
+        "question_delta": -0.325,
+        "exclamation_delta": -0.567,
+        "command_delta": -0.013,
+        "politeness_delta": -0.013,
+        "softening_delta": -0.21,
+        "intimate_term_delta": -0.223
+      },
+      "relationship_label": "疏离/冷静"
+    },
+    "阿虚→长门有希(原)": {
+      "dialogue_count": 1,
+      "avg_char_count": 14.0,
+      "question_ratio": 0.0,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {},
+      "top_openers": {
+        "你去": 1
+      },
+      "representative_dialogues": [
+        "你去把改变了的世界恢复原状。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -4.311,
+        "question_delta": -0.575,
+        "exclamation_delta": -0.162,
+        "command_delta": -0.006,
+        "politeness_delta": -0.054,
+        "softening_delta": -0.174,
+        "intimate_term_delta": -0.036
+      },
+      "relationship_label": "疏离/冷静"
+    },
+    "凉宫春日→长门有希(镜)": {
+      "dialogue_count": 1,
+      "avg_char_count": 5.0,
+      "question_ratio": 0.0,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {},
+      "top_openers": {
+        "不能": 1
+      },
+      "representative_dialogues": [
+        "不能采用。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -22.174,
+        "question_delta": -0.325,
+        "exclamation_delta": -0.567,
+        "command_delta": -0.013,
+        "politeness_delta": -0.013,
+        "softening_delta": -0.21,
+        "intimate_term_delta": -0.223
+      },
+      "relationship_label": "疏离/冷静"
+    },
+    "阿虚→学生会会长": {
+      "dialogue_count": 1,
+      "avg_char_count": 46.0,
+      "question_ratio": 0.0,
+      "exclamation_ratio": 1.0,
+      "command_ratio": 1.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 1.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {
+        "吧": 1
+      },
+      "top_openers": {
+        "给我": 1
+      },
+      "representative_dialogues": [
+        "给我等下！你这样说，我们也很难做的。之前一直不闻不问，而在这种时候突然这么做也太不公平了吧。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": 27.689,
+        "question_delta": -0.575,
+        "exclamation_delta": 0.838,
+        "command_delta": 0.994,
+        "politeness_delta": -0.054,
+        "softening_delta": 0.826,
+        "intimate_term_delta": -0.036
+      },
+      "relationship_label": "命令式/疏离/热烈"
+    },
+    "凉宫春日→学生会会长": {
+      "dialogue_count": 2,
+      "avg_char_count": 23.0,
+      "question_ratio": 0.0,
+      "exclamation_ratio": 1.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.5,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {
+        "啊": 2,
+        "呢": 1
+      },
+      "top_openers": {
+        "行啊": 1,
+        "你好": 1
+      },
+      "representative_dialogues": [
+        "你好烦啊！如果你是来讽刺我们的话，很可惜，我才不会因为那种低程度的错误让你抓到把柄呢！",
+        "行啊！"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -4.174,
+        "question_delta": -0.325,
+        "exclamation_delta": 0.433,
+        "command_delta": -0.013,
+        "politeness_delta": -0.013,
+        "softening_delta": 0.29,
+        "intimate_term_delta": -0.223
+      },
+      "relationship_label": "疏离/热烈"
+    },
+    "古泉一树→学生会会长": {
+      "dialogue_count": 1,
+      "avg_char_count": 54.0,
+      "question_ratio": 0.0,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {},
+      "top_openers": {
+        "虽说": 1
+      },
+      "representative_dialogues": [
+        "虽说是朋友，但与新川先生和森小姐那样的伙伴是有所不同的。他也不是直属机关的成员。我们是学校组织内部的合作者。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": 21.609,
+        "question_delta": -0.241,
+        "exclamation_delta": -0.046,
+        "politeness_delta": -0.115,
+        "softening_delta": -0.138,
+        "intimate_term_delta": -0.034
+      },
+      "relationship_label": "疏离"
+    },
+    "凉宫春日→佐佐木": {
+      "dialogue_count": 2,
+      "avg_char_count": 4.5,
+      "question_ratio": 0.5,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {},
+      "top_openers": {
+        "那是": 1,
+        "多多": 1
+      },
+      "representative_dialogues": [
+        "多多关照。",
+        "那是谁？"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -22.674,
+        "question_delta": 0.175,
+        "exclamation_delta": -0.567,
+        "command_delta": -0.013,
+        "politeness_delta": -0.013,
+        "softening_delta": -0.21,
+        "intimate_term_delta": -0.223
+      },
+      "relationship_label": "疏离/冷静"
+    },
+    "凉宫春日→渡桥泰水": {
+      "dialogue_count": 1,
+      "avg_char_count": 59.0,
+      "question_ratio": 0.0,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 1.0,
+      "top_particles": {},
+      "top_openers": {
+        "这是": 1
+      },
+      "representative_dialogues": [
+        "这是阿虚做的SOS团官网，根本就是个无聊又毫无用处的网站。泰水，你就好好地用这台计算机，做出一个令人刮目相看的网站来。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": 31.826,
+        "question_delta": -0.325,
+        "exclamation_delta": -0.567,
+        "command_delta": -0.013,
+        "politeness_delta": -0.013,
+        "softening_delta": -0.21,
+        "intimate_term_delta": 0.777
+      },
+      "relationship_label": "亲近/冷静"
+    },
+    "古泉一树→渡桥泰水": {
+      "dialogue_count": 1,
+      "avg_char_count": 12.0,
+      "question_ratio": 0.0,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 0.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {},
+      "top_openers": {
+        "七十": 1
+      },
+      "representative_dialogues": [
+        "七十七万五千两百四十九。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": -20.391,
+        "question_delta": -0.241,
+        "exclamation_delta": -0.046,
+        "politeness_delta": -0.115,
+        "softening_delta": -0.138,
+        "intimate_term_delta": -0.034
+      },
+      "relationship_label": "疏离"
+    },
+    "凉宫春日→国王": {
+      "dialogue_count": 1,
+      "avg_char_count": 29.0,
+      "question_ratio": 1.0,
+      "exclamation_ratio": 0.0,
+      "command_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "softening_per_dialogue": 1.0,
+      "certain_high_ratio": 0.0,
+      "certain_low_ratio": 0.0,
+      "intimate_term_ratio": 0.0,
+      "top_particles": {
+        "吧": 1
+      },
+      "top_openers": {
+        "拯救": 1
+      },
+      "representative_dialogues": [
+        "拯救世界是么？好吧，未尝不可。任何委托对我来说都不成问题。"
+      ],
+      "vs_baseline": {
+        "avg_char_count": 1.826,
+        "question_delta": 0.675,
+        "exclamation_delta": -0.567,
+        "command_delta": -0.013,
+        "politeness_delta": -0.013,
+        "softening_delta": 0.79,
+        "intimate_term_delta": -0.223
+      },
+      "relationship_label": "疏离/冷静"
+    }
+  },
+  "relationship_matrix": {
+    "凉宫春日": {
+      "阿虚": {
+        "label": "疏离",
+        "dialogue_count": 163,
+        "avg_char_count": 25.4,
+        "command_ratio": 0.012,
+        "exclamation_ratio": 0.54,
+        "politeness_per_dialogue": 0.012,
+        "intimate_term_ratio": 0.037
+      },
+      "长门有希": {
+        "label": "亲近",
+        "dialogue_count": 29,
+        "avg_char_count": 32.4,
+        "command_ratio": 0.034,
+        "exclamation_ratio": 0.517,
+        "politeness_per_dialogue": 0.034,
+        "intimate_term_ratio": 0.655
+      },
+      "朝比奈实玖瑠": {
+        "label": "亲近",
+        "dialogue_count": 42,
+        "avg_char_count": 26.2,
+        "command_ratio": 0.024,
+        "exclamation_ratio": 0.595,
+        "politeness_per_dialogue": 0.0,
+        "intimate_term_ratio": 0.643
+      },
+      "古泉一树": {
+        "label": "亲近/热烈",
+        "dialogue_count": 30,
+        "avg_char_count": 28.2,
+        "command_ratio": 0.0,
+        "exclamation_ratio": 0.633,
+        "politeness_per_dialogue": 0.0,
+        "intimate_term_ratio": 0.367
+      }
+    },
+    "阿虚": {
+      "凉宫春日": {
+        "label": "疏离",
+        "dialogue_count": 79,
+        "avg_char_count": 18.2,
+        "command_ratio": 0.0,
+        "exclamation_ratio": 0.139,
+        "politeness_per_dialogue": 0.051,
+        "intimate_term_ratio": 0.0
+      },
+      "长门有希": {
+        "label": "冷静/敬语",
+        "dialogue_count": 29,
+        "avg_char_count": 19.4,
+        "command_ratio": 0.0,
+        "exclamation_ratio": 0.103,
+        "politeness_per_dialogue": 0.138,
+        "intimate_term_ratio": 0.034
+      },
+      "朝比奈实玖瑠": {
+        "label": "亲近/热烈",
+        "dialogue_count": 18,
+        "avg_char_count": 23.6,
+        "command_ratio": 0.0,
+        "exclamation_ratio": 0.278,
+        "politeness_per_dialogue": 0.0,
+        "intimate_term_ratio": 0.111
+      },
+      "古泉一树": {
+        "label": "亲近/热烈",
+        "dialogue_count": 17,
+        "avg_char_count": 17.2,
+        "command_ratio": 0.0,
+        "exclamation_ratio": 0.235,
+        "politeness_per_dialogue": 0.059,
+        "intimate_term_ratio": 0.176
+      }
+    },
+    "长门有希": {
+      "凉宫春日": {
+        "label": "亲近/热烈",
+        "dialogue_count": 12,
+        "avg_char_count": 28.1,
+        "command_ratio": 0.0,
+        "exclamation_ratio": 0.083,
+        "politeness_per_dialogue": 0.083,
+        "intimate_term_ratio": 0.083
+      },
+      "阿虚": {
+        "label": "中性",
+        "dialogue_count": 42,
+        "avg_char_count": 15.2,
+        "command_ratio": 0.024,
+        "exclamation_ratio": 0.0,
+        "politeness_per_dialogue": 0.119,
+        "intimate_term_ratio": 0.0
+      },
+      "朝比奈实玖瑠": {
+        "label": "敬语",
+        "dialogue_count": 4,
+        "avg_char_count": 26.5,
+        "command_ratio": 0.0,
+        "exclamation_ratio": 0.0,
+        "politeness_per_dialogue": 0.25,
+        "intimate_term_ratio": 0.0
+      },
+      "古泉一树": {
+        "label": "敬语",
+        "dialogue_count": 5,
+        "avg_char_count": 21.6,
+        "command_ratio": 0.0,
+        "exclamation_ratio": 0.0,
+        "politeness_per_dialogue": 0.2,
+        "intimate_term_ratio": 0.0
+      }
+    },
+    "朝比奈实玖瑠": {
+      "凉宫春日": {
+        "label": "热烈",
+        "dialogue_count": 25,
+        "avg_char_count": 20.1,
+        "command_ratio": 0.0,
+        "exclamation_ratio": 0.24,
+        "politeness_per_dialogue": 0.12,
+        "intimate_term_ratio": 0.12
+      },
+      "阿虚": {
+        "label": "疏离/冷静",
+        "dialogue_count": 13,
+        "avg_char_count": 19.6,
+        "command_ratio": 0.0,
+        "exclamation_ratio": 0.077,
+        "politeness_per_dialogue": 0.154,
+        "intimate_term_ratio": 0.077
+      },
+      "长门有希": {
+        "label": "亲近/冷静",
+        "dialogue_count": 5,
+        "avg_char_count": 31.2,
+        "command_ratio": 0.0,
+        "exclamation_ratio": 0.0,
+        "politeness_per_dialogue": 0.0,
+        "intimate_term_ratio": 0.2
+      },
+      "古泉一树": {
+        "label": "亲近/冷静/敬语",
+        "dialogue_count": 4,
+        "avg_char_count": 18.8,
+        "command_ratio": 0.0,
+        "exclamation_ratio": 0.0,
+        "politeness_per_dialogue": 0.25,
+        "intimate_term_ratio": 0.25
+      }
+    },
+    "古泉一树": {
+      "凉宫春日": {
+        "label": "中性",
+        "dialogue_count": 47,
+        "avg_char_count": 35.1,
+        "command_ratio": 0.0,
+        "exclamation_ratio": 0.085,
+        "politeness_per_dialogue": 0.106,
+        "intimate_term_ratio": 0.021
+      },
+      "阿虚": {
+        "label": "亲近/敬语",
+        "dialogue_count": 17,
+        "avg_char_count": 28.6,
+        "command_ratio": 0.0,
+        "exclamation_ratio": 0.0,
+        "politeness_per_dialogue": 0.294,
+        "intimate_term_ratio": 0.059
+      },
+      "长门有希": {
+        "label": "疏离",
+        "dialogue_count": 6,
+        "avg_char_count": 33.3,
+        "command_ratio": 0.0,
+        "exclamation_ratio": 0.0,
+        "politeness_per_dialogue": 0.0,
+        "intimate_term_ratio": 0.0
+      },
+      "朝比奈实玖瑠": {
+        "label": "亲近",
+        "dialogue_count": 7,
+        "avg_char_count": 23.9,
+        "command_ratio": 0.0,
+        "exclamation_ratio": 0.0,
+        "politeness_per_dialogue": 0.0,
+        "intimate_term_ratio": 0.143
+      }
+    }
+  }
+}

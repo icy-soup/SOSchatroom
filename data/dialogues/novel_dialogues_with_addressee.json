@@ -1,0 +1,7121 @@
+[
+  {
+    "speaker": "冈部老师",
+    "text": "接下来就请大家自我介绍吧!",
+    "vol": 1,
+    "ch": "序曲",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我毕业于东国中，叫做凉宫春日。",
+    "vol": 1,
+    "ch": "序曲",
+    "addressee": "冈部老师",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我对普通的人类没有兴趣。你们之中要是有外星人、未来人、异世界的人、超能力者。就尽管来找我吧!以上。",
+    "vol": 1,
+    "ch": "序曲",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "喂喂…",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你在一开始自我介绍时说的那些，是认真的吗?",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "什么叫做自我介绍说的那些?",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "就是外星人那些啊!",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "你是外星人吗?",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "……不是。",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "自言自语",
+    "inference_method": "self_talk",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "既然不是，那要干嘛?",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "……不，没干嘛。",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "自言自语",
+    "inference_method": "self_talk",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "那就不要跟我讲话，那只会浪费我的时间。",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "女同学",
+    "text": "对了，你有没有看昨天的连续剧?九点开始播的那出。",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "没有。",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "女同学",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "女同学",
+    "text": "咦，为什么?",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我不知道。",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "女同学",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "女同学",
+    "text": "你就先看一次嘛，就算从中间看也不会看不懂的。",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "吵死了!",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "女同学",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "谷口",
+    "text": "你前阵子不是跟凉宫说话吗?",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "谷口",
+    "text": "她一定说了一些很奇怪的话，让你接不下去吧?",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "谷口",
+    "text": "如果那家伙对你有意思，就不会说那些奇怪的话了。",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "谷口",
+    "text": "她常常做一些超乎常理的事。你不是有听到她的自我介绍吗?",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你是说那个外星人之类的东西吗?",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "谷口",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "国木田",
+    "text": "没错。她在国中也常说一些奇怪的话。就像那件有名的校园涂鸦事件!",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "什么事?",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "国木田",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "谷口",
+    "text": "不是有种用石灰画白线的器具吗?总之她用那个东西在学校里画了很大很大的古代图案。",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "谷口",
+    "text": "真是太惊人了!一早到学校去，就发现操场上被人画了巨大的圆圈跟三角形。",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "国木田",
+    "text": "啊，我记得好像有看过那个。报纸的地方新闻版不是有登吗?",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "谷口",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "谷口",
+    "text": "我看过，我看过。标题好像就是国中校园里的谜样恶作剧图案。",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "国木田",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "犯人该不会就是她吧?",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "谷口",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "谷口",
+    "text": "是本人亲口说的,所以我想应该错不了。",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "那她到底为什么做那种事?",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "谷口",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "谷口",
+    "text": "不知道。她还做了很多不可思议的事喔!",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "谷口",
+    "text": "不过啊，她真的很受男生欢迎喔!毕竟她长得很正。",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "国木田",
+    "text": "你又知道什么小道消息了?",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "谷口",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "谷口",
+    "text": "有一段时间她不停地换男朋友。交往最长的是一个礼拜。",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "国木田",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "谷口",
+    "text": "如果要我选的话，我倒觉得她不错喔，朝仓凉子。她一定排得进一年级前三大美女的行列。",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "谷口",
+    "text": "你黄金周去哪玩啊?",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "我带念小学的妹妹回乡下的奶奶家。",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "谷口",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你是特地为见外星人每天变换发型的吗?",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "谷口",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "你什么时候发现的?",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "嗯……前阵子吧。",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "就颜色来说，礼拜一是黄色，礼拜二是红色，礼拜三是蓝色。",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "我是不是曾经在哪里看过你啊，在很久以前?",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "没有吧!",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你真的参加过所有的社团啊?",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "完全没有。原本以为升上高中后会好一点，没想到还是跟以前一样。",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你真的甩了所有跟你交往的男生啊?",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "为什么我非得听你讲这种事?",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "那，你觉得什么样的男生才叫有趣?果然还是要外星人吗?",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "外星人，或是同样等级的某种生物都可以。总之，只要不是普通人。",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "为什么你会那么强调一定要人类以外的生物呢?",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "当然是因为人类一点都不有趣啊!所以我才会这么努力啊!",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "冈部老师",
+    "text": "抱歉，我迟到了!啊……那么我们就开始开班会吧!",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "谷口",
+    "text": "喂，阿虚。你到底施了什么魔法?我还是第一次看到凉宫跟人说话说那么久呢!",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "冈部老师",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "国木田",
+    "text": "阿虚从以前就很喜欢奇怪的女生了。",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "谷口",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝仓凉子",
+    "text": "我也要听。曾经试着找凉宫同学讲过好几次话，可是都没有结果。",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "国木田",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝仓凉子",
+    "text": "你可要继续帮助凉宫同学跟班上同学打成一片喔!",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "国木田",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你别说那种吓死人的话啦!",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "朝仓凉子",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我参加过推理研究会喔。真是笑死人了!根本没半件像样的事件出现。",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "啊，真是的，实在太无聊了!原本还以为高中会有什么超劲爆的社团的说!",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你干嘛啦!",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我想到了!为什么我之前都没注意到这么简单的事呢。如果没有，自己组一个就好啦!",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你到底想到什么了?",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "社团啊!",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "因为现在还在上课。",
+    "vol": 1,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我要你帮忙。帮助我组新社团啊!",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "要我帮什么忙?你打算组什么社团啦?",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "什么都无所谓啊!总之，先弄个新社团出来就对了。",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "以后这里就是我们的社团教室了。",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "等一下，这里到底是什么地方?",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "文化社团的社团大楼。这间教室归文艺社所有。",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "那个女生怎么办?",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "她说没关系啊!午休时我就见过她了。",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "长门有希。",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "这家伙想借用这里作为不知名社团的活动教室，请问可以吗?",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "可以。没差。请便。",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "以后放学后，就在这间教室集合。一定要来喔!否则你就死定了!",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "现在最重要的是社员，起码还要再找两个人才行。",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "……你在看什么?",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "自言自语",
+    "inference_method": "self_talk",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "很特别。",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你喜欢看书啊?",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "非常喜欢。",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "跟大家介绍一下，她是朝比奈实玖瑠。",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你是从哪里把人家绑架过来的?",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "才不是绑架呢!只是强迫她跟我过来。",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "她长得很可爱吧?我觉得『萌』角色的存在是非常重要的!",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "明明个子不高，胸部却比我还大呢!可爱的脸蛋加上巨乳的身材，这也是一个吸引人的重要要素!",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你耍什么白痴啦!",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "真的很大啊!要不然你也摸摸看?",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "救，救命啊!",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "像她这种吉祥物般的角色，是绝对必要的!",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "我会退出书法社，加入你们社团的……不过，我并不清楚文艺社是在做什么的。",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "社团名字我刚刚已经想到了!SOS团!让世界变得更热闹的凉宫春日团，简称SOS团。",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "朝比奈学姐。那种奇怪的社团，你不想加入也没关系啦!",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "没关系，我要加入。而且，我对长门的存在也有点兴趣……",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "小女子不才，以后还请多多指教。以后请叫我实玖瑠就好了。",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "你们好!我前来征收一台电脑!",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "电脑社长",
+    "text": "我就是，有什么事吗?",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "你是没带耳朵啊，我刚刚明明就讲过了。一台电脑给我。",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "电脑社长",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "电脑社长",
+    "text": "不行不行。怎么可能你说要就随便给你。",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我用SOS团的名义号令你，马上交出一台电脑!",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "电脑社长",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "唉呀呀!我们可是拍到你性骚扰我们社员的画面啰!要是不想让这张照片在校内流传的话，就快点交出电脑!",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "自言自语",
+    "inference_method": "self_talk",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "电脑社长",
+    "text": "开什么玩笑!那是你强拉着我去摸的耶!我是无辜的!",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "好，那我就说你们全体社员轮暴朝比奈!",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "电脑社长",
+    "text": "随便你要哪一台，尽管搬走吧……",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "自言自语",
+    "inference_method": "self_talk",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "长门，你有没有想写什么?",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "没有耶。",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "借给你。",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "怎样，网页做好了吗?现在只需要这样就好，有伊妹儿信箱就OK了。",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我这可是为了让大家认识我们SOS团而做的传单。这两百张传单，是我偷溜进印刷室印出来的喔!",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "来吧，实玖瑠，穿这个!兔女郎啊!",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "我，我不要穿那种衣服!",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你在哪里买到这种东西的?",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "在网络上买的。",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "怎么样?这样铁定大受注目!穿成这样，应该每个人都会拿宣传单了吧!",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "气死我了!搞什么鬼啊，臭老师!就只会妨碍我做事，可恶!",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "谷口",
+    "text": "阿虚啊，看来你跟凉宫相处得还挺愉快的嘛!",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "国木田",
+    "text": "这个SOS团到底是什么?又打算要干嘛?",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "谷口",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝仓凉子",
+    "text": "你们好像在做什么有趣的事耶!不过，如果是违反善良风俗的事，我劝你们最好赶快停止。",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "为什么都没人寄信来?",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "朝仓凉子",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "昨天没人寄，今天也没有!或许大家都有什么不可告人的谜样体验，只是无法信任我们这种看起来可疑到极点的社团吧。",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "可恶，人家今天特准备新的服装要让她换耶!",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你不会自己穿喔!",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "当然也会穿啊!不过，实玖瑠不在实在太无聊了。",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "你不觉得很棒吗?他真的来了耶!转学生!真是个千载难逢的好机会。",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "是不是个谜样的转学生啊……?嗯……感觉不太像。",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "转学生是男的还是女的?",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "虽然有变装的可能性，不过看起来像是男的。",
+    "vol": 1,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "要玩吗,长门?",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "凉宫同学好慢呢!",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "对了，朝比奈，没想到你今天还会来呢!",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "我叫古泉一树。请多多指教。",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "这里就是SOS团的社团教室，我是团长凉宫春日，他们则是团员一、二、三号。",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "要我加入也是可以啦!请问这是什么样的社团?",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "就让我来告诉你SOS团是个什么样的社团吧!找出外星人、未来人以及超能力者，然后跟他们一起玩!",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "古泉一树",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "啊，原来如此。真不愧是凉宫同学。没问题，我加入。",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "好了，这样我们就有五个人了。这么一来，学校就无话可说了!",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "先走啰!",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "那本书你看了吗?",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "今天记得看。回家后马上看。",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "很庆幸我今天终于来了吧?",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你该不会每天都在这里等吧?",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "长门有希",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "这边。",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "请问，我们要去哪里啊?",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "我家。放心，我家里没人。进去吧。",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "由统括这个银河系的资讯统合思念体，制造出来与有机生命体接触用的联系装置外星人，就是我。",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "我的工作就是观察凉宫春日，将得到的资讯上传给资讯统合思念体。",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "凉宫春日",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "凉宫春日跟我都不是普通人。我并不是指性格上的普遍差异，而是纯粹指字面上的意思。",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "凉宫春日",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "凉宫春日身上可能隐藏着自律进化的可能性，说不定甚至拥有操纵周遭资讯环境的能力。",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "凉宫春日",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "我就直说了，我完全不懂你在说什么。",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "请相信我。因为你被凉宫春日挑中了。你是个重要的关键人物。",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "凉宫春日",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "不要乱动啦!唉哟，都叫你乖乖不要动了!",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "不……不要……救命啊!",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "怎么样，可爱吧?女侍装扮才诱人嘛!",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "为什么要把她打扮成女侍?",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "以学校为舞台的故事里，一定会有一个像实玖瑠这种惹人怜爱的角色。",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "实玖瑠，以后你来参加社团时，都要穿这套衣服喔!",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "哇啊，这是怎么回事啊?在进行什么活动吗?",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "古泉，你来得正好。大家一起来作弄实玖瑠吧!",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "古泉一树",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "不了，看起来好像挺可怕的。我可以在旁边看吗?",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "好了，第一回SOS团全员大会开始啰!",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "这个礼拜六早上九点在北口车站前集合!大家不要迟到了!如果没来，就处以死刑!",
+    "vol": 1,
+    "ch": "第三章",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "好慢喔，要罚钱!就罚你请大家喝饮料吧。",
+    "vol": 1,
+    "ch": "第四章",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "明明还没有九点。",
+    "vol": 1,
+    "ch": "第四章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "就算没有迟到，最晚来的人也要处罚。这就是规定!因为是我刚刚才决定的啊。",
+    "vol": 1,
+    "ch": "第四章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "接下来我们将兵分两路在市内搜寻，要是发现任何不可思议的现象，立刻用手机联络。",
+    "vol": 1,
+    "ch": "第四章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "阿虚，你给我听着，这可不是约会喔!给我认真点!",
+    "vol": 1,
+    "ch": "第四章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "其实，我并不是这个时代的人。我是从未来的时代来的。",
+    "vol": 1,
+    "ch": "第四章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "三年前，我们侦测出会有一次巨大的时间震动发生。罪魁祸首就是凉宫同学。",
+    "vol": 1,
+    "ch": "第四章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "……我倒不认为春日办得到那种事……",
+    "vol": 1,
+    "ch": "第四章",
+    "addressee": "凉宫春日",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "我可以当作这一切都没发生过吗?",
+    "vol": 1,
+    "ch": "第四章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "以目前的状况来说，这是最好的办法了。",
+    "vol": 1,
+    "ch": "第四章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你到底几岁了?",
+    "vol": 1,
+    "ch": "第四章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "无可奉告。",
+    "vol": 1,
+    "ch": "第四章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "你这个笨蛋，到底在做什么啊?以为现在几点了!立刻给我滚过来!",
+    "vol": 1,
+    "ch": "第四章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "迟到，罚钱!",
+    "vol": 1,
+    "ch": "第四章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "今天还挺好玩的呢!凉宫同学真是个有趣的人。",
+    "vol": 1,
+    "ch": "第四章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "也帮我扇!",
+    "vol": 1,
+    "ch": "第五章",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "不会自己扇喔!",
+    "vol": 1,
+    "ch": "第五章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你该不会也要跟我讲凉宫的事吧?",
+    "vol": 1,
+    "ch": "第五章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "唉呀，看你这种反应，可见她们两人已经先跟你接触过了。",
+    "vol": 1,
+    "ch": "第五章",
+    "addressee": "自言自语",
+    "inference_method": "self_talk",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "我确实有超能力。我是『机关』的一员，任务是监视凉宫春日。",
+    "vol": 1,
+    "ch": "第五章",
+    "addressee": "凉宫春日",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "目前她还算是不完整的神，还无法任意操纵这个世界。",
+    "vol": 1,
+    "ch": "第五章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "既然这样，就施展写能力给我看看。",
+    "vol": 1,
+    "ch": "第五章",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "抱歉，我办不到。我拥有的并不是这么轻易理解的能力。",
+    "vol": 1,
+    "ch": "第五章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "对不起。",
+    "vol": 1,
+    "ch": "第五章",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "没关系……真是的，老让你看到我丢脸的一面。",
+    "vol": 1,
+    "ch": "第五章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "吵死了!我已经一个人开完反省会了!",
+    "vol": 1,
+    "ch": "第五章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "凉宫，或许我之前已经说过了，我还是要劝你趁早放弃寻找那些不可能发现的迷样现象。",
+    "vol": 1,
+    "ch": "第五章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "像普通高中生一样生活，到底是什么生活?哼，有没有男朋友都没差啦!",
+    "vol": 1,
+    "ch": "第五章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝仓凉子",
+    "text": "好慢喔!进来啊!",
+    "vol": 1,
+    "ch": "第五章",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "原来是你啊……有什么事吗?",
+    "vol": 1,
+    "ch": "第五章",
+    "addressee": "朝仓凉子",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝仓凉子",
+    "text": "我要杀了你，看凉宫春日会有什么反应。",
+    "vol": 1,
+    "ch": "第五章",
+    "addressee": "凉宫春日",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "朝仓凉子",
+    "text": "这个空间已经被我所控制，所有出路都遭到封锁。",
+    "vol": 1,
+    "ch": "第五章",
+    "addressee": "国木田",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "每个程式都太简单了。天花板附近的空间与资讯封锁并不周全。",
+    "vol": 1,
+    "ch": "第五章",
+    "addressee": "朝仓凉子",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "这种独断独行是绝对不被允许的。进行解除资讯结合的申请。",
+    "vol": 1,
+    "ch": "第五章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "朝仓凉子",
+    "text": "你在这个空间，是不可能赢过我的。",
+    "vol": 1,
+    "ch": "第五章",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "资讯连结解除，开始!",
+    "vol": 1,
+    "ch": "第五章",
+    "addressee": "朝仓凉子",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝仓凉子",
+    "text": "我输了。祝你和凉宫幸福。再会了。",
+    "vol": 1,
+    "ch": "第五章",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "喂!长门，振作点!我马上叫救护车。",
+    "vol": 1,
+    "ch": "第五章",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "不用了。肉体的损伤根本不算什么。",
+    "vol": 1,
+    "ch": "第五章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "我觉得你不戴眼镜比较可爱。",
+    "vol": 1,
+    "ch": "第五章",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "什么意思?",
+    "vol": 1,
+    "ch": "第五章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "谷口",
+    "text": "对不起。",
+    "vol": 1,
+    "ch": "第五章",
+    "addressee": "长门有希",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "阿虚，这肯定是灵异事件。先是有谜样的转学生，现在又出现了莫名其妙转学的女生。这其中一定有鬼!",
+    "vol": 1,
+    "ch": "第五章",
+    "addressee": "谷口",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "大朝比奈",
+    "text": "阿虚……好久不见了。我就是朝比奈实玖瑠。只不过，我是从更未来的时空过来的。",
+    "vol": 1,
+    "ch": "第六章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "大朝比奈",
+    "text": "你现在看到的是我未来的模样。我来这里是要给你传递一个信息。",
+    "vol": 1,
+    "ch": "第六章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "大朝比奈",
+    "text": "凉宫同学已经制造出闭锁空间了。再不快点的话，世界就会被覆盖了。",
+    "vol": 1,
+    "ch": "第六章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你真的是朝比奈学姐?从未来来的?",
+    "vol": 1,
+    "ch": "第六章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "大朝比奈",
+    "text": "我是来帮助你的。古泉同学应该已经发现凉宫同学的情况了。",
+    "vol": 1,
+    "ch": "第六章",
+    "addressee": "古泉一树",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "终于到了我得向你展示超能力的时刻了。凉宫同学制造了闭锁空间，那是她精神不安定的产物。",
+    "vol": 1,
+    "ch": "第六章",
+    "addressee": "大朝比奈",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "在这个空间里，我能够发挥我的能力。我的任务就是在闭锁空间中击败神人，释放凉宫同学累积的压力。",
+    "vol": 1,
+    "ch": "第六章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "所以你所谓的能力就是在这个世界里战斗?",
+    "vol": 1,
+    "ch": "第六章",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "没错。闭锁空间是因凉宫同学的情绪产生的。如果放任不管，最终会覆盖整个现实世界。",
+    "vol": 1,
+    "ch": "第六章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "你对她而言是非常重要的存在。你的行动可能才是解决问题的关键。",
+    "vol": 1,
+    "ch": "第六章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "说了半天我还是不知道该怎么办啊!",
+    "vol": 1,
+    "ch": "第六章",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "大朝比奈",
+    "text": "请按照你所想的去做。我相信你的选择是正确的。",
+    "vol": 1,
+    "ch": "第六章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "阿虚，你昨天和今天放学后都跑到哪里去了?社团活动也没参加。",
+    "vol": 1,
+    "ch": "第六章",
+    "addressee": "大朝比奈",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "我啊…其实是…那个…你愿意听我说吗?",
+    "vol": 1,
+    "ch": "第六章",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "说吧!",
+    "vol": 1,
+    "ch": "第六章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "其实我觉得…SOS团也挺好的。虽然有点奇怪，但我并不讨厌。",
+    "vol": 1,
+    "ch": "第六章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "这是什么意思?",
+    "vol": 1,
+    "ch": "第六章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "我有重要的事情要跟你说，你好好听著。",
+    "vol": 2,
+    "ch": "序曲",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "干嘛？",
+    "vol": 2,
+    "ch": "序曲",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你不是一直希望有外星人或未来人，或者超能力者的存在吗？",
+    "vol": 2,
+    "ch": "序曲",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "没错啊，那又怎样？",
+    "vol": 2,
+    "ch": "序曲",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "也就是说，我们SOS团的目的就是找出这样的人，对吧？",
+    "vol": 2,
+    "ch": "序曲",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "光找出来还不够，还要能一起玩才行，光是找到这样的人还是欠缺画龙点晴的效果，我想当的不是旁观者，而是当事者啦！",
+    "vol": 2,
+    "ch": "序曲",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "我倒是只想当个永远在一旁观看的人……算了，也好，不过你有没有想过人、未来人，甚至超能力者会不会根本就出乎意料的近在眼前呢？",
+    "vol": 2,
+    "ch": "序曲",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "啊？你指的是谁？你说的该不会是有希或实玖瑠，或者是古泉吧？如果是他们，那可一点都不算是『出乎意料』。",
+    "vol": 2,
+    "ch": "序曲",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "那个长门有希就是外星人。朝比奈她是未来人。古泉是超能力者。",
+    "vol": 2,
+    "ch": "序曲",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "耍什么白痴啊！",
+    "vol": 2,
+    "ch": "序曲",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "不管是外星人、未来人、还是超能力者，他们是不可能随随便便出现在我们眼前的！他们可是非得在发现之后，一把抓住他们的脖子后吊起来，再将他们绑得死紧，防止他们逃跑这么珍贵的人耶！我随便挑选的团员怎么可能全部都是那样的人！",
+    "vol": 2,
+    "ch": "序曲",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我不想再听你讲这种无聊的笑话了。我们走吧！",
+    "vol": 2,
+    "ch": "序曲",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "什么问卷发表？简直蠢到极点！",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "那种事有什么好玩的？我实在完全无法理解！",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "校庆是校庆，换个名词叫学园祭。只要说到校庆，不就代表那是一整年里最重要的超级活动吗？",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我们SOS团要做更有趣的事！",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "喂，阿虚，你有没有在听啊？",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "我没听到，怎样？",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我在说校庆、校庆啦！你好歹也提起一点精神嘛！高一的校庆一年只有一次耶！",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "话是这么说没错啦，但是也不需要这么大惊小怪吧？",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "啊……两位好。",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "我马上去泡茶。",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "古泉呢？",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "古泉一树",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "那、那个……他还没到。",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "实玖瑠，我记得之前跟你说过了，端茶来时，每三次至少要有一次不小心把茶杯打翻才行！你这样一点都没有笨拙女侍的样子！",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "朝比奈，春日所说的玩笑只有头壳坏掉的人才听得懂。",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "那边那个笨蛋，我可没开玩笑！我做事永远都是认真的。",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "喂！别妨碍我做事！",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "对不起，我来迟了。因为课外辅导的时间延长了。",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "看来我是最后一个到的。如果因为我的迟到而使得会议无法开始进行，那我在此郑重向各位道歉。",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我们SOS团将举办电影试映会！",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "原来如此。也就是说，我们自行拍摄电影，然后吸引客人前来观赏，对吧？",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "连那种无聊的电影都有了。那我一定可以拍得比他更好！你们有什么意见吗？",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你似乎有志当个电影导演或者制片，那是你的前途，但是我们什么都还没有说。如果我们不喜欢这个提议的话怎么办？",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "你放心，剧本我大概都想好了。",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "目标校庆最佳活动票选第一名！搞不好这么一来，那些不懂事的学生会就会认同SOS团是正式的社团了！",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "制作费从哪来？",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "不是有分配给文艺社的预算吗？",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "角色分配：女主角朝比奈实玖瑠，男主角古泉一树，配角长门有希，幕后工作人员阿虚。",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "由我主演吗？……我不会演戏。",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "不用担心，我会好好地指导你的。导演的命令是绝对的！",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "现在我们去调度摄影机。",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "把需要帮什么忙告诉我们吧！否则我跟朝比奈是绝对不会离开这里一步的。",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我要去跟赞助者调度啦，带女主角同行应该比较容易得到好印象吧？你也一起来吧！来搬运货物。",
+    "vol": 2,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "那、那个……凉、凉宫同学，我想起来我还有事。",
+    "vol": 2,
+    "ch": "第二章",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "别担心。这次我不会拿实玖瑠的身体抵付货款的。",
+    "vol": 2,
+    "ch": "第二章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "第一步算是成功了。现在到下一家店去！",
+    "vol": 2,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "是武器。拍动作画面时会用到。",
+    "vol": 2,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "谷口",
+    "text": "哟，阿虚！你抱着什么东西啊？能够担任守护凉宫任务的，古往今来就只有你一人了。",
+    "vol": 2,
+    "ch": "第二章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "这样不是很好吗？我对凉宫同学想拍什么电影倒是挺有兴趣的。",
+    "vol": 2,
+    "ch": "第二章",
+    "addressee": "谷口",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我希望实玖瑠在电影中穿这种戏服。",
+    "vol": 2,
+    "ch": "第二章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "啊，凉宫同学……这件衣服对我来说好像小了一点……",
+    "vol": 2,
+    "ch": "第二章",
+    "addressee": "自言自语",
+    "inference_method": "self_talk",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "这样才刚好呀，感觉是Just Fit。",
+    "vol": 2,
+    "ch": "第二章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "这个打扮——还真是适合啊。",
+    "vol": 2,
+    "ch": "第二章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "有希，你也开窍了？没错，就这身打扮！",
+    "vol": 2,
+    "ch": "第二章",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "角色分配：朝比奈实玖瑠……来自未来世界的战斗女服务生。古泉一树……超能力少年。长门有希……邪恶的外星人。",
+    "vol": 2,
+    "ch": "第二章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "等一下，你打算让她们以这种装扮搭电车吗？",
+    "vol": 2,
+    "ch": "第二章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "有什么问题吗？要是没穿衣服可能会被逮捕，但是她们可都穿得好好的呀！",
+    "vol": 2,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "最重要的是临机应变的能力，因为地球上的生物就是这样进化而来的！",
+    "vol": 2,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "现在开始拍摄CM！",
+    "vol": 2,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "好，卡！真是一点感情都没有。怎么会表达不出来呢？",
+    "vol": 2,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "古泉，那个袋子借我一下。",
+    "vol": 2,
+    "ch": "第二章",
+    "addressee": "古泉一树",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "店长！后面有可以换衣服的房间吗？",
+    "vol": 2,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "嗯，这样就无可挑剔了，还是用兔女郎来介绍商品最适合了。",
+    "vol": 2,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "明天星期六放假，大家一早就要集合。九点到北口车站前面碰面！",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "我说春日，关于朝比奈的打扮，难道你不想变换一下吗？",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "凉宫春日",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "穿那种衣服战斗一点创意都没有。就因为穿着女服务生的衣服战斗，才能让人有『哦──』的感觉啊。",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "为什么要刻意设定成女主角来自未来？",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "这种事情以后再考虑，等有人提出质疑时再去考虑就够了。只要有趣就够了！",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "那我现在就去棒球社要一些道具来！",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "实玖瑠！别那么害羞！抛开自我！只要把自己融入角色当中就好了！",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "那接下来是有希和实玖瑠的战斗画面。",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "实玖瑠，你现在要毫不留情地对有希射击。",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "没关系。开枪吧！",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "要拍下实玖瑠跑在以鸽子翩翩飞舞为背景的画面！",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "撤退！",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "实玖瑠光束！你要一边大叫一边做出这个动作。",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "实实实、实玖瑠光束！",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "用丹田发声！",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "等一下，有希，你在搞什么，没有这样的安排啊！",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "喂，长门，你在干什么？",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "实玖瑠，你的隐形眼镜怎么了？",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "长门，你有没有看到朝比奈的隐形眼镜？",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "不知道。",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "怎么都找不到啊？",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "说吧，那是什么即兴表演啊？",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "雷射。具有高指向性的不可见同调光。",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "雷射光从朝比奈同学的左眼射出来吗？",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "是的。",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "古泉一树",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "等等！这片隐形眼镜应该没有施什么魔法吧？为什么只因为春日的希望，就能射出杀人的光线呢？",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "凉宫春日",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "凉宫同学不需要魔法或什么科学技术。只要她觉得某事『存在』，事情就会真的『存在』。",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "春日又不是真的要朝比奈发射出光束？那只是她在电影中的设定。",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "凉宫春日",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "是啊。",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "我被咬了。被长门同学注射纳米机械……",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "不过，眼睛好像再也射不出什么东西来了，真是太好了。",
+    "vol": 2,
+    "ch": "第三章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我去把她带来，那个包包借我一下。",
+    "vol": 2,
+    "ch": "第四章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "说什么生病？我才不准你用这种藉口呢！我们要继续拍摄！一切都是为了SOS团！",
+    "vol": 2,
+    "ch": "第四章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "决定场所了！拍摄外景的场所。古泉家附近好像有一座大池子。",
+    "vol": 2,
+    "ch": "第四章",
+    "addressee": "古泉一树",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "鹤屋",
+    "text": "这是什么电影啊？最重要的是这算电影吗？哇哈哈！真是太好笑了！",
+    "vol": 2,
+    "ch": "第四章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "那么，实玖瑠，用你神奇实玖瑠之眼发射出不可思议的东西，什么都好，做猛烈的攻击！",
+    "vol": 2,
+    "ch": "第四章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "等一下！有希！你可是魔法师耶！",
+    "vol": 2,
+    "ch": "第四章",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "啊，算了，这样也好，应该可以成为卖点吧？阿虚！好好给我拍下来！",
+    "vol": 2,
+    "ch": "第四章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "一时疏忽。本来的设定是雷射虽然会扩散但是不会伤及人类，这一次却是超震动性分子切断器——",
+    "vol": 2,
+    "ch": "第四章",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "那是像单纤维一样的东西吧？不过那种单分子刀既看不到也没有质量，对吧？",
+    "vol": 2,
+    "ch": "第四章",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "刚刚你在我手上注进了什么东西吗……？",
+    "vol": 2,
+    "ch": "第四章",
+    "addressee": "古泉一树",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "次元振动周期经过相位转换后，便可在物体表面产生足以置换成重力波的力场。",
+    "vol": 2,
+    "ch": "第四章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "一开始就把实玖瑠打到池子里去。",
+    "vol": 2,
+    "ch": "第四章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "住口！面对真实是多少需要一点牺牲的。",
+    "vol": 2,
+    "ch": "第四章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "我、我、我愿意！",
+    "vol": 2,
+    "ch": "第四章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "鹤屋",
+    "text": "实玖瑠，对不起。我不想这么做，但是我无法控制我自己，真的很抱歉。",
+    "vol": 2,
+    "ch": "第四章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "鹤屋",
+    "text": "对不起。在实玖瑠的果汁里掺了一点龙舌兰。",
+    "vol": 2,
+    "ch": "第四章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "有什么关系？实玖瑠现在看起来真是风情万种呢。古泉，没关系，就给她吻下去，当然是要嘴对嘴！",
+    "vol": 2,
+    "ch": "第四章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "古泉住手！",
+    "vol": 2,
+    "ch": "第四章",
+    "addressee": "古泉一树",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "住手，你这个笨蛋！练习什么啊？这哪算什么表演？有什么好玩的？朝比奈又不是你的玩具。",
+    "vol": 2,
+    "ch": "第四章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "干嘛？不要阻止我，这也是早就计划好的事情之一啊！",
+    "vol": 2,
+    "ch": "第四章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "是我决定的，实玖瑠就是我的玩具！",
+    "vol": 2,
+    "ch": "第四章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "不……不要！不行不行！不能打架……唔………大家一定要和睦相处……否则……会被禁足的。",
+    "vol": 2,
+    "ch": "第四章",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "本来看你是一个比较冷静的人。",
+    "vol": 2,
+    "ch": "第四章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "现实已经变得有点奇怪了，请你不要再做出可能会产生闭锁空间的行为了。关于刚才的事情，凉宫同学似乎无意识地自制了。这是我的请求，请你明天跟她言归于好。",
+    "vol": 2,
+    "ch": "第四章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "这些白色的羽毛如假包换是长自它们体内的。不是染色的，也不是脱色造成的。",
+    "vol": 2,
+    "ch": "第四章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "凉宫同学的失控行为就像这样一步一步地在进行当中，制作电影所产生的弊端影响到现实世界了。",
+    "vol": 2,
+    "ch": "第四章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "九班一大早就在舞台排练表演节目了，我只是偶然经过这里。凉宫同学好像忙着沮丧而没空焦躁呢。",
+    "vol": 2,
+    "ch": "第五章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "你应该很清楚啊……凉宫同学一直认为，不管发生什么事，只有你是她的伙伴。你能劝她打起精神来吗？",
+    "vol": 2,
+    "ch": "第五章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "喂，春日。绝对要让这部电影成功！",
+    "vol": 2,
+    "ch": "第五章",
+    "addressee": "凉宫春日",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "那是当然的，因为是我当导演啊。成功是必然的，根本不需你多废话。",
+    "vol": 2,
+    "ch": "第五章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "怎么会这么符合我的需要呢？我才想要拍樱花的画面呢！简直是巧合到不可思议的气象啊！",
+    "vol": 2,
+    "ch": "第五章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "对了！去抓只猫来！魔女应该有手下才对啊，猫是最适合的角色了！",
+    "vol": 2,
+    "ch": "第五章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "你的名字叫三味线。哪，三味线，讲讲话！",
+    "vol": 2,
+    "ch": "第五章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "三味线",
+    "text": "都无所谓。",
+    "vol": 2,
+    "ch": "第五章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "三味线",
+    "text": "我也这么想，所以才回答你，难道我说错了什么吗？",
+    "vol": 2,
+    "ch": "第五章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "三味线",
+    "text": "我实在搞不懂你们为什么这么惊讶？",
+    "vol": 2,
+    "ch": "第五章",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "三味线",
+    "text": "这我也不懂。对我来说，时间相当于不存在。",
+    "vol": 2,
+    "ch": "第五章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "三味线",
+    "text": "也许我所发出的声音，只是刚好符合你的问题而已啊。",
+    "vol": 2,
+    "ch": "第五章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "目前的状况好像不太妙。我们好像太小看凉宫同学了。",
+    "vol": 2,
+    "ch": "第五章",
+    "addressee": "三味线",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "我们必须防止虚构对现实生活的侵蚀。要让凉宫同学了解到虚拟终究只是虚拟。",
+    "vol": 2,
+    "ch": "第五章",
+    "addressee": "阿虚",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "就是梦中的世界。这是我们唯一能想到的合理结局。",
+    "vol": 2,
+    "ch": "第五章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "杀青了！各位辛苦了！现在全部的摄影工作都结束了！",
+    "vol": 2,
+    "ch": "尾声",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "实玖瑠，现在哭还太早了，把泪水留到获颁棕榈奖或奥斯卡金像奖的当天再流吧！",
+    "vol": 2,
+    "ch": "尾声",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "这样就完美无缺了，果然是拍了一部好电影。",
+    "vol": 2,
+    "ch": "尾声",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "要是熬夜赶工的话不就来得及吗？今天住在这里不就得了？我来帮你。",
+    "vol": 2,
+    "ch": "尾声",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "嘿嘿！还算不错嘛！虽然称不上完美，但是只要你用心做还是做得来的。",
+    "vol": 2,
+    "ch": "尾声",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "本故事纯属虚构，和实际存在的人物、团体，以及其他固有名词或现象完全无关，全都是胡说八道的。",
+    "vol": 2,
+    "ch": "尾声",
+    "addressee": "阿虚",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我们要参加棒球大赛！",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你说要参加什么？",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "那么，谁要参加这个草地棒球大赛？",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "当然是我们了，那还用说？",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "所谓的我们，是包括我跟朝比奈还有长门跟古泉？",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "那还用说？我们还需要四个人。",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你懂棒球的规则吗？",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "多少懂一点啦。这种运动不就是投球、打球、跑垒、滑垒、阻截吗？我之前意思意思参加过棒球社。",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "所谓的意思意思，请问你到底去了几天？",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "大概不到一个小时吧？因为觉得一点都不好玩，所以就回家了。",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "这是让天下人知道我们存在的太好机会呀！如果能在比赛中获胜的话，搞不好SOS团的名号会一举独步天下呢。",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "棒球不是很好玩吗？我可要言明在先，我们的目标是赢得胜利！连一场失败都不允许，因为我最讨厌失败了！",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "有何不可呢？",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "那我现在就去棒球社要一些道具来！",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "古泉一树",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "我们应该庆幸她不是要发动捕捉外星人的战争。打棒球跟我们最害怕的非现实现象没什么关系吧？",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "等等，这可是软式棒球赛耶。你拿硬式棒球来干什么用？",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "古泉一树",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "球就是球，有什么关系？只要用球棒打就会飞起来的。",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "那比赛什么时候举行？",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "这个星期天。我已经报名了，队伍名称用SOS团。",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "其它的成员，你打算从哪里挖来啊？",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "只要逮住四处闲晃的人就可以了呀。",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "我懂了。你别轻举妄动，找选手的事情我来负责。",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "对不起。如果我的朋友可以的话……没问题的。是我在班上认识的朋友。",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "那就先进行特训，特训！先来个千棒挥击！",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "啊，好久没有这样玩了，这种感触真是让人怀念啊。",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "笨蛋！",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "放马过来！喝！",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "不是不能。只是我不建议这么做。局部的环境资料篡改，很可能会造成行星生态系统的后遗症。",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "后遗症？多久以后？",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "几百年到一万年之间。",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "那还是不做为妙。",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "嗯。",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "鹤屋",
+    "text": "你就是阿虚？我常听实玖瑠提起你。",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "实玖瑠，你过来一下，咬紧你的牙关。这是惩罚！惩罚！",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你白痴啊？是打出莫名其妙暗号的你不对。",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "封闭空间开始发生了。可能是前所未有的规模。因为凉宫同学无意识中产生的压力而产生的。",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "也就是说，春日因为输球这个理由在闹别扭吗？",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "凉宫春日",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "好好打球。可能的话用长打，最好是全垒打。",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "真厉害耶！你哪里来那么大的力气啊？",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "加速变更属性资料。自动导航模式。",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "好厉害的才能啊！将来一定很有发展性！你可望进入大联盟哦！",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "够了。",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "是吗？",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "给我认真投！",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "长门有希",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "非常抱歉。我们一群人稍微有点超乎常理。",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我们就这样继续赢下去，然后进军夏天的甲子园，称霸全国不再是梦想了！",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "我们退出比赛吧。",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "唔，好吧，反正我肚子也饿了，我们去吃午饭吧！我觉得啊，棒球真是一项简单到不行的运动。",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "抱歉，我来迟了！哪个好？",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "什么哪个？",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "其实啊，我本来不想参加棒球，是想从足球和美式足球中选择一项的。但是棒球的比赛日程比较早。你认为哪个好？",
+    "vol": 3,
+    "ch": "棒球篇",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "你知道今天是什么日子吗？",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "是你的生日吗？",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "不是啦！",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "七月七日。七夕七夕七夕。如果你也算是日本人的话，就该好好记住。",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "总之我们得举办七夕的活动才行。大家一起进行会比较好玩。你到社团教室去等我，不可以跑回家哦！",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "哟，情况如何？",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "我的情况，自从进高中以来就没有正常过。",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "古泉一树",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "当然是用来挂诗笺的。因为今天是七夕啊！",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "哪，大家把自己的愿望写下来吧！但是！我有条件。阿虚，有人会在七夕当天实现人们的愿望，你知道是谁吗？",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "不是织女或牛郎星吗？",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "答对了，十分。那么，你知道织女和牛郎星是指哪两颗星吗？",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "是天琴座α星和河鼓二天鹰座α星吧？",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "没错！八十五分！地球距离天琴座α星和河鼓二天鹰座α星分别是二十五光年和十六光年，所以短笺上必须写二十五年后、十六年后的未来希望实现的事情！",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "古泉一树",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "凉宫同学的言行举止很与众不同，但她很清楚何谓常识的。如果她的思考活动异常的话，这个世界是不可能这么安定的。",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "对、对不起，我希望你跟我到一个地方去。",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "无所谓啊，要去哪里？",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "那个……嗯……三年前。",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "求求你，请你现在什么都不要问，只要说好就好了。",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "这个嘛——那就走吧。",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠(大)",
+    "text": "她睡熟了吗？",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠(大)",
+    "text": "把你带到这里来是她的任务，今后引导你就是我的任务了。沿着那边的轨道往南走，有一座公立国中。我想请你去帮助在校门前面的那个人。",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日(国中)",
+    "text": "干嘛？！你是什么人？变态？还是绑架犯？看起来真是可疑。",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "朝比奈实玖瑠(大)",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日(国中)",
+    "text": "你才可疑。你在这里干什么？",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "朝比奈实玖瑠(大)",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日(国中)",
+    "text": "那还用说？当然是非法入侵。你来得正好。我虽然不认识你，但是要是你有空的话，就帮我一下忙吧，否则我就去报警。",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "朝比奈实玖瑠(大)",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日(国中)",
+    "text": "喂，你认为有外星人存在吗？",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "朝比奈实玖瑠(大)",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "应该有吧？",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "凉宫春日(国中)",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日(国中)",
+    "text": "那么未来人呢？",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "唔，就算有也不奇怪啊。",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "凉宫春日(国中)",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日(国中)",
+    "text": "那超能力者呢？",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "我想到处都有吧？",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "凉宫春日(国中)",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日(国中)",
+    "text": "异世界人呢？",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "我还没认识这种人。",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "凉宫春日(国中)",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日(国中)",
+    "text": "你穿的是北高的制服吧？你叫什么名字？",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "约翰史密斯。",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "凉宫春日(国中)",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日(国中)",
+    "text": "……你白痴啊？",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "自言自语",
+    "inference_method": "self_talk",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "TPDD……不见了。是像时光机一样的东西……没有那个东西，我们就回不到原来的时间了……",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "自言自语",
+    "inference_method": "self_talk",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "长门有希(三年前)",
+    "text": "进来。",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希(三年前)",
+    "text": "了解了。",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "长门有希(三年前)",
+    "text": "是的。移动时间的方法不只有一种。使用TPDD进行有机情报体的转移是被允许的，但是会产生噪音。",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "长门有希(三年前)",
+    "text": "可行。睡吧。只是睡觉而已。",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "太好了，我们回来了。我们出发的时间是七月七日的晚上九点半过后。真是太好了……",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "自言自语",
+    "inference_method": "self_talk",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "将选择时空间内的液体结合情报冻结，置于已知时空间连续体的符合点，然后解除冻结。那就是现在。",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "长门同学——让时间静止了。把我们的时间冻结了三年之久，一直到今天才解开。",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "喂，总之，你在那个时候就知道大概的发展了？包括我，包括今天发生的事情？",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "是的。",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "对了，关于这张短笺上的图案，你能念给我听是写些什么吗？",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "我在这里。",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "怎么了？打昨天起你就显得很忧郁。",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "没什么。只是因回忆而忧郁罢了。我在七夕的季节有一些回忆。",
+    "vol": 3,
+    "ch": "竹叶狂想曲",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "你看看这个。这是我们SOS团的徽章。",
+    "vol": 3,
+    "ch": "神秘信号",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "这是什么？",
+    "vol": 3,
+    "ch": "神秘信号",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "这个吗？这种东西看起来就像熬夜一整晚的副科长喝醉酒留下的脚印。",
+    "vol": 3,
+    "ch": "神秘信号",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "你看清楚啦！正中央不是画了SOS团吗？我想把这个登在SOS团网站的首页。",
+    "vol": 3,
+    "ch": "神秘信号",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "上站人数一直没有增加。都是因为你从中作梗的关系。我本来想用实玖瑠的色情图片来招揽客人的说。",
+    "vol": 3,
+    "ch": "神秘信号",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "倒是你过来看看这个。我觉得很奇怪，会是电脑出了问题吗？",
+    "vol": 3,
+    "ch": "神秘信号",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "气死人了。会不会是有人对SOS团发动网路攻击？",
+    "vol": 3,
+    "ch": "神秘信号",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "喜绿江美里",
+    "text": "希望我们SOS团，帮你寻找行踪不明的男朋友。他已经有好几天没来上学了。",
+    "vol": 3,
+    "ch": "神秘信号",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "嗯！我知道了！我们会想办法的。",
+    "vol": 3,
+    "ch": "神秘信号",
+    "addressee": "喜绿江美里",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "真是奇怪了。还以为他会抱着膝盖缩在墙角的。",
+    "vol": 3,
+    "ch": "神秘信号",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "还是出去比较好。发现次元断层。有人启动了位相变换。",
+    "vol": 3,
+    "ch": "神秘信号",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "这个房间让我有种奇怪的异样感。很类似封闭空间，但是本质上却是不相同的……",
+    "vol": 3,
+    "ch": "神秘信号",
+    "addressee": "自言自语",
+    "inference_method": "self_talk",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "请现身。",
+    "vol": 3,
+    "ch": "神秘信号",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "这是什么东东啊？",
+    "vol": 3,
+    "ch": "神秘信号",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "情报生命体。这个空间的创造者。",
+    "vol": 3,
+    "ch": "神秘信号",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "那是情报生命体的亚种。它企图利用男学生的脑部组织，以提高生存几率。",
+    "vol": 3,
+    "ch": "神秘信号",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "难道说，社长就在这只巨大的蟋蟀里面？",
+    "vol": 3,
+    "ch": "神秘信号",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "赶快解决它呀！",
+    "vol": 3,
+    "ch": "神秘信号",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "凉宫春日所描绘的图像是个契机，它变成了一道门。SOS团的这个徽章如果换算成地球的尺度，大约拥有约四百三十六太拉的资料。",
+    "vol": 3,
+    "ch": "神秘信号",
+    "addressee": "凉宫春日",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "好高的几率啊。信手捻来的徽章竟然就完全符合，真不愧是凉宫同学。",
+    "vol": 3,
+    "ch": "神秘信号",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "这个情报生命体就是这样增殖的，非常幼稚而笨拙。这是一种把自身情报Copy到看过网站的人的脑内，促使限定空间产生的机制。",
+    "vol": 3,
+    "ch": "神秘信号",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "很好，大家都到齐了哦！因为今天是开重要会议的日子。",
+    "vol": 3,
+    "ch": "孤岛症候群",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "暑假！暑假！这还用怀疑吗？提到暑假就是合宿！SOS团的合宿！",
+    "vol": 3,
+    "ch": "孤岛症候群",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "合宿啊……什么的合宿？",
+    "vol": 3,
+    "ch": "孤岛症候群",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "SOS团的。去合宿。",
+    "vol": 3,
+    "ch": "孤岛症候群",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我打算去孤岛，而且是加上『远洋』这个形容词的孤岛。四面环海的远洋孤岛！而且还有别墅！",
+    "vol": 3,
+    "ch": "孤岛症候群",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "我有一个非常有钱的远房亲戚。是一个钱多到可以买下一座无人岛，还能在那边盖别墅的有钱人。",
+    "vol": 3,
+    "ch": "孤岛症候群",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "因为是古泉提供的场地——古泉，我任命你为SOS团的副团长！",
+    "vol": 3,
+    "ch": "孤岛症候群",
+    "addressee": "古泉一树",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "好大的船啊！这么大的船竟然能浮在水面上，真是不可思议。",
+    "vol": 3,
+    "ch": "孤岛症候群",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "怎么浮起来的？除了浮力之外还能有什么办法？",
+    "vol": 3,
+    "ch": "孤岛症候群",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "事件最好还是发生在孤岛上！古泉，我的期望不会落空吧？",
+    "vol": 3,
+    "ch": "孤岛症候群",
+    "addressee": "古泉一树",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "怎么会？",
+    "vol": 3,
+    "ch": "孤岛症候群",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "阿虚，难道……那个人——死了吗？",
+    "vol": 3,
+    "ch": "孤岛症候群",
+    "addressee": "古泉一树",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "新川",
+    "text": "多丸圭一先生……已经死了。",
+    "vol": 3,
+    "ch": "孤岛症候群",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "你们圣诞夜跟人有约吗？",
+    "vol": 4,
+    "ch": "序曲",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "有的话又怎样？先说说你要干嘛。",
+    "vol": 4,
+    "ch": "序曲",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "意思就是——你当天跟人没约，对吧？",
+    "vol": 4,
+    "ch": "序曲",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "古泉你呢？和女朋友有约吗？",
+    "vol": 4,
+    "ch": "序曲",
+    "addressee": "古泉一树",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "如果有就好罗。不知道是幸或不幸，圣诞节前后，我的行程都是一片空白。",
+    "vol": 4,
+    "ch": "序曲",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "实玖瑠，你呢？有人约你三更半夜去欣赏雨水变雪花的那一瞬间吗？",
+    "vol": 4,
+    "ch": "序曲",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "没有…是、是啊，现在哪有人…呃？三更半夜…？啊，请问你要喝什么…",
+    "vol": 4,
+    "ch": "序曲",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "有希。",
+    "vol": 4,
+    "ch": "序曲",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "没有。",
+    "vol": 4,
+    "ch": "序曲",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "那么，有关举行SOS团圣诞派对的提案，就在全体一致同意下通过。有异议或反对者，在派对结束后再以书面文件提出。",
+    "vol": 4,
+    "ch": "序曲",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "圣诞老人装啦，很应景吧？在这个时节不做季节限定的打扮就失去教化意义了。来，我帮你换上。",
+    "vol": 4,
+    "ch": "序曲",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "能看到凉宫同学这么开心的模样，实在让我备感安心。因为要是见到她焦虑不安，那是最叫我心痛的。",
+    "vol": 4,
+    "ch": "序曲",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "你不晓得凉宫同学进高中以前是什么样子。一切的改变都是发生在遇到你之后。凉宫同学的精神才远比在中学时代安定了许多。",
+    "vol": 4,
+    "ch": "序曲",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "其实不只有凉宫同学，就连我们也都一直在改变。你和我，还有朝比奈都是。大概长门同学也是。",
+    "vol": 4,
+    "ch": "序曲",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "嗨，谷口。你怎么了？感冒了吗？",
+    "vol": 4,
+    "ch": "第一章",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "谷口",
+    "text": "一看就知道我感冒啦。老实说我今天本来想请假休息。",
+    "vol": 4,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你还很高兴的跟我说你圣诞夜有约了。",
+    "vol": 4,
+    "ch": "第一章",
+    "addressee": "谷口",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "谷口",
+    "text": "约会？你在说什么呀…咳咳。我圣诞夜哪有约啊。",
+    "vol": 4,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝仓凉子",
+    "text": "嗯，我已经没事了。上午去医院吊完点滴就好多了。",
+    "vol": 4,
+    "ch": "第一章",
+    "addressee": "谷口",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你…你怎么会在这里？",
+    "vol": 4,
+    "ch": "第一章",
+    "addressee": "朝仓凉子",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝仓凉子",
+    "text": "你的表情活像看到鬼。我脸上有什么东西吗？",
+    "vol": 4,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "国木田",
+    "text": "阿虚，人家才请几小时假，你怎么就把同班同学的脸给忘了？",
+    "vol": 4,
+    "ch": "第一章",
+    "addressee": "朝仓凉子",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你为什么会在春日的座位上放书包。那不是你的书桌，是春日的。",
+    "vol": 4,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "朝仓凉子",
+    "text": "春日是谁？我们班有人叫这个绰号吗？",
+    "vol": 4,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "国木田",
+    "text": "我们班上没有这个人。凉宫这个姓氏我完全没印象。",
+    "vol": 4,
+    "ch": "第一章",
+    "addressee": "朝仓凉子",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "可恶！凉宫春日在哪里？朝仓凉子不是转学了吗？",
+    "vol": 4,
+    "ch": "第一章",
+    "addressee": "凉宫春日",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "朝仓凉子",
+    "text": "你最好去保健室。人在不舒服的时候，常常会这样子。你可能是感冒了吧！",
+    "vol": 4,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "朝比奈学姐！春日不见了！古泉也进了漂流教室！你是我的朝比奈学姐，没错吧？",
+    "vol": 4,
+    "ch": "第一章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "未来？请问你在说什么啊？不过…请你先放开我好吗？",
+    "vol": 4,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "鹤屋",
+    "text": "不可以这样突然冲过来。你是实玖瑠粉丝俱乐部的一年级学弟吧？",
+    "vol": 4,
+    "ch": "第一章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "不不…我不认识。请、请问，你是不是认错人了…",
+    "vol": 4,
+    "ch": "第一章",
+    "addressee": "鹤屋",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "长门，告诉我，你认识我吗？",
+    "vol": 4,
+    "ch": "第一章",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "认识。",
+    "vol": 4,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "对不起。我不认识你。我不记得你。我只知道你是五班的学生。这是第一次和你说话。",
+    "vol": 4,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "麻烦你，可以借我用一下电脑吗？",
+    "vol": 4,
+    "ch": "第一章",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "等一下。请用。",
+    "vol": 4,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "如果可以…请拿去。",
+    "vol": 4,
+    "ch": "第一章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "朝仓凉子",
+    "text": "早！今天有没有清醒一点？可是，不是眼睛睁开就等于清醒了喔。",
+    "vol": 4,
+    "ch": "第二章",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "朝仓，你是真的不记得，还是在装傻？你真的没想过要杀我吗？",
+    "vol": 4,
+    "ch": "第二章",
+    "addressee": "朝仓凉子",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "这是你写的吗？",
+    "vol": 4,
+    "ch": "第二章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "是很像我的字，可是…我不知道耶。我不记得写过这个。",
+    "vol": 4,
+    "ch": "第二章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你竟然知道春日！那女人在哪里？春日现在在哪里？",
+    "vol": 4,
+    "ch": "第三章",
+    "addressee": "凉宫春日",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "谷口",
+    "text": "光阳园学院。她应该是念山下的车站前面那所高中。",
+    "vol": 4,
+    "ch": "第三章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "喂！",
+    "vol": 4,
+    "ch": "第三章",
+    "addressee": "谷口",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "干嘛？找我干嘛？不，应该说你是谁？我可不是让不认识的男人叫『喂！』的角色。",
+    "vol": 4,
+    "ch": "第三章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "我和你，也是第一次见面？",
+    "vol": 4,
+    "ch": "第三章",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "好像是。请问您是哪位？",
+    "vol": 4,
+    "ch": "第三章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你对『机关』这个组织，有没有什么印象？",
+    "vol": 4,
+    "ch": "第三章",
+    "addressee": "古泉一树",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "机关？请问汉字怎么写？",
+    "vol": 4,
+    "ch": "第三章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "谁准你直接喊我的名字的？你到底是谁呀！",
+    "vol": 4,
+    "ch": "第三章",
+    "addressee": "古泉一树",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你记得三年前的七夕吗？那一天，你偷溜进国中，在校园内用白线画图案。",
+    "vol": 4,
+    "ch": "第三章",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "那又怎样？你是怎么知道的？",
+    "vol": 4,
+    "ch": "第三章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "约翰·史密斯。",
+    "vol": 4,
+    "ch": "第三章",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "约翰·史密斯？就是你吗？你就是那个约翰？在东中帮我的那个奇怪的高中生…",
+    "vol": 4,
+    "ch": "第三章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "SOS团啊…好像很好玩。",
+    "vol": 4,
+    "ch": "第三章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "由你的说明来判断，你陷入的情况可以有两种解释。之一就是你进入了平行世界。之二就是世界除了你之外，整个都改变了。",
+    "vol": 4,
+    "ch": "第三章",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我想见见那位长门同学和朝比奈。我也想去那间社团教室看看。",
+    "vol": 4,
+    "ch": "第三章",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "当然是北高啊！",
+    "vol": 4,
+    "ch": "第三章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "这里就是你的学校啊。好寒酸的校门。这就是有希和实玖瑠在等我们的地方吗？唔，怎么一个人都没有。你们学校的治安看起来不太好喔。",
+    "vol": 4,
+    "ch": "第三章",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "凉宫同学，他说的应该都是真的吧。那个阿虚拼命想要找回原来的世界。不惜跑到我们学校的校门前站岗。这么一来，不卯足了劲帮他可不行哪。",
+    "vol": 4,
+    "ch": "第三章",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "晚安，阿虚。『和你』真是许久不见了。",
+    "vol": 4,
+    "ch": "第四章",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "太好了，我们又在此相会。其实我有点不安，很怕我又不小心犯错。",
+    "vol": 4,
+    "ch": "第四章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "朝比奈小姐，你早就知道我又会来…知道在这个时间，这个地点，我会再来一次是吗？",
+    "vol": 4,
+    "ch": "第四章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "是的。因为这是既定事项。",
+    "vol": 4,
+    "ch": "第四章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "今后引导你是我的任务。可是，在那之后，你就得自己引导自己了。我只会顺从你的意志。",
+    "vol": 4,
+    "ch": "第四章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "原因是什么？我知道自己存在的未来有了改变，可是，是什么时候开始改变的？",
+    "vol": 4,
+    "ch": "第四章",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "你所在的时间平面的改变，是发生在距『今』三年后的十二月十八日早晨。不是你。不是凉宫同学，犯人另有其人。是你也很熟的人。",
+    "vol": 4,
+    "ch": "第四章",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "请多多关照把世界搞得轰轰烈烈的约翰·史密斯！拜托你一定要记住喔。春日，你一定要记住约翰·史密斯这个名字…",
+    "vol": 4,
+    "ch": "第四章",
+    "addressee": "凉宫春日",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "囤积在我记忆空间里的错误档案集结，成为BUG封包的扳机引发异常动作。可以预料这是无法避免的现象。我一定会在三年后的十二月十八日再度构筑世界。没有应对的方法。因为我不明白那个错误是如何产生的。",
+    "vol": 4,
+    "ch": "第五章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "我传给你目标物的时空间座标。",
+    "vol": 4,
+    "ch": "第五章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "你的身体表面，已经张设了操作资讯用遮蔽屏幕和防护罩。",
+    "vol": 4,
+    "ch": "第五章",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "长门，后会有期。在我和春日过去之前，你要好好在文艺社等我们喔。",
+    "vol": 4,
+    "ch": "第五章",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "我等你们。",
+    "vol": 4,
+    "ch": "第五章",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "现在是十二月十八日的凌晨四点十八分。大约再五分钟，世界就会起变化。",
+    "vol": 4,
+    "ch": "第五章",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "长门。是你干的好事吧。",
+    "vol": 4,
+    "ch": "第五章",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "为什么…你…你会在这里？",
+    "vol": 4,
+    "ch": "第五章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "我才要问你知不知道自己为什么会在这里呢。",
+    "vol": 4,
+    "ch": "第五章",
+    "addressee": "长门有希",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "散步。",
+    "vol": 4,
+    "ch": "第五章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "当然有趣！用膝盖想也知道很快乐。那种心知肚明的事就别再问了。",
+    "vol": 4,
+    "ch": "第五章",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "还是那边比较好。这个世界一点也不适合我。抱歉，长门。我不喜欢现在的你，比较喜欢以前那个长门。而且，我喜欢你不戴眼镜的样子。",
+    "vol": 4,
+    "ch": "第五章",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "请恢复原状吧。你也要恢复原状，我们再一起在社团教室奋斗吧。",
+    "vol": 4,
+    "ch": "第五章",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "阿虚，你这段时间跑去哪了？",
+    "vol": 4,
+    "ch": "第六章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你那边才是。还有，真亏你想得到要绑马尾。",
+    "vol": 4,
+    "ch": "第六章",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "什么意思？算了，要你管。你昨天请假了吧？感冒好点没？",
+    "vol": 4,
+    "ch": "第六章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "嗯，好多了。喂，春日。",
+    "vol": 4,
+    "ch": "第六章",
+    "addressee": "凉宫春日",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "干嘛？",
+    "vol": 4,
+    "ch": "第六章",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "没什么，只是我也觉得…你把头发扎起来比较好看。",
+    "vol": 4,
+    "ch": "第六章",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "你今天闲闲没事吧？两点整，全体在车站前面集合。一定要来喔！",
+    "vol": 5,
+    "ch": "漫无止境的八月",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "另外，记得骑脚踏车来，还有记得带足够的钱。",
+    "vol": 5,
+    "ch": "漫无止境的八月",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "阿虚，你很慢耶！拜托你有点干劲好吗？",
+    "vol": 5,
+    "ch": "漫无止境的八月",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "除了市立游泳池，还会是哪里？时光稍纵即逝。想到就要马上行动！",
+    "vol": 5,
+    "ch": "漫无止境的八月",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "现在，骑脚踏车到游泳池去！",
+    "vol": 5,
+    "ch": "漫无止境的八月",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我们来比赛！看谁最快游到泳池的另一端。快下来啦！水温温的，好舒服！",
+    "vol": 5,
+    "ch": "漫无止境的八月",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我定好了接下来的活动计划。这是如何度过为期不多暑假的预定表。",
+    "vol": 5,
+    "ch": "漫无止境的八月",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我突然发现，暑假只剩下两个星期就结束了。该做而没做的事情还那么多。",
+    "vol": 5,
+    "ch": "漫无止境的八月",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "实玖瑠，这里也有你想玩的捞金鱼摊喔。你就拼命地去捞。",
+    "vol": 5,
+    "ch": "漫无止境的八月",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "这样有什么不好？我一直很想要这个。这只青蛙要装饰在社团教室当作纪念。",
+    "vol": 5,
+    "ch": "漫无止境的八月",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "哇哇哇…大事不好了……再这样下去……我回不去未来了…",
+    "vol": 5,
+    "ch": "漫无止境的八月",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "我们被困在永不终止的暑假当中了。从八月十七日到三十一日这段时间。",
+    "vol": 5,
+    "ch": "漫无止境的八月",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "同样的两周时间，我们循环了多少次？",
+    "vol": 5,
+    "ch": "漫无止境的八月",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "这一次是第一万五千四百九十八次。",
+    "vol": 5,
+    "ch": "漫无止境的八月",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "我的工作只是观察。",
+    "vol": 5,
+    "ch": "漫无止境的八月",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "我的课题还没有结束！对了，是作业！学校规定的暑假作业，我一样都没做。",
+    "vol": 5,
+    "ch": "漫无止境的八月",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "你是笨蛋吗？",
+    "vol": 5,
+    "ch": "漫无止境的八月",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "给我等一下！不要擅自决定！团长可是我！我也要去！",
+    "vol": 5,
+    "ch": "漫无止境的八月",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "鹤屋",
+    "text": "我家的滑雪别墅，大家一起来玩吧！",
+    "vol": 5,
+    "ch": "雪山篇",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "鹤屋学姐，这个送你！",
+    "vol": 5,
+    "ch": "雪山篇",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address_senpai",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "请放心。这次玩的是事先就已经打过招呼的推理游戏。",
+    "vol": 5,
+    "ch": "雪山篇",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "我们所看的究竟是哪一个Yuki？是从天上飘下来的，抑或是——",
+    "vol": 5,
+    "ch": "雪山篇",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我们要盛大迎接新年！好好地感谢新年，让新年也会是很好的年。",
+    "vol": 5,
+    "ch": "雪山篇",
+    "addressee": "古泉一树",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "出发！",
+    "vol": 5,
+    "ch": "雪山篇",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "鹤屋",
+    "text": "呀呼！",
+    "vol": 5,
+    "ch": "雪山篇",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "据说那边的天气晴朗，是绝佳的滑雪日。",
+    "vol": 5,
+    "ch": "雪山篇",
+    "addressee": "鹤屋",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "阿虚，你先说，你刚刚两个人偷偷在外头做了什么？从实招来！",
+    "vol": 5,
+    "ch": "雪山篇",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "长门心里有烦恼。她不想转学，想在北高待到毕业。",
+    "vol": 5,
+    "ch": "雪山篇",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "那更要跟我说呀！有希是非常重要的团员，我绝对不准她擅自离开！",
+    "vol": 5,
+    "ch": "雪山篇",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "万一，只是万一。长门说她还是得转学，或是被人强行带走的话，你爱怎么闹就怎么闹。到时我一定挺你到底。",
+    "vol": 5,
+    "ch": "雪山篇",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "那当然！",
+    "vol": 5,
+    "ch": "雪山篇",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "实玖瑠，锅里的汤要煮干了，快加热水。",
+    "vol": 5,
+    "ch": "雪山篇",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "鹤屋",
+    "text": "哇！春日，一年三百六十五天你都记得喔？好厉害！",
+    "vol": 5,
+    "ch": "雪山篇",
+    "addressee": "凉宫春日",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我在校门口发电影传单发完了，发现有人在鞋柜附近争吵。原来轻音乐社的主唱兼吉他手病了。",
+    "vol": 6,
+    "ch": "校庆乐队",
+    "addressee": "鹤屋",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "不然我代你出场好了。",
+    "vol": 6,
+    "ch": "校庆乐队",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "有希简直是十项全能！我去找她时，她二话不说就跟我走了。",
+    "vol": 6,
+    "ch": "校庆乐队",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "凉宫同学的演唱和长门同学的吉他在水准之上，甚至超越了一般高中轻音乐社的程度。",
+    "vol": 6,
+    "ch": "校庆乐队",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我唱得很开心，曲子又很动听，那就好像免费在唱现场有乐队伴奏的卡拉OK一样。",
+    "vol": 6,
+    "ch": "校庆乐队",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我真是瞎了狗眼，才会拉连这么蠢的情书都写得出来的笨蛋入团！你现在就给我引咎辞职！",
+    "vol": 6,
+    "ch": "情书事件",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "我觉得好浪漫喔。假如有人对我如此痴狂，我或许会很开心……十年啊。",
+    "vol": 6,
+    "ch": "情书事件",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "真是一篇旷世奇文。具体的描述予人好感。虽然作者一时丧失了自我，但从字里行间可以读出他澎湃的情感。",
+    "vol": 6,
+    "ch": "情书事件",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "他一见钟情的对象，并不是我。他看到的我并不是我，而是资讯统合思念体。",
+    "vol": 6,
+    "ch": "情书事件",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "他拥有透过我这个终端机，进入资讯统合思念体的超感应能力。",
+    "vol": 6,
+    "ch": "情书事件",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "他看到的资讯仅是九牛一毛，但那资讯压已足以令他为之倾倒。",
+    "vol": 6,
+    "ch": "情书事件",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "凶手就是要让我们误以为三味线没有不在场证明的时间，就是行凶时间！",
+    "vol": 6,
+    "ch": "推理游戏",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "鹤屋",
+    "text": "阿虚，你听懂了吗？要逆向思考！",
+    "vol": 6,
+    "ch": "推理游戏",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "我就是凶手一角。这次推理剧原本就是为了取悦凉宫同学才上演的。",
+    "vol": 6,
+    "ch": "推理游戏",
+    "addressee": "鹤屋",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "明年的夏天也拜托你了！孤岛和雪山我们都去过了，下次的舞台最好是更吊诡一点的！",
+    "vol": 6,
+    "ch": "推理游戏",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "鹤屋",
+    "text": "我知道一个好地方！我爸有个朋友在国外有城堡！",
+    "vol": 6,
+    "ch": "推理游戏",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "大家暑假前要把护照办好喔，可以吧！",
+    "vol": 6,
+    "ch": "推理游戏",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "有个地方想让你和我一起去。是去年的十二月十八号。请你带我和长门回到过去。",
+    "vol": 7,
+    "ch": "阴谋",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "啊?啊?这，这是怎么回事？这事…我来传送…不，需要严格的审查和很多人的批准的。",
+    "vol": 7,
+    "ch": "阴谋",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "朝比奈学姐，您现在赶快和上司联系一下。说明一下情况。",
+    "vol": 7,
+    "ch": "阴谋",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "真是不敢相信……通过了。这，为什么……？这么简单就……",
+    "vol": 7,
+    "ch": "阴谋",
+    "addressee": "自言自语",
+    "inference_method": "self_talk",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "我还是不明白。为什么阿虚的要求轻轻松松就通过了呢?上司反而还命令我说，让长门也一块去。",
+    "vol": 7,
+    "ch": "阴谋",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "什么历史整个被改变，怎么会，我一点儿也没察觉到……世界规模的时空改变与未来的直接干涉……",
+    "vol": 7,
+    "ch": "阴谋",
+    "addressee": "自言自语",
+    "inference_method": "self_talk",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "想求你一件事。请你不要跟那段时间内的我说任何话。",
+    "vol": 7,
+    "ch": "阴谋",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "知道了啦。既然你这么说我就照办咯。",
+    "vol": 7,
+    "ch": "阴谋",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希(原)",
+    "text": "要求同步。",
+    "vol": 7,
+    "ch": "阴谋",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希(镜)",
+    "text": "要求同步。",
+    "vol": 7,
+    "ch": "阴谋",
+    "addressee": "长门有希(原)",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希(原)",
+    "text": "拒绝。",
+    "vol": 7,
+    "ch": "阴谋",
+    "addressee": "长门有希(镜)",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希(镜)",
+    "text": "为什么。",
+    "vol": 7,
+    "ch": "阴谋",
+    "addressee": "长门有希(原)",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希(原)",
+    "text": "因为我不愿意。",
+    "vol": 7,
+    "ch": "阴谋",
+    "addressee": "长门有希(镜)",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你去把改变了的世界恢复原状。",
+    "vol": 7,
+    "ch": "阴谋",
+    "addressee": "长门有希(原)",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希(镜)",
+    "text": "知道了。",
+    "vol": 7,
+    "ch": "阴谋",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "不能采用。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "长门有希(镜)",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "我已经绞尽脑汁了……",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "自言自语",
+    "inference_method": "self_talk",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "不行，完全不行。引言部分太老套，开头部分一定要吸引读者，第一印象很关键啊！",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "那种思维也太过时了吧！思维转换是很有必要的，如果你的构思让人觉得有似曾相识的感觉，那么首先就要逆向思考。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "有件事其实不太想让她听到。实际上——学生会长发出了召唤指令，指令内容就是今天放学后到学生会活动室。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "找长门？学生会长？",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "没错，会长指名传唤长门同学。要见长门同学的理由很简单，听取关于文艺部活动情况的汇报以及该社团今后废存问题的讨论。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "希望你能对凉宫保守秘密。因为我觉得这件事有点麻烦。所以放学时趁凉宫看不到的时候来学生会吧。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "等下，为什么我也要去，又没有点名让我去。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "对方（学生会长）也答应了，所以我才奉命传达消息的。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "为什么那么心神不定啊？一副简直像是要被谁传唤的样子。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "如果需要的话我可以帮助你学习，没什么大不了的，反正只是重复课堂上的内容。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "学生会会长",
+    "text": "我想古泉已经跟你们说过了，不过我还是再说一次吧。叫你们来不是为别的，就是与文艺部活动相关的，学生会发出了最后通告。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "古泉一树",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "学生会会长",
+    "text": "现在，文艺部已经有名无实了，你们还不承认吗？它已经失去了作为一个社团的机能了。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "学生会会长",
+    "text": "因而，才通告文艺部无限期停止活动，让你们尽快撤离活动室。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "给我等下！你这样说，我们也很难做的。之前一直不闻不问，而在这种时候突然这么做也太不公平了吧。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "学生会会长",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "学生会会长",
+    "text": "你提出的关于设立同好会的申请书我已经看过了。抱歉，真是太可笑了。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "你这个菜鸟学生会会长！把我的三个忠诚随从关在这里干什么呢！是不是在欺负有希啊？如果是阿虚还好说，若是有希的话是绝对说不过去的！",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "是不是想把我排挤出去，我才是SOS团的最高指导者！",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "你是学生会会长吧？好吧！那就一决胜负吧！",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "等下！阿虚！别愣在那啊！因为他是学生会会长你有什么顾虑了吗？大家一起来制伏他，绑起来主动权就在我们这了。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "如果这样做就全面对战，一决胜负！无论何时无论何地无论谁不管怎么样的挑战，我们都会接受！",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "学生会会长",
+    "text": "发行社刊！历届的文艺部，甚至在成员不足的情况下，每年还会发行一册杂志。我想这是最容易看得见的活动吧。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "学生会会长",
+    "text": "期限是一周，一星期后的今天，要准备好装订成册的200本文艺部社刊。如果做不到，就按刚才说的，文艺部休部，交出活动室。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "全体",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "行啊！",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "学生会会长",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "社刊！社刊！像同人志一样的东西可以吗？就是登些小说，随笔，或者评论之类的东西吧！",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "不是很有趣吗？既然不做不行那就做呗！既是为了帮有希，也因为没了文艺部我们就麻烦了。那个活动室已经是我的东西了。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "学生会会长",
+    "text": "古泉，这样可以吗？虽然和预定计划有出入，但还是按照你说的去做了，让我演这么蠢的戏，真是麻烦！",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "古泉一树",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "虽说是朋友，但与新川先生和森小姐那样的伙伴是有所不同的。他也不是直属机关的成员。我们是学校组织内部的合作者。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "学生会会长",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "也就是说，古泉，这也是你的剧本。学生会在策划瓦解文艺部——使春日这么认为。这又是为了给春日那家伙打发时间啊。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "古泉一树",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "确实是这样计划的。但今后会怎样，还是个未知数。在期限内拿出社刊还好说，如果拿不出，完不成条件的话……车到山前必有路。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "来，过来抽签！各自写的题材就按纸条上的内容决定。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "恋爱小说。这可是正大光明抓阄儿决定的啊！有什么怨言一概不接受！",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "可是我有更重要的事情要去做啊。出书这种工作需要很多步骤，得有人监督！从今天开始的一周内，团长这个位置我暂时不做，主编这个职位更适合我！",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "嗨！大家利索点，赶快开始行动吧！要写出有意思的东西哦！当然，我觉得没意思就不能通过！",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "是出书吗？是我们吗？写什么样的书才好呢……？",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "写自己的亲身经历怎么样？只要和恋爱有关就行了不是吗。把你的亲身经历如实地写下来，然后彻底坚持是虚构的不就好了。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "阿虚",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "还好古泉抽到了推理小说，如果连一篇值得读的文章都没有的话，很难说是社刊呢。只是一味地标新立异的话，读者也会逃之夭夭的。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "古泉一树",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "拿回家仔细读过之后，觉得这小说好古怪呢。是幻想小说没错，要说是恐怖小说的话也算得上。你也读读看啦。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "阿虚，我可不认为有希只是随便写写。我想啊，这里面一定反映出了有希的内心。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "有希的部分这样就可以了。完全找不出需要修改的地方。古泉好像也写得很顺利，实玖瑠的绘本似乎也值得期待。那么，你的呢？到现在我连序章都没看到。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "学生会会长",
+    "text": "这房间不错呢。真是越来越觉得这里给你们太浪费了。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "你好烦啊！如果你是来讽刺我们的话，很可惜，我才不会因为那种低程度的错误让你抓到把柄呢！",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "学生会会长",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "气死我了，到底来干什么啊，那个混蛋会长。",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "大家，听好了。事到如今，就是死也一定要把社刊完成，而且还要全部卖完，一本也不准剩下。我要狠狠地教训一下学生会的家伙。大家明白了吗！",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "因为这里是SOS团的社团教室，而SOS团是属于我的团！",
+    "vol": 8,
+    "ch": "主编★一直线",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "这算什么啊？简直和一年级的时候没有什么变化不是吗。我还以为会有什么大刀阔斧的变动呢。",
+    "vol": 9,
+    "ch": "序曲",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我是SOS团团长凉宫春日。我说完了！",
+    "vol": 9,
+    "ch": "序曲",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "你有意见吗？穿旗袍会有什么问题啊？",
+    "vol": 9,
+    "ch": "序曲",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我不是有在考虑么！所以才选这个的啊。本来我打算穿兔女郎装很不错的，怕你们哆嗦才会换成旗袍的，我都已经这么照顾你们了，你们不是应该感激涕零才对么！",
+    "vol": 9,
+    "ch": "序曲",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "学生会会长",
+    "text": "你说的照顾算什么照顾？我作为维护校内风纪的学生会长，绝对不能容忍你这种出格行为！",
+    "vol": 9,
+    "ch": "序曲",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "这个有什么关系？真希望你们能够稍微尊重一下学生的自主性啊。放学后我们穿什么衣服，就不能自己决定吗？",
+    "vol": 9,
+    "ch": "序曲",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我们可是来帮有希的啊，绝对不是来劝别人加入SOS团的！",
+    "vol": 9,
+    "ch": "序曲",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "你竟然敢迟到！……你迟到了所以罚金要加倍！",
+    "vol": 9,
+    "ch": "序曲",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "佐佐木",
+    "text": "相当亲密的好朋友。是初中时代的朋友。",
+    "vol": 9,
+    "ch": "序曲",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "那是谁？",
+    "vol": 9,
+    "ch": "序曲",
+    "addressee": "佐佐木",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "佐佐木",
+    "text": "我是佐佐木。你就是凉宫小姐是吧。久仰大名。",
+    "vol": 9,
+    "ch": "序曲",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "多多关照。",
+    "vol": 9,
+    "ch": "序曲",
+    "addressee": "佐佐木",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "那边长得可爱的是实玖瑠，那边穿着水手服的是有希，这边是古泉。",
+    "vol": 9,
+    "ch": "序曲",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "啊、啊、我是朝比奈实玖瑠。",
+    "vol": 9,
+    "ch": "序曲",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "我是古泉。",
+    "vol": 9,
+    "ch": "序曲",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "这人有点奇怪。那个你的朋友，一直都是那个样子的吗？",
+    "vol": 9,
+    "ch": "序曲",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "闭锁空间的发生率最近增加了，和凉宫同学进入高中前后的数值差不多。",
+    "vol": 9,
+    "ch": "序曲",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "由于凉宫同学在新学期开始的同时开始产生闭锁空间，所以我可以断言春假最后一天中一定有什么问题点。",
+    "vol": 9,
+    "ch": "序曲",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "那当然是那个自称是你亲密好朋友的佐佐木，其实是个恐怕十人中会有八个看一眼就会被她迷住的有魅力的女性呀！",
+    "vol": 9,
+    "ch": "序曲",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "以我的观点来看的话，如果把一切都归结为凉宫同学对佐佐木小姐的嫉妒的话，那就容易明白了。",
+    "vol": 9,
+    "ch": "序曲",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "那家伙可是曾经说过恋爱感情是精神病的一种啊！",
+    "vol": 9,
+    "ch": "序曲",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "凉宫同学她好像很了解，可是实际上一窍不通。她的精神跟同年纪的女生相比并不见得会比较成熟。",
+    "vol": 9,
+    "ch": "序曲",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "因为你的朋友佐佐木，看上去虽然是一般人，可是用另外一种看法来观察的话，也有可能不一般。行动就像粒子一样，做事方式却带有波动，就跟光类似。",
+    "vol": 9,
+    "ch": "序曲",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "有没有有趣的入团志愿者来过？有希那边呢？有没有？",
+    "vol": 9,
+    "ch": "序曲",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "看来一年级之中没有有趣的家伙啊。果然还是得扩大一下搜索范围吧。",
+    "vol": 9,
+    "ch": "序曲",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "佐佐木这个人，你应该认识吧？她身边出现了一些和我们类似的人。她可能是另一个类似凉宫同学的存在。",
+    "vol": 9,
+    "ch": "分裂",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你是说佐佐木也是……神？",
+    "vol": 9,
+    "ch": "分裂",
+    "addressee": "古泉一树",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "有可能。而且她身边的人和机关不同，他们主张的是另一套理念。",
+    "vol": 9,
+    "ch": "分裂",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "是我啦，有希。大家都来看你了。",
+    "vol": 10,
+    "ch": "惊愕",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "有希，你吃饭了没？头会不会痛？怎么可以不吃饭呢？看你一个人住，我就知道会发生这种事。",
+    "vol": 10,
+    "ch": "惊愕",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "有一点发烧耶，你有冰枕吗？没关系，我等等去买个退烧贴片过来，再来就是晚餐了。有希，冰箱的东西和厨房借我用一下。",
+    "vol": 10,
+    "ch": "惊愕",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "原本频繁发生的闭锁空间最近毫无动静，让我安心了不少。也许是凉宫同学在招募新生上过度费神。",
+    "vol": 10,
+    "ch": "惊愕",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "就现阶段而言，我还是不确定（关于佐佐木他们）。他们还没有任何动作，各方联系也仍不完全。",
+    "vol": 10,
+    "ch": "惊愕",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我是在等新生到社团教室集合啦。好戏最后才登场，所以我干脆到最后再隆重登台，用团长应有的排场率众驾到最好。",
+    "vol": 10,
+    "ch": "惊愕",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "历史只要死背就好了，所以很简单。念历史需要自己的想法，能让脑袋远比填鸭式学习时有用多了。",
+    "vol": 10,
+    "ch": "惊愕",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "很好，看来是我误会你们了。想说一定只剩下十分之一呢，今年的一年级很有看头嘛。那么——我现在宣布，SOS团入团考试第二阶段正式开始！",
+    "vol": 10,
+    "ch": "惊愕",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "现在要笔试喔！只是性向测验之类的东西。虽然不会直接影响录取，但还是会成为参考。",
+    "vol": 10,
+    "ch": "惊愕",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "渡桥泰水",
+    "text": "学姐、学长，我等你们好久了！从今天起，我就是SOS团的一员了，请多指教！",
+    "vol": 10,
+    "ch": "惊愕",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address_senpai",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "这个女生就是在我严格且公平的精选下脱颖而出的新团员渡桥泰水。大家要毫不保留地将SOS团的教训和成果灌输给她！",
+    "vol": 10,
+    "ch": "惊愕",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "渡桥泰水",
+    "text": "没问题！我要泡，请让我泡！朝比奈学姐，请将茶水专员的精髓传授给不才小女子渡桥泰水吧！",
+    "vol": 10,
+    "ch": "惊愕",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "渡桥泰水",
+    "text": "这是南非博士茶！零咖啡因、助消化、营养高，请各位尝尝！",
+    "vol": 10,
+    "ch": "惊愕",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "这是阿虚做的SOS团官网，根本就是个无聊又毫无用处的网站。泰水，你就好好地用这台计算机，做出一个令人刮目相看的网站来。",
+    "vol": 10,
+    "ch": "惊愕",
+    "addressee": "渡桥泰水",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "佐佐木",
+    "text": "阿虚，我有件事想和你商量。我身边出现了一些很奇怪的人。",
+    "vol": 10,
+    "ch": "惊愕",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "佐佐木身边的人自称『机关』的对立组织。他们的目的是解放春日的力量。",
+    "vol": 10,
+    "ch": "惊愕",
+    "addressee": "凉宫春日",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "事态已经超出我的掌控范围了。如果佐佐木真的是另一个神，那么这个世界可能面临分裂。",
+    "vol": 10,
+    "ch": "惊愕",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "你是谁？",
+    "vol": 10,
+    "ch": "惊愕",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "渡桥泰水",
+    "text": "是我啊，我是渡桥。",
+    "vol": 10,
+    "ch": "惊愕",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "七十七万五千两百四十九。",
+    "vol": 11,
+    "ch": "无厘数",
+    "addressee": "渡桥泰水",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "那什么数字啊，古泉？你这一生吃过的麻糬吗？",
+    "vol": 11,
+    "ch": "无厘数",
+    "addressee": "古泉一树",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "这串数字没什么特别的意思，就只是我心血来潮想到的数字。",
+    "vol": 11,
+    "ch": "无厘数",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "快点，先从这间神社开始拜！今天我们要把这个市里的所有神社全部拜过一遍喔！",
+    "vol": 11,
+    "ch": "无厘数",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "一年之计在于元旦起三天！所以想求什么就在今天赶快求完吧！",
+    "vol": 11,
+    "ch": "无厘数",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "这衣服怎么样，很棒吧？有希和实玖瑠也是喔！",
+    "vol": 11,
+    "ch": "无厘数",
+    "addressee": "长门有希",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "真的非常好看。",
+    "vol": 11,
+    "ch": "无厘数",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "真是的，很不吉利耶。真想把香油钱拿回来。这里的神是在睡午觉吗。",
+    "vol": 11,
+    "ch": "无厘数",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我又没有怪你。要是用一只脚跳回去，会连左脚的草履也弄坏。我可不喜欢把借来的东西弄得破破烂烂再还回去。",
+    "vol": 11,
+    "ch": "无厘数",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "话说你也太重了吧，是吃了多少年糕啊？",
+    "vol": 11,
+    "ch": "无厘数",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "是衣服很重啦！少废话，用臼齿咬你耳朵喔！",
+    "vol": 11,
+    "ch": "无厘数",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "仔细想想，只有我们穿和服，阿虚跟古泉都还是穿便服实在很奇怪。你们两个也都要像日本男人一样穿纹付袴过年！限十秒！",
+    "vol": 11,
+    "ch": "无厘数",
+    "addressee": "古泉一树",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "思君苦无期～～断肠悬泪亦今宵，若能共长久～～",
+    "vol": 11,
+    "ch": "七大不可思议延长赛",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "愿弃荣华赴难波～～舍死投海作澪标～～",
+    "vol": 11,
+    "ch": "七大不可思议延长赛",
+    "addressee": "凉宫春日",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "这里。这张对吧？",
+    "vol": 11,
+    "ch": "七大不可思议延长赛",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "深秋稻岸处～～夙夜孤守一陋……呃……淹？",
+    "vol": 11,
+    "ch": "七大不可思议延长赛",
+    "addressee": "古泉一树",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "庵。",
+    "vol": 11,
+    "ch": "七大不可思议延长赛",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "苫。",
+    "vol": 11,
+    "ch": "七大不可思议延长赛",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "瀼。",
+    "vol": 11,
+    "ch": "七大不可思议延长赛",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "至今看过的本格推理小说里，觉得最棒的是哪本呢？",
+    "vol": 11,
+    "ch": "鹤屋学姐的挑战",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "《绿胶囊之谜》。",
+    "vol": 11,
+    "ch": "鹤屋学姐的挑战",
+    "addressee": "古泉一树",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "《毒巧克力命案》。",
+    "vol": 11,
+    "ch": "鹤屋学姐的挑战",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "长门有希",
+    "text": "《希腊棺材的秘密》。",
+    "vol": 11,
+    "ch": "鹤屋学姐的挑战",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "话说回来，我们SOS团成立也快一年了呢。这一年我们做了好多事，但还是没有找到外星人、未来人、超能力者！真奇怪啊。",
+    "vol": 11,
+    "ch": "简单",
+    "addressee": "长门有希",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "也许他们就一直在你身边也说不定。",
+    "vol": 11,
+    "ch": "简单",
+    "addressee": "凉宫春日",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "哼，又在说莫名其妙的话了。不过算了，反正SOS团还会继续下去的。",
+    "vol": 11,
+    "ch": "简单",
+    "addressee": "自言自语",
+    "inference_method": "self_talk",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "《大家穿和服的样子》啊……",
+    "vol": 12,
+    "ch": "直觉",
+    "addressee": "全体",
+    "inference_method": "group_address",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "先来个七万七千五百二十四十九？",
+    "vol": 12,
+    "ch": "直觉",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "这串数字没什么特别的意思，就只是我心血来潮想到——应该说想起来的数字。",
+    "vol": 12,
+    "ch": "直觉",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "这是怎么回事？",
+    "vol": 13,
+    "ch": "勇者春日",
+    "addressee": "古泉一树",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我什么都没说。实际上我这会儿什么都不想说。这里交给我。你当龙套好了。",
+    "vol": 13,
+    "ch": "勇者春日",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "国王",
+    "text": "勇者春日。为了拯救这个世界，需要一位天生的勇者。请答应朕的请求，去打倒那妄图用恐怖和灾厄来支配这个美丽世界的大魔王吧。",
+    "vol": 13,
+    "ch": "勇者春日",
+    "addressee": "凉宫春日",
+    "inference_method": "direct_address",
+    "inference_confidence": "high"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "拯救世界是么？好吧，未尝不可。任何委托对我来说都不成问题。",
+    "vol": 13,
+    "ch": "勇者春日",
+    "addressee": "国王",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "不过你也知道，劳动需要相应的报酬。要是打倒了那个统治欲发作什么的魔王，我能得到什么？",
+    "vol": 13,
+    "ch": "勇者春日",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "荣誉勋章又不能烧了吃。我最多把它拿到拍卖会上卖掉。",
+    "vol": 13,
+    "ch": "勇者春日",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我才不要什么公主咧。如果你以为让我和什么莫名其妙的家伙结婚我就会高兴的话，我现在就告诉你，你大错特错了！",
+    "vol": 13,
+    "ch": "勇者春日",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "我说阿虚。我们搞个叛乱来推翻这个政权怎么样？要是你想，也可以把你推上王位。",
+    "vol": 13,
+    "ch": "勇者春日",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "要是你想做自己去做好了。我对叛乱啊革命啊王权啊什么的一点没兴趣。",
+    "vol": 13,
+    "ch": "勇者春日",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "我穿这个好看么？",
+    "vol": 13,
+    "ch": "勇者春日",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "像位完美的魔法师。没人会认错的。",
+    "vol": 13,
+    "ch": "勇者春日",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "你穿着也很好看，阿虚。",
+    "vol": 13,
+    "ch": "勇者春日",
+    "addressee": "阿虚",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "先把肚子填饱再说。爱吃的随便点。现在有一大笔军费。我们去找点乐子吧！",
+    "vol": 13,
+    "ch": "勇者春日",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "adjacency",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "老板在哪里？菜单上所有吃的喝的按顺序上一遍。一样五份！先庆贺一下！",
+    "vol": 13,
+    "ch": "勇者春日",
+    "addressee": "阿虚",
+    "inference_method": "fallback_relationship",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "阿虚",
+    "text": "这是怎么回事？这RPG般的世界是怎么回事？为什么我们会在这儿？谁把我们弄来的？",
+    "vol": 13,
+    "ch": "勇者春日",
+    "addressee": "凉宫春日",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "古泉一树",
+    "text": "说实话我也无法确定。我在意识到之前就置身于那个觐见室了。",
+    "vol": 13,
+    "ch": "勇者春日",
+    "addressee": "阿虚",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  },
+  {
+    "speaker": "朝比奈实玖瑠",
+    "text": "这里不是主题乐园么？我以为我们到了一个游乐园之类的地方进了某个房间……",
+    "vol": 13,
+    "ch": "勇者春日",
+    "addressee": "自言自语",
+    "inference_method": "self_talk",
+    "inference_confidence": "low"
+  },
+  {
+    "speaker": "凉宫春日",
+    "text": "阿虚，快过来！这种发泡酒虽然满烈的不过超好喝哟！你再不快点过来我可要喝光了哦！",
+    "vol": 13,
+    "ch": "勇者春日",
+    "addressee": "朝比奈实玖瑠",
+    "inference_method": "qa_pair",
+    "inference_confidence": "medium"
+  }
+]

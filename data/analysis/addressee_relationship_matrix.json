@@ -1,0 +1,192 @@
+{
+  "凉宫春日": {
+    "阿虚": {
+      "label": "疏离",
+      "dialogue_count": 163,
+      "avg_char_count": 25.4,
+      "command_ratio": 0.012,
+      "exclamation_ratio": 0.54,
+      "politeness_per_dialogue": 0.012,
+      "intimate_term_ratio": 0.037
+    },
+    "长门有希": {
+      "label": "亲近",
+      "dialogue_count": 29,
+      "avg_char_count": 32.4,
+      "command_ratio": 0.034,
+      "exclamation_ratio": 0.517,
+      "politeness_per_dialogue": 0.034,
+      "intimate_term_ratio": 0.655
+    },
+    "朝比奈实玖瑠": {
+      "label": "亲近",
+      "dialogue_count": 42,
+      "avg_char_count": 26.2,
+      "command_ratio": 0.024,
+      "exclamation_ratio": 0.595,
+      "politeness_per_dialogue": 0.0,
+      "intimate_term_ratio": 0.643
+    },
+    "古泉一树": {
+      "label": "亲近/热烈",
+      "dialogue_count": 30,
+      "avg_char_count": 28.2,
+      "command_ratio": 0.0,
+      "exclamation_ratio": 0.633,
+      "politeness_per_dialogue": 0.0,
+      "intimate_term_ratio": 0.367
+    }
+  },
+  "阿虚": {
+    "凉宫春日": {
+      "label": "疏离",
+      "dialogue_count": 79,
+      "avg_char_count": 18.2,
+      "command_ratio": 0.0,
+      "exclamation_ratio": 0.139,
+      "politeness_per_dialogue": 0.051,
+      "intimate_term_ratio": 0.0
+    },
+    "长门有希": {
+      "label": "冷静/敬语",
+      "dialogue_count": 29,
+      "avg_char_count": 19.4,
+      "command_ratio": 0.0,
+      "exclamation_ratio": 0.103,
+      "politeness_per_dialogue": 0.138,
+      "intimate_term_ratio": 0.034
+    },
+    "朝比奈实玖瑠": {
+      "label": "亲近/热烈",
+      "dialogue_count": 18,
+      "avg_char_count": 23.6,
+      "command_ratio": 0.0,
+      "exclamation_ratio": 0.278,
+      "politeness_per_dialogue": 0.0,
+      "intimate_term_ratio": 0.111
+    },
+    "古泉一树": {
+      "label": "亲近/热烈",
+      "dialogue_count": 17,
+      "avg_char_count": 17.2,
+      "command_ratio": 0.0,
+      "exclamation_ratio": 0.235,
+      "politeness_per_dialogue": 0.059,
+      "intimate_term_ratio": 0.176
+    }
+  },
+  "长门有希": {
+    "凉宫春日": {
+      "label": "亲近/热烈",
+      "dialogue_count": 12,
+      "avg_char_count": 28.1,
+      "command_ratio": 0.0,
+      "exclamation_ratio": 0.083,
+      "politeness_per_dialogue": 0.083,
+      "intimate_term_ratio": 0.083
+    },
+    "阿虚": {
+      "label": "中性",
+      "dialogue_count": 42,
+      "avg_char_count": 15.2,
+      "command_ratio": 0.024,
+      "exclamation_ratio": 0.0,
+      "politeness_per_dialogue": 0.119,
+      "intimate_term_ratio": 0.0
+    },
+    "朝比奈实玖瑠": {
+      "label": "敬语",
+      "dialogue_count": 4,
+      "avg_char_count": 26.5,
+      "command_ratio": 0.0,
+      "exclamation_ratio": 0.0,
+      "politeness_per_dialogue": 0.25,
+      "intimate_term_ratio": 0.0
+    },
+    "古泉一树": {
+      "label": "敬语",
+      "dialogue_count": 5,
+      "avg_char_count": 21.6,
+      "command_ratio": 0.0,
+      "exclamation_ratio": 0.0,
+      "politeness_per_dialogue": 0.2,
+      "intimate_term_ratio": 0.0
+    }
+  },
+  "朝比奈实玖瑠": {
+    "凉宫春日": {
+      "label": "热烈",
+      "dialogue_count": 25,
+      "avg_char_count": 20.1,
+      "command_ratio": 0.0,
+      "exclamation_ratio": 0.24,
+      "politeness_per_dialogue": 0.12,
+      "intimate_term_ratio": 0.12
+    },
+    "阿虚": {
+      "label": "疏离/冷静",
+      "dialogue_count": 13,
+      "avg_char_count": 19.6,
+      "command_ratio": 0.0,
+      "exclamation_ratio": 0.077,
+      "politeness_per_dialogue": 0.154,
+      "intimate_term_ratio": 0.077
+    },
+    "长门有希": {
+      "label": "亲近/冷静",
+      "dialogue_count": 5,
+      "avg_char_count": 31.2,
+      "command_ratio": 0.0,
+      "exclamation_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "intimate_term_ratio": 0.2
+    },
+    "古泉一树": {
+      "label": "亲近/冷静/敬语",
+      "dialogue_count": 4,
+      "avg_char_count": 18.8,
+      "command_ratio": 0.0,
+      "exclamation_ratio": 0.0,
+      "politeness_per_dialogue": 0.25,
+      "intimate_term_ratio": 0.25
+    }
+  },
+  "古泉一树": {
+    "凉宫春日": {
+      "label": "中性",
+      "dialogue_count": 47,
+      "avg_char_count": 35.1,
+      "command_ratio": 0.0,
+      "exclamation_ratio": 0.085,
+      "politeness_per_dialogue": 0.106,
+      "intimate_term_ratio": 0.021
+    },
+    "阿虚": {
+      "label": "亲近/敬语",
+      "dialogue_count": 17,
+      "avg_char_count": 28.6,
+      "command_ratio": 0.0,
+      "exclamation_ratio": 0.0,
+      "politeness_per_dialogue": 0.294,
+      "intimate_term_ratio": 0.059
+    },
+    "长门有希": {
+      "label": "疏离",
+      "dialogue_count": 6,
+      "avg_char_count": 33.3,
+      "command_ratio": 0.0,
+      "exclamation_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "intimate_term_ratio": 0.0
+    },
+    "朝比奈实玖瑠": {
+      "label": "亲近",
+      "dialogue_count": 7,
+      "avg_char_count": 23.9,
+      "command_ratio": 0.0,
+      "exclamation_ratio": 0.0,
+      "politeness_per_dialogue": 0.0,
+      "intimate_term_ratio": 0.143
+    }
+  }
+}
