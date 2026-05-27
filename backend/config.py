@@ -3,8 +3,8 @@
 import json
 from pathlib import Path
 
-# Project root (haruhi-skill/)
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
+# Project root (haruhi-skill/) — config.py lives in backend/, go up one level
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 CONFIG_PATH = PROJECT_ROOT / "data" / "chatroom" / "response_engine_config.json"
 SKILL_DIR = PROJECT_ROOT / "skills" / "characters"
 

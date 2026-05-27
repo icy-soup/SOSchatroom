@@ -1,10 +1,21 @@
 @import "tailwindcss";
 
+/* 全局默认光标 = 箭头，不覆盖 Tailwind 工具类 (用 :where 零优先级) */
+:where(*) {
+  cursor: default;
+}
+:where(input, textarea, [contenteditable]) {
+  cursor: text;
+}
+:where(button, a, [role="button"], label) {
+  cursor: pointer;
+}
+
 @layer base {
   * {
     font-family: "Noto Sans SC", "PingFang SC", sans-serif;
   }
-  body {
+  html, body, #root {
     margin: 0;
     padding: 0;
   }

@@ -12,7 +12,7 @@ import re
 
 from dotenv import load_dotenv
 # 从项目根目录加载 .env（override=True 覆盖被 ANSI 码污染的 shell 环境变量）
-_env_path = Path(__file__).resolve().parents[2] / ".env"
+_env_path = Path(__file__).resolve().parent.parent / ".env"
 load_dotenv(dotenv_path=_env_path, override=True)
 
 # 清除 ANSI 转义码（防止终端粘贴导致模型名/URL 被污染）
@@ -258,13 +258,18 @@ async def style_transfer(api_key: str, api_url: str, model: str,
                          character: str, text: str) -> str:
     """Rewrite text in character's tone while preserving meaning exactly."""
     skill_text = load_character_skill(character)
-    rules = (
-        "Rules: 1. NEVER change the core meaning. 2. Only adjust tone and wording. "
-        "3. NEVER add new content, opinions, or suggestions. "
-        "4. You are rewriting, not responding. 5. Output only the rewritten text, no prefixes. "
-        "6. Preserve the full length of the original text - don't shorten it."
+    system = (
+        f"Task: Rewrite the user's sentence as if {character} said it.\n"
+        "IMPORTANT: This is a REWRITE task, not a conversation.\n"
+        "1. Keep the exact same meaning and intent.\n"
+        "2. Only change wording and tone to match the character's speaking style.\n"
+        "3. NEVER respond to or reply to the sentence.\n"
+        "4. NEVER add new content, opinions, suggestions, or narrative.\n"
+        "5. Output ONLY the rewritten sentence, no prefixes or explanations.\n"
+        "6. Preserve the full length — don't shorten.\n"
+        "7. If the sentence is already in character, return it as-is.\n\n"
+        f"Character reference:\n{skill_text[:1500]}"
     )
-    system = f"Rewrite this sentence in {character}'s tone. {rules}\n\nCharacter reference:\n{skill_text[:1500]}"
 
     if api_key:
         try:
@@ -295,6 +300,42 @@ async def style_transfer(api_key: str, api_url: str, model: str,
     fn = DEMO_PREFIXES.get(character, lambda t: t)
     return fn(text)
 
+
+# ── 风格化质量检查 ──
+
+_CHARACTER_MARKS = {
+    "凉宫春日": ["！", "嘛", "呢", "啊——", "决定了", "有趣", "无聊", "给我", "哼"],
+    "阿虚":     ["……", "唉", "是是是", "吐槽", "麻烦", "算了", "随你便", "哈？"],
+    "长门有希": [],  # 长门无明确语气标记，走LLM判断
+    "朝比奈实玖瑠": ["……", "对不起", "抱歉", "怎么办", "那个……", "吧？", "好、"],
+    "古泉一树": ["——", "推测", "有趣", "大概", "恐怕", "呵呵", "开玩笑"],
+}
+
+
+def check_character_match(text: str, character: str) -> dict:
+    """Check if text already sounds like the character.
+
+    Returns dict with matched flag and score and message.
+    """
+    marks = _CHARACTER_MARKS.get(character, [])
+
+    if not marks:
+        # 无语气标记的角色（长门），长度短+无情绪词视为符合
+        no_emote = not any(c in text for c in ["！", "？", "～", "嘛", "啦", "哟"])
+        short = len(text) < 30
+        if no_emote and short:
+            return {"matched": True, "score": 0.8,
+                    "message": f"✓ 很{character}的风格"}
+
+    score = sum(1 for m in marks if m in text)
+    ratio = score / max(len(marks), 1) / 2 + score / max(len(text), 1) * 2
+
+    if ratio > 0.25:
+        return {"matched": True, "score": min(ratio, 1.0),
+                "message": f"✓ 很有{character}的味道，直接发吧！"}
+
+    return {"matched": False, "score": round(ratio, 2), "message": f"角色匹配度: {round(ratio * 100)}%"}
+
 # ── 上传目录 ──
 
 UPLOAD_DIR = Path(__file__).resolve().parent / "uploads"
@@ -317,7 +358,7 @@ async def get_tools():
 @app.post("/api/save-config")
 async def save_config(data: dict):
     """Save API config to .env file on disk."""
-    env_path = Path(__file__).resolve().parents[2] / ".env"
+    env_path = Path(__file__).resolve().parent.parent / ".env"
     existing = {}
     if env_path.exists():
         for line in env_path.read_text(encoding="utf-8").strip().splitlines():
@@ -360,6 +401,7 @@ async def websocket_endpoint(ws: WebSocket):
 
     sessions[client_id] = {
         "character": None,
+        "partner": "",
         "history": [],
         "last_speaker": None,
         "api_key": DEFAULT_API_KEY,
@@ -411,6 +453,7 @@ async def websocket_endpoint(ws: WebSocket):
                 char = data.get("character", "")
                 if char in CHARACTER_NAMES:
                     session["character"] = char
+                    session["partner"] = data.get("partner", "")
                     session["history"] = []
                     session["last_speaker"] = None
                     await manager.broadcast({
@@ -422,7 +465,7 @@ async def websocket_endpoint(ws: WebSocket):
                         "character": char,
                     })
 
-            # ── 风格转化 ──
+            # ── 风格转化（旧，保留兼容）──
             elif msg_type == "style_transfer":
                 char = session.get("character")
                 text = data.get("text", "").strip()
@@ -437,6 +480,38 @@ async def websocket_endpoint(ws: WebSocket):
                     "original": text,
                     "transformed": transformed,
                 })
+
+            # ── 风格化：Enter → 风格化 → 预览（新流程）──
+            elif msg_type == "stylize":
+                char = session.get("character")
+                text = data.get("text", "").strip()
+                if not char or not text:
+                    continue
+
+                # 先检查是否已有角色味
+                quality = check_character_match(text, char)
+                if quality["matched"]:
+                    await ws.send_json({
+                        "type": "stylized",
+                        "original": text,
+                        "transformed": None,
+                        "already_in_character": True,
+                        "message": quality["message"],
+                        "score": quality.get("score", 0),
+                    })
+                else:
+                    transformed = await style_transfer(
+                        session["api_key"], session["api_url"], session["model"],
+                        char, text,
+                    )
+                    await ws.send_json({
+                        "type": "stylized",
+                        "original": text,
+                        "transformed": transformed,
+                        "already_in_character": False,
+                        "message": "✨ 已风格化",
+                        "score": quality.get("score", 0),
+                    })
 
             # ── 工具调用（结果只在调用者的连接中显示）──
             elif msg_type == "tool_invoke":
@@ -495,6 +570,13 @@ async def websocket_endpoint(ws: WebSocket):
                     existing_responders=existing,
                     conversation_history=session.get("history", []),
                 )
+
+                # 按对话对象过滤（单人聊天只让指定角色回复，群聊不过滤）
+                partner = session.get("partner", "")
+                if partner in CHARACTER_NAMES:
+                    responders = [r for r in responders if r == partner]
+                    if not responders:
+                        responders = [partner]
 
                 # 串行回复：每个响应者依次思考、回复，
                 # 先回复的人的输出作为后面回复者的语料

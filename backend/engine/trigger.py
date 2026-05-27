@@ -10,7 +10,7 @@ from pathlib import Path
 
 from config import CHARACTER_NAMES
 
-_PROJECT_ROOT = Path(__file__).resolve().parents[3]
+_PROJECT_ROOT = Path(__file__).resolve().parents[2]
 _NOVEL_PROB_PATH = _PROJECT_ROOT / "data" / "analysis" / "novel_probability_result.json"
 
 _novel_matrix: dict | None = None

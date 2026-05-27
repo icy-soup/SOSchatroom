@@ -1,53 +1,76 @@
 # haruhi-skill
 
-《凉宫春日》系列 SOS 团全员思维框架 Skill 合集 + 小说对话挖掘流水线
+**SOS团聊天室** — 基于《凉宫春日》全13卷小说原文的多角色 AI 聊天室。
+5 名角色（春日/阿虚/长门/朝比奈/古泉），真实对话数据驱动的响应引擎。
 
-基于全13卷小说原文的逐卷通读，为5名角色各提炼4-5个核心心智模型、6-7条决策启发式和完整表达DNA。项目兼具「角色AI人格配置」和「轻小说文本挖掘研究」两个面向。
+## 快速开始
 
-## 角色阵容
+```bash
+# 一键启动（构建前端 + 启动后端）
+.\chatroom.bat
 
-| 角色 | 心智模型数 | 状态 |
-|------|:---------:|:----:|
-| 凉宫春日 | 4个 | ✅ 已完成 |
-| 阿虚 | 5个 | ✅ 已完成 |
-| 长门有希 | 5个 | ✅ 已完成 |
-| 朝比奈实玖瑠 | 4个 | ✅ 已完成（+大朝比奈彩蛋） |
-| 古泉一树 | 5个 | ✅ 已完成 |
+# 或分步：
+cd backend && pip install -r requirements.txt
+cd ../frontend && npm install && npx vite build
+cd ../backend && python main.py
+```
 
-每个角色的SKILL.md位于 `skills/characters/{角色}/SKILL.md`，包含角色扮演规则、回答工作流、身份卡、心智模型、决策启发式、表达DNA、时间线、价值观、智识谱系、诚实边界。
-
-调研资料位于同目录下的 `references/research/01-07.md`。
+访问 `http://localhost:8000`，右上角 ⚙ 配置 API Key。
 
 ## 项目结构
 
 ```
-├── skills/characters/           # 5个角色思维框架（SKILL.md + 调研文档）
-├── data/
-│   ├── novels/                  # 原始小说文本（全13卷）
-│   ├── dialogues/               # 标注对话 JSON（791条）
-│   └── analysis/                # 统计分析结果（概率矩阵/关系矩阵）
-├── scripts/                     # 对话标注和分析脚本
-├── plan/architecture.md         # 项目架构与技术规划
-└── README.md
+├── backend/                     # FastAPI + WebSocket 后端
+│   ├── main.py                  # 服务入口、LLM 调用、WebSocket 路由
+│   ├── config.py                # 角色映射、SKILL 加载
+│   ├── engine/                  # 三层响应引擎
+│   │   ├── trigger.py           #   触发层：谁应该回复
+│   │   ├── character.py         #   角色层：system prompt 构建
+│   │   └── style.py             #   风格层：对象别语气调整
+│   └── requirements.txt
+├── frontend/                    # React + TypeScript + Vite 前端
+│   └── src/
+│       ├── components/          #   ChatArea, InputArea, Sidebar, ...
+│       ├── hooks/               #   useWebSocket
+│       └── App.tsx
+├── skills/characters/           # 5 个角色 SKILL.md
+├── data/                        # 小说、标注对话、分析、脚本
+│   └── scripts/                 #   对话挖掘与分析脚本
+├── docs/                        # 文档
+│   └── README.md                #   文档索引
+└── chatroom.bat                 # Windows 一键启动
 ```
 
-## 数据规模
+## 响应引擎三层架构
 
-| 指标 | 数值 |
-|------|------|
-| 标注对话总数 | 791条 |
-| 覆盖卷数 | 全13卷 |
-| 条件概率矩阵 | 5x5 (25对关系) |
+```
+触发层 (trigger.py)  ── @提及/提问/概率roll，基于真实小说统计数据
+    ↓
+角色层 (character.py) ── 加载 SKILL.md → 构建 system prompt
+    ↓
+风格层 (style.py) ── 根据说话对象调整语气（基于addressee关系矩阵）
+    ↓
+LLM 调用 ── Anthropic/OpenAI 双协议，失败→演示模式兜底
+```
 
-详情见 `plan/architecture.md`。
+## 5 角色 SKILL
 
-## 重建流程
+| 角色 | 心智模型 | SKILL 位置 |
+|------|---------|-----------|
+| 凉宫春日 | 4 个 | `skills/characters/haruhi/SKILL.md` |
+| 阿虚 | 5 个 | `skills/characters/kyon/SKILL.md` |
+| 长门有希 | 5 个 | `skills/characters/nagato/SKILL.md` |
+| 朝比奈实玖瑠 | 4 个 | `skills/characters/asahina/SKILL.md` |
+| 古泉一树 | 5 个 | `skills/characters/koizumi/SKILL.md` |
 
-每个角色经历：逐卷精读原文 → 6-agent调研（含网络搜索）→ 三重验证提炼 → SKILL.md构建 → 质量验证 → 双agent精炼。完整流程见 `plan/architecture.md`。
+调研笔记见 `docs/research/{角色}/`。
 
-## 后续方向
+## 数据驱动
 
-- **SOS团聊天室**：多角色群聊应用，用户切换身份，角色基于心智模型自动响应
-- **跨作品分析**：将 pipeline 应用于其他轻小说/动画作品的角色对话分析
+| 数据 | 来源 | 用途 |
+|------|------|------|
+| 条件概率矩阵 | 全 13 卷小说对话统计 | 上一位说话后各角色接话概率 |
+| 对象别语气调整 | addressee 关系矩阵 | 说话对象不同时的语气偏移 |
+| 791 条标注对话 | 手工标注 | 风格化训练参考 |
 
 > 调研日期：2026-05-23 | 基于《凉宫春日》系列全13卷原文

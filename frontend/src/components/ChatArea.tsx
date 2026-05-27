@@ -25,7 +25,7 @@ export default function ChatArea({ messages, myCharacter, thinkingCharacters }: 
           <div className="text-xs mt-1 text-black/15">
             {myCharacter
               ? `以 ${myCharacter} 的身份发言吧`
-              : "从左侧选择一个角色开始"}
+              : "选择角色开始对话"}
           </div>
         </div>
       </div>
