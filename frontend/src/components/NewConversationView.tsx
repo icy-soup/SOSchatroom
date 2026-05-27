@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { CHARACTERS } from "../characters";
+import SceneSettingsPanel from "./SceneSettingsPanel";
 
 interface NewConversationViewProps {
-  onStart: (partner: string, playerCharacter: string) => void;
+  onStart: (partner: string, playerCharacter: string, sceneBackground?: string, absentCharacters?: string[]) => void;
   onCancel: () => void;
   presetPartner?: string | null;  // 从联系人页传入，跳过选对象步骤
 }
@@ -11,6 +12,8 @@ export default function NewConversationView({ onStart, onCancel, presetPartner }
   const [step, setStep] = useState<"partner" | "player">(presetPartner ? "player" : "partner");
   const [partner, setPartner] = useState<string | null>(presetPartner ?? null);
   const [playerChar, setPlayerChar] = useState<string | null>(null);
+  const [sceneBackground, setSceneBackground] = useState("");
+  const [absentCharacters, setAbsentCharacters] = useState<string[]>([]);
 
   // 当 presetPartner 变化时同步
   useEffect(() => {
@@ -100,6 +103,15 @@ export default function NewConversationView({ onStart, onCancel, presetPartner }
                 ))}
               </div>
 
+              {/* Scene Settings */}
+              <SceneSettingsPanel
+                background={sceneBackground}
+                absent={absentCharacters}
+                allCharacters={CHARACTERS.map(c => c.name)}
+                onBackgroundChange={setSceneBackground}
+                onAbsentChange={setAbsentCharacters}
+              />
+
               <div className="flex justify-center mt-6 gap-3">
                 {!presetPartner && (
                   <button onClick={() => setStep("partner")}
@@ -107,7 +119,7 @@ export default function NewConversationView({ onStart, onCancel, presetPartner }
                     ← 重新选聊天对象
                   </button>
                 )}
-                <button onClick={() => { if (partner && playerChar) onStart(partner, playerChar); }}
+                <button onClick={() => { if (partner && playerChar) onStart(partner, playerChar, sceneBackground, absentCharacters); }}
                   disabled={!playerChar}
                   className="bg-purple-600 hover:bg-purple-500 disabled:bg-purple-300 text-white px-6 py-2 rounded-lg text-sm font-medium transition">
                   开始对话

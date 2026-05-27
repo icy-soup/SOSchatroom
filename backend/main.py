@@ -5,6 +5,7 @@ import json
 import os
 import random
 import sys
+import uuid
 
 from pathlib import Path
 
@@ -30,6 +31,12 @@ from config import CHARACTER_NAMES, load_character_skill, get_character_api_conf
 from engine.trigger import select_responders
 from engine.character import build_system_prompt, build_conversation_context
 from engine.style import build_style_instruction
+from database import (
+    init_db, get_all_conversations, get_conversation, create_conversation,
+    delete_conversation, update_conversation_scene,
+    get_messages, add_message, batch_import_conversations,
+    get_all_character_configs, get_character_config, upsert_character_config,
+)
 
 app = FastAPI(title="SOS聊天室")
 
@@ -394,6 +401,108 @@ async def get_background():
     return {"url": ""}
 
 
+# ── 头像上传 ──
+
+_AVATAR_DIR = UPLOAD_DIR / "avatars"
+_AVATAR_DIR.mkdir(exist_ok=True)
+
+
+@app.post("/api/upload-avatar/{character_name}")
+async def upload_avatar(character_name: str, file: UploadFile = File(...)):
+    """Save character avatar image, return its URL."""
+    ext = Path(file.filename).suffix if file.filename else ".png"
+    dest = _AVATAR_DIR / f"{character_name}{ext}"
+    content = await file.read()
+    dest.write_bytes(content)
+    url = f"/uploads/avatars/{character_name}{ext}"
+    # Update character config with avatar URL
+    upsert_character_config(character_name, {"avatar": url})
+    return {"url": url}
+
+
+# ── 数据库初始化 ──
+
+@app.on_event("startup")
+def startup():
+    init_db()
+
+
+# ── 对话 REST API ──
+
+@app.get("/api/conversations")
+async def list_conversations():
+    convs = get_all_conversations()
+    return {"conversations": convs}
+
+
+@app.post("/api/conversations")
+async def new_conversation(data: dict):
+    conv_id = str(uuid.uuid4())
+    character = data.get("character", "")
+    conv_type = data.get("type", "single")
+    title = data.get("title", "")
+    scene_background = data.get("scene_background", "")
+    absent_characters = json.dumps(data.get("absent_characters", []))
+    create_conversation(conv_id, character, conv_type, title, scene_background, absent_characters)
+    return {"id": conv_id}
+
+
+@app.get("/api/conversations/{conv_id}")
+async def get_conversation_detail(conv_id: str):
+    conv = get_conversation(conv_id)
+    if not conv:
+        return {"error": "not found"}, 404
+    messages = get_messages(conv_id)
+    return {"conversation": conv, "messages": messages}
+
+
+@app.delete("/api/conversations/{conv_id}")
+async def remove_conversation(conv_id: str):
+    delete_conversation(conv_id)
+    return {"ok": True}
+
+
+@app.patch("/api/conversations/{conv_id}/scene")
+async def update_scene(conv_id: str, data: dict):
+    scene_bg = data.get("scene_background")
+    absent = data.get("absent_characters")
+    if absent is not None:
+        absent = json.dumps(absent)
+    update_conversation_scene(conv_id, scene_bg, absent)
+    return {"ok": True}
+
+
+@app.post("/api/conversations/batch-import")
+async def batch_import(data: dict):
+    convs = data.get("conversations", [])
+    messages_map = data.get("messages", {})
+    batch_import_conversations(convs, messages_map)
+    return {"ok": True, "count": len(convs)}
+
+
+# ── 角色配置 API ──
+
+
+@app.get("/api/character-configs")
+async def list_character_configs():
+    configs = get_all_character_configs()
+    return {"configs": configs}
+
+
+@app.get("/api/character-configs/{name}")
+async def get_single_character_config(name: str):
+    config = get_character_config(name)
+    if not config:
+        return {"config": None}
+    return {"config": config}
+
+
+@app.put("/api/character-configs/{name}")
+async def update_character_config(name: str, data: dict):
+    upsert_character_config(name, data)
+    return {"ok": True}
+
+
 @app.websocket("/ws")
 async def websocket_endpoint(ws: WebSocket):
     client_id = f"user_{random.randint(10000, 99999)}"
@@ -454,8 +563,19 @@ async def websocket_endpoint(ws: WebSocket):
                 if char in CHARACTER_NAMES:
                     session["character"] = char
                     session["partner"] = data.get("partner", "")
+                    session["conversation_id"] = data.get("conversation_id", "")
                     session["history"] = []
                     session["last_speaker"] = None
+
+                    if session.get("conversation_id"):
+                        conv = get_conversation(session["conversation_id"])
+                        if conv:
+                            session["scene_background"] = conv.get("scene_background", "")
+                            session["absent_characters"] = (
+                                conv["absent_characters"]
+                                if isinstance(conv.get("absent_characters"), list)
+                                else []
+                            )
                     await manager.broadcast({
                         "type": "system",
                         "text": f"{char} 加入了聊天室",
@@ -561,6 +681,10 @@ async def websocket_endpoint(ws: WebSocket):
                     "is_bot": False,
                 })
 
+                # 持久化用户消息
+                if session.get("conversation_id"):
+                    add_message(session["conversation_id"], user_char, text, is_bot=0)
+
                 # 选择自动回复角色（已按概率降序排列）
                 existing = set()
                 responders = select_responders(
@@ -569,6 +693,7 @@ async def websocket_endpoint(ws: WebSocket):
                     user_character=user_char,
                     existing_responders=existing,
                     conversation_history=session.get("history", []),
+                    absent=session.get("absent_characters", []),
                 )
 
                 # 按对话对象过滤（单人聊天只让指定角色回复，群聊不过滤）
@@ -590,7 +715,15 @@ async def websocket_endpoint(ws: WebSocket):
                     })
 
                     style_instruction = build_style_instruction(responder, user_char)
-                    system_prompt = build_system_prompt(responder)
+                    # Get character-specific custom instructions from config
+                    char_cfg = session.get("character_api_config", {}).get(responder, {})
+                    custom_instructions = char_cfg.get("custom_instructions", "")
+
+                    system_prompt = build_system_prompt(
+                        responder,
+                        scene_background=session.get("scene_background", ""),
+                        custom_instructions=custom_instructions,
+                    )
                     if style_instruction:
                         system_prompt += f"\n\n{style_instruction}"
 
@@ -601,13 +734,16 @@ async def websocket_endpoint(ws: WebSocket):
                         "content": f"【{user_char}】{text}",
                     })
 
-                    # 检查角色独立API配置（优先级：会话独立配置 > 文件配置 > 全局默认）
+                    # 检查角色独立API配置（优先级：会话>DB>文件配置>全局默认）
                     char_api = get_character_api_config(responder)
                     session_char = session.get("character_api_config", {}).get(responder, {})
+                    db_char_cfg = get_character_config(responder) or {}
                     char_api_url = (session_char.get("api_url")
+                                    or db_char_cfg.get("api_url")
                                     or char_api.get("api_url")
                                     or session["api_url"])
                     char_model = (session_char.get("model")
+                                  or db_char_cfg.get("model")
                                   or char_api.get("model")
                                   or session["model"])
 
@@ -642,6 +778,27 @@ async def websocket_endpoint(ws: WebSocket):
                         "text": reply,
                         "is_bot": True,
                     })
+
+                    # 持久化机器人回复
+                    if session.get("conversation_id"):
+                        add_message(session["conversation_id"], responder, reply, is_bot=1)
+
+            # ── 更新场景设置 ──
+            elif msg_type == "update_scene":
+                bg = data.get("scene_background", "")
+                absent = data.get("absent_characters", [])
+                session["scene_background"] = bg
+                session["absent_characters"] = absent
+                if session.get("conversation_id"):
+                    update_conversation_scene(
+                        session["conversation_id"],
+                        scene_background=bg,
+                        absent_characters=json.dumps(absent),
+                    )
+                await ws.send_json({
+                    "type": "scene_updated",
+                    "ok": True,
+                })
 
             # ── 清除对话 ──
             elif msg_type == "clear":

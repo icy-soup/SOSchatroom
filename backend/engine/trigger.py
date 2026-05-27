@@ -109,6 +109,7 @@ def select_responders(
     user_character: str,
     existing_responders: set[str],
     conversation_history: list[dict] | None = None,
+    absent: list[str] | None = None,
 ) -> list[str]:
     """
     结合语境和概率选择回复角色。
@@ -121,16 +122,28 @@ def select_responders(
     # 1. @mention -> 100%强制回复
     at_mentioned = check_at_mention(message_text)
     if at_mentioned:
-        return [c for c in at_mentioned if c != user_character]
+        at_mentioned = [c for c in at_mentioned if c != user_character]
+        if absent:
+            at_mentioned = [c for c in at_mentioned if c not in absent]
+        if at_mentioned:
+            return at_mentioned
 
     # 2. 直接提问中含角色名 -> 被问的人回复
+    named_target = None
     if contains_direct_question(message_text):
         for name, partials in _NAME_ALIASES.items():
             if name == user_character:
                 continue
             for alias in partials:
                 if alias in message_text:
-                    return [name]
+                    named_target = name
+                    break
+            if named_target:
+                break
+
+    if named_target:
+        if not absent or named_target not in absent:
+            return [named_target]
 
     # 3. 独立概率 roll（含语境补正）
     raw = get_character_probs(last_speaker)
@@ -162,6 +175,10 @@ def select_responders(
 
         candidates.append((char, prob, adjusted))
 
+    # Filter absent characters
+    if absent:
+        candidates = [(c, p, a) for c, p, a in candidates if c not in absent]
+
     # Roll
     selected = [(char, prob) for char, prob, adj in candidates if random.random() < adj]
 
@@ -172,5 +189,15 @@ def select_responders(
     if not selected and candidates:
         candidates.sort(key=lambda x: x[1], reverse=True)
         selected = [(candidates[0][0], candidates[0][1])]
+
+    # Filter absent characters from final selection
+    if absent:
+        selected = [(c, p) for c, p in selected if c not in absent]
+
+    # If all absent characters removed, fallback to first non-absent
+    if not selected and absent:
+        for c in CHARACTER_NAMES:
+            if c != user_character and c not in absent and c not in existing_responders:
+                return [c]
 
     return [c for c, _ in selected]

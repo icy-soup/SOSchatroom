@@ -1,6 +1,6 @@
 # SOS团聊天室 — 设计文档
 
-> 更新：2026-05-27 | 对应项目重构 + 风格化交互改造
+> 更新：2026-05-27 | v3+ 角色编辑增强(可编辑头衔/介绍/独立API/模型) + 工具点子
 
 ## 项目结构
 
@@ -197,7 +197,6 @@ App
 │   ├── 💬 聊天              ← 默认激活
 │   ├── 👥 联系人
 │   ├── 🛠 工具
-│   ├── 📁 历史
 │   └── ⚙ 设置              ← SettingsModal
 │
 ├── MiddlePanel (280px)       ← 中间栏，始终显示
@@ -246,64 +245,136 @@ App
 - 工具: 点击→中间栏显示工具列表，右侧显示工具操作界面（不保留聊天）
 - 角色未选择时显示 CharacterSelectorBar
 
-### P1: SQLite 对话持久化
+### P1: SQLite 对话持久化（已实现 · 2026-05-27 v3）
 
-#### 现状（临时方案）
-- P2 之前用浏览器 `localStorage` 保存对话数据
-- 关页面重开记录不丢，清缓存或换设备会丢
-- 键名: `sos_conversations`
+#### 现状
+- 已用 `backend/database.py` SQLite 替换 localStorage
+- 所有对话和消息持久化到 `backend/chatroom.db`
+- 平滑迁移：首次加载自动从 localStorage 导入
 
-#### 数据库结构
+#### 数据库结构（已实现）
 ```sql
--- conversations: 对话会话
-CREATE TABLE conversations (
+CREATE TABLE IF NOT EXISTS conversations (
     id TEXT PRIMARY KEY,
     character TEXT NOT NULL,      -- 角色名 或 "group"
-    type TEXT DEFAULT 'single',   -- 'single' 单人 | 'group' 群聊
+    type TEXT DEFAULT 'single',
     title TEXT DEFAULT '',
+    scene_background TEXT DEFAULT '',
+    absent_characters TEXT DEFAULT '[]',
     created_at TEXT NOT NULL,
     updated_at TEXT NOT NULL,
     message_count INTEGER DEFAULT 0,
-    preview TEXT DEFAULT ''       -- 最后一条消息摘要
+    preview TEXT DEFAULT ''
 );
-
--- messages: 消息
-CREATE TABLE messages (
+CREATE TABLE IF NOT EXISTS messages (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     conversation_id TEXT NOT NULL,
-    role TEXT NOT NULL,           -- 说话者角色名
+    role TEXT NOT NULL,
     content TEXT NOT NULL,
     is_bot INTEGER DEFAULT 0,
     created_at TEXT NOT NULL,
-    FOREIGN KEY (conversation_id) REFERENCES conversations(id)
+    FOREIGN KEY (conversation_id) REFERENCES conversations(id) ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS character_configs (
+    character_name TEXT PRIMARY KEY,
+    display_name TEXT DEFAULT '',
+    avatar TEXT DEFAULT '',
+    signature TEXT DEFAULT '',
+    temperature REAL DEFAULT 0.7,
+    reply_length TEXT DEFAULT 'normal',
+    tone TEXT DEFAULT 'default',
+    custom_instructions TEXT DEFAULT ''
 );
 ```
 
-#### API 设计
+#### API（已实现）
 ```
-GET    /api/conversations           → 对话列表
-POST   /api/conversations           → 新建 { character, type }
-GET    /api/conversations/{id}      → 对话完整消息
-DELETE /api/conversations/{id}      → 删除对话
+GET    /api/conversations              → 对话列表
+POST   /api/conversations              → 新建
+GET    /api/conversations/{id}         → 对话+消息
+DELETE /api/conversations/{id}         → 删除
+PATCH  /api/conversations/{id}/scene   → 更新场景
+POST   /api/conversations/batch-import → 批量导入
+GET    /api/character-configs          → 所有角色配置
+GET    /api/character-configs/{name}   → 单个角色配置
+PUT    /api/character-configs/{name}   → 更新角色配置
+POST   /api/upload-avatar/{name}       → 上传角色头像
 ```
-WebSocket 收到/发出消息时同步写入 `add_message()`。
+WebSocket 消息自动落盘（`add_message()`）。
 
-### P2: 角色微调面板（规划）
+### P1.5: 对话场景设置（已实现 · 2026-05-27 v3）
 
-允许用户在界面上微调角色行为，无需修改SKILL文件：
+每条对话可设置场景基调 + 角色出勤，适用于单人对话和群聊，保存在 conversations 表：
 
 ```
-SettingsModal / 新面板
-├── System Prompt 温度 (slider 0-2)
-├── 回复长度偏好 (简短/适中/详细)
-├── 语气微调 (更活泼/更冷静/保持默认)
-├── 自定义指令 (textarea, 追加到system prompt末尾)
+对话设置面板（在 ChatHeader 或聊天列表右键菜单进入）
+├── 场景背景词 (textarea)
+│   └── "今天放学后春日说想去山上抓外星人……"
+│   └── 作为 system prompt 追加到该对话的 LLM 调用中
+│   └── 可在对话中途修改（角色会感知变化：聊着聊着春日又开心了）
+├── 缺席角色 (多选 toggle)
+│   └── 勾选的角色不会在对话中出现
+│   └── 后端过滤 responders 时排除
+│   └── 默认全员出席
+└── 未设置时使用默认行为
+```
+
+**实现方式**:
+- 场景词: 追加到 `build_system_prompt()` 末尾，每条消息调用时传入
+- 缺席角色: 后端 `select_responders` 后在 partner 过滤之前排除
+- 对话中途修改：前端发 WebSocket 消息更新 session 中的场景/缺席列表
+
+### P2: 角色编辑面板（已实现 · 2026-05-27 v3）
+
+允许用户在界面上编辑角色资料和微调行为，从联系人详情页进入：
+
+```
+角色编辑面板（ContactDetail ✏️ 按钮进入）
+├── 基础资料
+│   ├── 头像切换（预制 emoji 12个 + 用户上传图片）
+│   ├── 显示名称（不修改SKILL，仅UI显示用）
+│   └── 签名/介绍（UI显示用，默认显示角色原文台词）
+├── 行为微调
+│   ├── System Prompt 温度 (slider 0-2)
+│   ├── 回复长度偏好 (简短/适中/详细)
+│   ├── 语气微调 (更活泼/更冷静/保持默认)
+│   └── 自定义指令 (textarea, 追加到system prompt末尾)
 └── 每个角色独立配置
 ```
 
-**存储方式**: 追加到 SQLite `conversations` 表或新建 `character_configs` 表
+**存储方式**: `character_configs` 表（SQLite）
 **优先级**: 自定义指令 > 语气微调 > 温度 > SKILL默认
-**实现时机**: SQLite 持久化之后
+**头像上传**: `POST /api/upload-avatar/{name}` → 保存到 `uploads/avatars/` → 更新 avatar 字段
+**注意**: 所有编辑是前端UI覆盖层，不影响 SKILL.md 原始数据
+
+#### P2.5: 角色编辑面板增强（待实现）
+- 头像上传支持裁切/缩放
+- **自定义表情包管理**：每个角色绑定一组表情，在对应场景/情绪下自动发送（见 P6）
+- 编辑面板 UI 重新设计（当前为简单 modal，后续可能改为独立页面或分 tab）
+
+### P6: 角色表情包系统（待实现）
+
+角色在聊天中发送表情/贴图，增强表现力：
+
+```
+表情包系统
+├── 默认表情包
+│   ├── 每个角色预置 8-12 个表情（聊天中自动匹配场景发送）
+│   ├── 触发条件：关键词匹配、对话氛围、情绪状态
+│   ├── 发送方式：纯表情 / 文字+表情
+│   └── 频率控制：每条对话最多 1 个表情，不刷屏
+├── 用户自定义
+│   ├── 角色编辑面板增加「表情管理」tab
+│   ├── 可上传自定义表情图片
+│   ├── 可为表情绑定触发词/场景
+│   └── 可删除/替换默认表情
+└── 前后端存储
+    ├── character_stickers 表（SQLite）：存储表情URL+触发词+角色
+    ├── 表情图片存 uploads/stickers/ 目录
+    └── API: GET/POST/DELETE /api/stickers/{character_name}
+```
+
+**实现时机**: P3 之后，与 P4 工具市场并行
 
 ### P3: 角色主动发消息 + 对话超时反应
 - 角色可以主动发起对话，不只是在聊天中被动回复
@@ -333,6 +404,29 @@ SettingsModal / 新面板
 - 前端ToolList从API拉取工具列表（当前硬编码→API驱动）
 - 用户可管理已安装/上传的工具
 - 后端提供工具CRUD API + 下载/安装接口
+
+#### 当前已有工具
+| 工具 | 图标 | 说明 |
+|------|------|------|
+| 反无聊审查器 | 🔍 | 分析待办清单，区分真该做和拖延的 |
+| 直觉加速器 | ⚡ | 3秒直觉判断+行动方案 |
+| 行动力测试 | 💪 | 春日式计划评分 |
+
+#### 待加入工具点子
+| 工具 | 图标 | 说明 | 负责人 |
+|------|------|------|--------|
+| 长门资讯分析器 | 📊 | 输入一段文字，分析隐含信息和逻辑漏洞 | 长门有希 |
+| SOS团活动评估 | 🎯 | 输入活动方案，春日打分+可行性评估 | 凉宫春日 |
+| 阿虚吐槽生成器 | 💢 | 把日常抱怨变成阿虚风格的吐槽 | 阿虚 |
+| 朝比奈时间管理 | ⏰ | 温柔的日程规划和提醒 | 朝比奈实玖瑠 |
+| 古泉策略棋盘 | ♟ | 多方案推演和决策树分析 | 古泉一树 |
+| 春日世界观检测 | 🌍 | 检测输入内容中的「非日常」元素潜力 | 凉宫春日 |
+| 长门沉默评估 | 📖 | 对任何输入用最少字数给出最精准分析 | 长门有希 |
+
+### P5: 桌面打包（远期规划）
+- Electron → Tauri 迁移
+- 打包为独立桌面应用
+- 内置 SQLite 数据库 + 本地 LLM 或 API Key 配置
 
 ## 角色 SKILL 概览
 

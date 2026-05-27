@@ -1,12 +1,4 @@
 import { useState, useEffect } from "react";
-import { CHARACTERS } from "../characters";
-
-interface PerCharacterEntry {
-  api_url: string;
-  model: string;
-}
-
-type CharacterConfig = Record<string, PerCharacterEntry>;
 
 interface SettingsModalProps {
   open: boolean;
@@ -15,19 +7,10 @@ interface SettingsModalProps {
     apiKey: string;
     apiUrl: string;
     model: string;
-    characterConfig: CharacterConfig;
   }) => void;
   hasApiKey: boolean;
   initialApiUrl: string;
   initialModel: string;
-}
-
-function emptyCharacterConfig(): CharacterConfig {
-  const cfg: CharacterConfig = {};
-  for (const c of CHARACTERS) {
-    cfg[c.name] = { api_url: "", model: "" };
-  }
-  return cfg;
 }
 
 export default function SettingsModal({
@@ -41,41 +24,19 @@ export default function SettingsModal({
   const [apiKey, setApiKey] = useState("");
   const [apiUrl, setApiUrl] = useState(initialApiUrl);
   const [model, setModel] = useState(initialModel);
-  const [charConfig, setCharConfig] = useState<CharacterConfig>(emptyCharacterConfig);
-  const [showAdvanced, setShowAdvanced] = useState(false);
 
   useEffect(() => {
     if (open) {
       setApiUrl(initialApiUrl);
       setModel(initialModel);
       setApiKey("");
-      setCharConfig(emptyCharacterConfig());
-      setShowAdvanced(false);
     }
   }, [open, initialApiUrl, initialModel]);
 
   if (!open) return null;
 
-  const updateChar = (name: string, field: "api_url" | "model", value: string) => {
-    setCharConfig((prev) => ({
-      ...prev,
-      [name]: { ...prev[name], [field]: value },
-    }));
-  };
-
   const handleSave = () => {
-    // Strip empty entries
-    const cleaned: CharacterConfig = {};
-    for (const c of CHARACTERS) {
-      const entry = charConfig[c.name];
-      if (entry?.api_url || entry?.model) {
-        cleaned[c.name] = {
-          api_url: entry.api_url || "",
-          model: entry.model || "",
-        };
-      }
-    }
-    onSave({ apiKey, apiUrl, model, characterConfig: cleaned });
+    onSave({ apiKey, apiUrl, model });
   };
 
   return (
@@ -151,65 +112,6 @@ export default function SettingsModal({
           </div>
         </div>
 
-        {/* ── 角色独立配置 ── */}
-        <div className="mt-4 pt-4 border-t border-black/5">
-          <button
-            onClick={() => setShowAdvanced(!showAdvanced)}
-            className="flex items-center justify-between w-full text-left text-sm font-medium text-black/50 hover:text-black/70 transition"
-          >
-            <span>角色独立 API 配置（可选）</span>
-            <span className="text-xs">{showAdvanced ? "收起" : "展开"}</span>
-          </button>
-
-          {showAdvanced && (
-            <div className="mt-3 space-y-4">
-              {CHARACTERS.map((c) => (
-                <div
-                  key={c.name}
-                  className="bg-white/60 rounded-xl p-3 border border-black/5"
-                >
-                  <div className="flex items-center gap-1.5 mb-2">
-                    <span>{c.emoji}</span>
-                    <span className="text-sm font-medium" style={{ color: c.color }}>
-                      {c.name}
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div>
-                      <label className="text-[10px] text-black/30 block mb-0.5">
-                        API 地址
-                      </label>
-                      <input
-                        type="text"
-                        value={charConfig[c.name]?.api_url ?? ""}
-                        onChange={(e) => updateChar(c.name, "api_url", e.target.value)}
-                        placeholder="留空=全局"
-                        className="w-full bg-white border border-black/10 rounded-lg px-2.5 py-1.5 text-xs
-                                   focus:border-purple-400 focus:outline-none placeholder-black/15"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-[10px] text-black/30 block mb-0.5">
-                        Model
-                      </label>
-                      <input
-                        type="text"
-                        value={charConfig[c.name]?.model ?? ""}
-                        onChange={(e) => updateChar(c.name, "model", e.target.value)}
-                        placeholder="留空=全局"
-                        className="w-full bg-white border border-black/10 rounded-lg px-2.5 py-1.5 text-xs
-                                   focus:border-purple-400 focus:outline-none placeholder-black/15"
-                      />
-                    </div>
-                  </div>
-                </div>
-              ))}
-              <p className="text-[10px] text-black/20 leading-relaxed">
-                每个角色可独立配置 API 地址和模型。留空则使用全局设置。
-              </p>
-            </div>
-          )}
-        </div>
 
         {/* ── 聊天背景 ── */}
         <div className="mt-4 pt-4 border-t border-black/5">

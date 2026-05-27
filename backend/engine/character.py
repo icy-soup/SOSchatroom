@@ -17,7 +17,7 @@ def load_skill(name: str) -> str:
     return skill_path.read_text(encoding="utf-8")
 
 
-def build_system_prompt(name: str) -> str:
+def build_system_prompt(name: str, scene_background: str = "", custom_instructions: str = "") -> str:
     """Build the full system prompt with SKILL + output rules.
 
     Character identity and conversation history are carried by the messages
@@ -46,6 +46,12 @@ def build_system_prompt(name: str) -> str:
             f"你是{name}，不是其他角色。只输出{name}会说的话。"
         ),
     ]
+
+    if scene_background:
+        parts.append(f"[当前场景]\n{scene_background}")
+
+    if custom_instructions:
+        parts.append(f"[额外指令]\n{custom_instructions}")
 
     return "\n\n".join(parts)
 

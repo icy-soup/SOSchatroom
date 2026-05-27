@@ -4,9 +4,10 @@ interface ChatHeaderProps {
   characterName: string | null;
   messageCount: number;
   onClear: () => void;
+  onSceneSettings?: () => void;
 }
 
-export default function ChatHeader({ characterName, messageCount, onClear }: ChatHeaderProps) {
+export default function ChatHeader({ characterName, messageCount, onClear, onSceneSettings }: ChatHeaderProps) {
   const isGroup = characterName === "聊天室" || characterName === "group";
 
   // 无角色时显示通用标题
@@ -33,6 +34,9 @@ export default function ChatHeader({ characterName, messageCount, onClear }: Cha
           </div>
         </div>
         <div className="flex items-center gap-1">
+          {onSceneSettings && (
+            <button onClick={onSceneSettings} className="text-[11px] text-black/30 hover:text-black/60 transition px-2 py-1 rounded hover:bg-black/5" title="场景设置">🎬</button>
+          )}
           <button onClick={onClear} className="text-[11px] text-black/30 hover:text-black/60 transition px-2 py-1 rounded hover:bg-black/5" title="清除对话">清除</button>
         </div>
       </div>
@@ -56,6 +60,9 @@ export default function ChatHeader({ characterName, messageCount, onClear }: Cha
       </div>
 
       <div className="flex items-center gap-1">
+        {onSceneSettings && (
+          <button onClick={onSceneSettings} className="text-[11px] text-black/30 hover:text-black/60 transition px-2 py-1 rounded hover:bg-black/5" title="场景设置">🎬</button>
+        )}
         <button
           onClick={onClear}
           className="text-[11px] text-black/30 hover:text-black/60 transition px-2 py-1 rounded

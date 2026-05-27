@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from "react";
+import { fetchConversations, createConversation, deleteConversation, fetchConversationDetail } from "./api";
 import type { Message, ChatConfig, WsMessage, PanelView, Conversation } from "./types";
 import { useWebSocket } from "./hooks/useWebSocket";
 import IconBar from "./components/IconBar";
@@ -9,6 +10,8 @@ import NewConversationView from "./components/NewConversationView";
 import ContactDetail from "./components/ContactDetail";
 import InputArea from "./components/InputArea";
 import SettingsModal from "./components/SettingsModal";
+import SceneSettingsPanel from "./components/SceneSettingsPanel";
+import { CHARACTERS } from "./characters";
 
 let msgCounter = 0;
 function nextId() {
@@ -35,19 +38,30 @@ const TOOL_DESC: Record<string, { icon: string; name: string; desc: string; plac
 
 export default function App() {
   /* ── 对话存储（前端本地管理） ── */
-  const [conversations, setConversations] = useState<Conversation[]>(() => {
-    try {
-      const saved = localStorage.getItem("sos_conversations");
-      return saved ? JSON.parse(saved) : [];
-    } catch { return []; }
-  });
+  const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activeConvId, setActiveConvId] = useState<string | null>(null);
   const [showNewConv, setShowNewConv] = useState(false);
 
-  /* ── localStorage 持久化 ── */
+  // Load conversations from API on mount
   useEffect(() => {
-    localStorage.setItem("sos_conversations", JSON.stringify(conversations));
-  }, [conversations]);
+    fetchConversations().then(data => {
+      const convs: Conversation[] = (data.conversations || []).map(c => ({
+        id: c.id,
+        partner: c.character,
+        playerCharacter: "",
+        title: c.title,
+        messages: [],
+        createdAt: new Date(c.created_at).getTime(),
+        sceneBackground: c.scene_background || undefined,
+        absentCharacters: typeof c.absent_characters === 'string'
+          ? JSON.parse(c.absent_characters || '[]')
+          : (c.absent_characters || []),
+      }));
+      setConversations(convs);
+    }).catch(() => {
+      // API not available; will retry on next mount
+    });
+  }, []);
 
   /* ── 后端同步状态 ── */
   const [myCharacter, setMyCharacter] = useState<string | null>(null);
@@ -209,18 +223,36 @@ export default function App() {
 
   /* ── 发起新对话 ── */
   const handleStartNewConversation = useCallback(
-    (partner: string, player: string) => {
+    async (partner: string, player: string, sceneBackground?: string, absentCharacters?: string[]) => {
       const id = `conv_${Date.now()}`;
       const newConv: Conversation = {
         id, partner, playerCharacter: player,
         title: `${partner} · 扮演${player}`,
         messages: [], createdAt: Date.now(),
+        sceneBackground: sceneBackground || undefined,
+        absentCharacters: absentCharacters?.length ? absentCharacters : undefined,
       };
       setConversations((prev) => [newConv, ...prev]);
       setActiveConvId(id);
       setShowNewConv(false);
       setActivePanel("chat");
-      send({ type: "join", character: player, partner });
+      send({
+        type: "join",
+        character: player,
+        partner,
+        conversation_id: id,
+      });
+      try {
+        await createConversation({
+          character: partner,
+          type: partner === "SOS团聊天室" ? "group" : "single",
+          title: newConv.title,
+          scene_background: sceneBackground || undefined,
+          absent_characters: absentCharacters?.length ? absentCharacters : undefined,
+        });
+      } catch (e) {
+        console.error("Failed to create conversation on server", e);
+      }
     },
     [send]
   );
@@ -242,13 +274,38 @@ export default function App() {
 
   /* ── 切换对话 ── */
   const switchConversation = useCallback(
-    (convId: string) => {
+    async (convId: string) => {
       if (convId === activeConvIdRef.current) return;
+
+      // Load messages from API
+      try {
+        const data = await fetchConversationDetail(convId);
+        const msgs: Message[] = (data.messages || []).map(m => ({
+          character: m.role,
+          text: m.content,
+          isBot: m.is_bot === 1,
+          id: `msg-${m.id}`,
+        }));
+        setConversations((prev) =>
+          prev.map((c) =>
+            c.id === convId ? { ...c, messages: msgs } : c
+          )
+        );
+      } catch (e) {
+        console.error("Failed to load messages", e);
+      }
+
+      // Join conversation
       setConversations((prev) => {
         const conv = prev.find((c) => c.id === convId);
         if (conv && conv.playerCharacter !== myCharRef.current) {
-          pendingRestoreRef.current = [...conv.messages];
-          send({ type: "join", character: conv.playerCharacter, partner: conv.partner });
+          pendingRestoreRef.current = [];
+          send({
+            type: "join",
+            character: conv.playerCharacter,
+            partner: conv.partner,
+            conversation_id: convId,
+          });
         }
         return prev;
       });
@@ -269,6 +326,7 @@ export default function App() {
     if (activeConvIdRef.current === convId) {
       setActiveConvId(null);
     }
+    deleteConversation(convId).catch(() => {});
   }, []);
 
   /* ── 消息 ── */
@@ -298,9 +356,32 @@ export default function App() {
     );
   }, []);
 
+  const [showSceneModal, setShowSceneModal] = useState(false);
+
+  const handleOpenScene = useCallback(() => {
+    setShowSceneModal(true);
+  }, []);
+
+  const handleSceneSave = useCallback((bg: string, absent: string[]) => {
+    send({ type: "update_scene", scene_background: bg, absent_characters: absent });
+    // Update local conversation state
+    const id = activeConvIdRef.current;
+    if (id) {
+      setConversations((prev) =>
+        prev.map((c) =>
+          c.id === id ? { ...c, sceneBackground: bg || undefined, absentCharacters: absent.length ? absent : undefined } : c
+        )
+      );
+    }
+    setShowSceneModal(false);
+  }, [send]);
+
   /* ── 联系人 ── */
   const handleSelectContact = useCallback((name: string) => {
     setSelectedContact(name);
+    setShowNewConv(false);
+    setNewConvPreset(null);
+    setActivePanel("contacts");
   }, []);
 
   const handleStartChatFromContact = useCallback(() => {
@@ -311,12 +392,10 @@ export default function App() {
   const handleSaveConfig = useCallback(
     (data: {
       apiKey: string; apiUrl: string; model: string;
-      characterConfig: Record<string, { api_url: string; model: string }>;
     }) => {
       send({
         type: "set_config", api_key: data.apiKey,
         api_url: data.apiUrl, model: data.model,
-        character_config: data.characterConfig,
       });
       fetch("/api/save-config", {
         method: "POST",
@@ -334,6 +413,9 @@ export default function App() {
   /* ── 工具 ── */
   const handleToolSelect = useCallback((id: string) => {
     setSelectedTool(id); setToolDraft(""); setToolResult(""); setToolLoading(false);
+    setShowNewConv(false);
+    setNewConvPreset(null);
+    setActivePanel("tools");
   }, []);
   const handleToolBack = useCallback(() => {
     setSelectedTool(null); setToolDraft(""); setToolResult(""); setToolLoading(false);
@@ -373,7 +455,7 @@ export default function App() {
         }
         return (
           <>
-            <ChatHeader characterName={partnerName} messageCount={messages.length} onClear={handleClearMessages} />
+            <ChatHeader characterName={partnerName} messageCount={messages.length} onClear={handleClearMessages} onSceneSettings={handleOpenScene} />
             <ChatArea messages={messages} myCharacter={myCharacter} thinkingCharacters={thinkingCharacters} />
             {myCharacter ? (
               <InputArea myCharacter={myCharacter} connected={isConnected} onSend={handleSend}
@@ -486,6 +568,34 @@ export default function App() {
       <div className="flex-1 flex flex-col min-w-0">
         {renderRightPanel()}
       </div>
+
+      {showSceneModal && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-40" onClick={() => setShowSceneModal(false)}>
+          <div className="bg-white rounded-xl p-5 w-[420px] max-h-[80vh] overflow-y-auto shadow-xl border border-black/10" onClick={e => e.stopPropagation()}>
+            <div className="flex justify-between items-center mb-3">
+              <h3 className="text-sm font-semibold text-[#2c2c2c]">场景设置</h3>
+              <button onClick={() => setShowSceneModal(false)} className="text-xs text-black/30 hover:text-black/60">✕</button>
+            </div>
+            {(function SceneForm() {
+              const [bg, setBg] = useState(activeConv?.sceneBackground || "");
+              const [absent, setAbsent] = useState<string[]>(activeConv?.absentCharacters || []);
+              return (
+                <>
+                  <SceneSettingsPanel
+                    background={bg} absent={absent}
+                    allCharacters={CHARACTERS.map(c => c.name)}
+                    onBackgroundChange={setBg} onAbsentChange={setAbsent}
+                  />
+                  <div className="flex justify-end gap-2 mt-4 pt-3 border-t border-black/5">
+                    <button onClick={() => setShowSceneModal(false)} className="text-xs text-black/40 px-3 py-1.5">取消</button>
+                    <button onClick={() => handleSceneSave(bg, absent)} className="text-xs bg-purple-600 text-white px-4 py-1.5 rounded-lg hover:bg-purple-500">保存</button>
+                  </div>
+                </>
+              );
+            })()}
+          </div>
+        </div>
+      )}
 
       <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)}
         onSave={handleSaveConfig} hasApiKey={config.hasApiKey}

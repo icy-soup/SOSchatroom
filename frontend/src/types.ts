@@ -27,6 +27,8 @@ export interface Conversation {
   title: string;            // 默认 "{partner} · 扮演{player}", 可重命名
   messages: Message[];
   createdAt: number;
+  sceneBackground?: string;
+  absentCharacters?: string[];
 }
 
 export type WsMessage =
@@ -41,4 +43,5 @@ export type WsMessage =
   | { type: "thinking"; character: string }
   | { type: "thinking_clear"; character: string }
   | { type: "tool_result"; tool_id: string; result: string }
-  | { type: "stylized"; original: string; transformed: string | null; already_in_character: boolean; message: string; score?: number };
+  | { type: "stylized"; original: string; transformed: string | null; already_in_character: boolean; message: string; score?: number }
+  | { type: "scene_updated"; ok: boolean };
