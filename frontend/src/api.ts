@@ -19,6 +19,7 @@ export interface ConversationDTO {
   updated_at: string;
   message_count: number;
   preview: string;
+  player_character: string;
 }
 
 export interface MessageDTO {
@@ -43,6 +44,7 @@ export interface CharacterConfigDTO {
   description: string;
   api_url: string;
   model: string;
+  api_key: string;
 }
 
 export async function fetchConversations(): Promise<{ conversations: ConversationDTO[] }> {
@@ -56,6 +58,7 @@ export async function createConversation(data: {
   scene_background?: string;
   absent_characters?: string[];
   id?: string;
+  player_character?: string;
 }): Promise<{ id: string }> {
   return fetchJSON(`${BASE}/conversations`, {
     method: "POST",

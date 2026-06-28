@@ -74,6 +74,17 @@ export default function NewConversationView({ onStart, onCancel, presetPartner }
                     </div>
                   </button>
                 ))}
+                {/* 群聊入口 */}
+                <button onClick={() => { setPartner("聊天室"); setStep("player"); }}
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl border-2 border-transparent bg-gradient-to-br from-purple-50 to-pink-50 hover:border-purple-200 transition-all duration-150 col-span-2">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-lg shrink-0 bg-gradient-to-br from-purple-100 to-pink-100">
+                    🏠
+                  </div>
+                  <div className="text-left">
+                    <div className="text-sm font-medium text-[#2c2c2c]">SOS团聊天室</div>
+                    <div className="text-[10px] text-black/40">全员群聊，所有角色在线回复</div>
+                  </div>
+                </button>
               </div>
             </div>
           )}
@@ -108,6 +119,7 @@ export default function NewConversationView({ onStart, onCancel, presetPartner }
                 background={sceneBackground}
                 absent={absentCharacters}
                 allCharacters={CHARACTERS.map(c => c.name)}
+                playerCharacter={playerChar}
                 onBackgroundChange={setSceneBackground}
                 onAbsentChange={setAbsentCharacters}
               />

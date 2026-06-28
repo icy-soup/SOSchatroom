@@ -34,7 +34,7 @@ export default function App() {
       const convs: Conversation[] = (data.conversations || []).map(c => ({
         id: c.id,
         partner: c.character,
-        playerCharacter: "",
+        playerCharacter: c.player_character || "",
         title: c.title,
         messages: [],
         createdAt: new Date(c.created_at).getTime(),
@@ -261,6 +261,7 @@ export default function App() {
           scene_background: sceneBackground || undefined,
           absent_characters: absentCharacters?.length ? absentCharacters : undefined,
           id,
+          player_character: player,
         });
       } catch (e) {
         console.error("Failed to create conversation on server", e);
@@ -581,6 +582,7 @@ export default function App() {
                   <SceneSettingsPanel
                     background={bg} absent={absent}
                     allCharacters={CHARACTERS.map(c => c.name)}
+                    playerCharacter={activeConv?.playerCharacter}
                     onBackgroundChange={setBg} onAbsentChange={setAbsent}
                   />
                   <div className="flex justify-end gap-2 mt-4 pt-3 border-t border-black/5">

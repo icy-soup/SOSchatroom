@@ -56,10 +56,11 @@ cd frontend && npx vite            # 前端 :5173
 │   ├── config.py                # 角色映射、SKILL 加载
 │   ├── tools/                   # 工具注册表（自动扫描根目录 tools/）
 │   │   └── registry.py
-│   └── engine/                  # 三层响应引擎
-│       ├── trigger.py           #   触发层：谁应该回复
-│       ├── character.py         #   角色层：system prompt 构建
-│       └── style.py             #   风格层：对象别语气调整
+│   ├── character_agent.py         # 多 Agent：每个角色独立决策+回复
+│   └── engine/                    # 响应引擎
+│       ├── trigger.py             #   概率矩阵加载
+│       ├── character.py           #   system prompt 构建
+│       └── style.py               #   对象别语气调整
 ├── frontend/                    # React + TypeScript + Vite 前端
 │   └── src/
 │       ├── components/          #   UI 组件（ChatArea、InputArea 等）
@@ -84,16 +85,22 @@ cd frontend && npx vite            # 前端 :5173
 └── chatroom.sh                  # Linux/Mac 一键启动
 ```
 
-## 响应引擎三层架构
+## 多 Agent 架构
 
 ```
-触发层 (trigger.py)  ── @提及/提问/概率roll，基于真实小说统计数据
-    ↓
-角色层 (character.py) ── 加载 SKILL.md → 构建 system prompt
-    ↓
-风格层 (style.py) ── 根据说话对象调整语气（基于addressee关系矩阵）
-    ↓
-LLM 调用 ── Anthropic/OpenAI/DeepSeek，失败→演示模式兜底
+用户消息 → 广播到所有独立 Agent
+
+凉宫春日Agent:  独立 message_log → LLM 判断相关度 → 用自己的 API Key 调 LLM → 回复
+阿虚Agent:      独立 message_log → LLM 判断相关度 → 用自己的 API Key 调 LLM → 回复
+长门有希Agent:  独立 message_log → LLM 判断相关度 → 用自己的 API Key 调 LLM → 回复
+朝比奈Agent:    独立 message_log → LLM 判断相关度 → 用自己的 API Key 调 LLM → 回复
+古泉Agent:      独立 message_log → LLM 判断相关度 → 用自己的 API Key 调 LLM → 回复
+
+每个 Agent：
+- 独立决定是否回复（LLM 判断相关度 + 概率兜底插嘴）
+- 独立 API Key / URL / Model
+- 两轮对话：第一轮回用户，第二轮 agent 之间互相反应
+- 真人小说对话数据（novel_probability_result.json）做参考概率
 ```
 
 ## 5 角色 SKILL

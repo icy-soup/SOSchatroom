@@ -39,6 +39,7 @@ _ALLOWED_CONFIG_FIELDS: frozenset[str] = frozenset({
     "description",
     "api_url",
     "model",
+    "api_key",
 })
 
 
@@ -194,6 +195,7 @@ def init_db() -> None:
             "description TEXT DEFAULT ''",
             "api_url TEXT DEFAULT ''",
             "model TEXT DEFAULT ''",
+            "api_key TEXT DEFAULT ''",
         ]
         for col_def in _NEW_CONFIG_COLS:
             col_name = col_def.split()[0]
@@ -201,6 +203,12 @@ def init_db() -> None:
                 conn.execute(f"ALTER TABLE character_configs ADD COLUMN {col_def}")
             except sqlite3.OperationalError:
                 pass  # Column already exists
+
+        # ── 迁移：conversations 增加 player_character 列 ──
+        try:
+            conn.execute("ALTER TABLE conversations ADD COLUMN player_character TEXT DEFAULT ''")
+        except sqlite3.OperationalError:
+            pass  # Column already exists
 
 
 # ===================================================================
@@ -241,6 +249,7 @@ def create_conversation(
     title: str = "",
     scene_background: str = "",
     absent_characters: Any = "[]",
+    player_character: str = "",
 ) -> dict:
     """创建新对话。
 
@@ -265,18 +274,19 @@ def create_conversation(
             """
             INSERT INTO conversations
                 (id, character, type, title, scene_background,
-                 absent_characters, created_at, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                 absent_characters, created_at, updated_at, player_character)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT(id) DO UPDATE SET
                 character         = excluded.character,
                 type              = excluded.type,
                 title             = excluded.title,
                 scene_background  = excluded.scene_background,
                 absent_characters = excluded.absent_characters,
+                player_character  = excluded.player_character,
                 updated_at        = excluded.updated_at
             """,
             (conv_id, character, type_, title,
-             scene_background, absent_str, now, now),
+             scene_background, absent_str, now, now, player_character),
         )
     return get_conversation(conv_id)
 

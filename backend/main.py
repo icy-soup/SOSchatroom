@@ -28,7 +28,6 @@ from fastapi import File, UploadFile
 from fastapi.staticfiles import StaticFiles
 
 from config import CHARACTER_NAMES, load_character_skill, get_character_api_config
-from engine.trigger import select_responders
 from engine.character import build_system_prompt, build_conversation_context
 from engine.style import build_style_instruction
 from database import (
@@ -38,6 +37,7 @@ from database import (
     get_all_character_configs, get_character_config, upsert_character_config,
 )
 from tools.registry import load_tool_prompt, get_character_for_tool, get_tool_ids
+from character_agent import CharacterAgent
 
 app = FastAPI(title="SOS聊天室")
 
@@ -90,9 +90,9 @@ def get_demo_response(character: str, user_message: str) -> str:
 # ── LLM 回复清洗 ──
 
 _SANITIZE_NAMES = sorted(CHARACTER_NAMES, key=len, reverse=True)
-_SANITIZE_PATTERN = re.compile(
-    r'^(?:'
-    rf'【(?:{"|".join(re.escape(n) for n in _SANITIZE_NAMES)})】[：:]?\s*|'
+_LINE_WITH_NAME = re.compile(
+    r'^\s*'
+    rf'(?:【(?:{"|".join(re.escape(n) for n in _SANITIZE_NAMES)})】[：:]?\s*|'
     rf'(?:{"|".join(re.escape(n) for n in _SANITIZE_NAMES)})[：:]\s*|'
     r'【[^】]+】[：:]?\s*'
     r')'
@@ -100,8 +100,17 @@ _SANITIZE_PATTERN = re.compile(
 
 
 def sanitize_llm_reply(text: str) -> str:
-    """Strip character-name and bracket prefixes from LLM output."""
-    return _SANITIZE_PATTERN.sub('', text).strip()
+    """Strip character-name and bracket prefixes from each line of LLM output.
+
+    如果整行以【角色名】开头，去掉前缀。如果整行就是【角色名】内容（替别人说话），删掉整行。
+    """
+    lines = text.split('\n')
+    cleaned = []
+    for line in lines:
+        stripped = _LINE_WITH_NAME.sub('', line).strip()
+        if stripped:
+            cleaned.append(stripped)
+    return '\n'.join(cleaned).strip()
 
 
 # ── 工具功能（动态加载自 tools/<id>/prompt.txt）──
@@ -377,7 +386,8 @@ async def new_conversation(data: dict):
     title = data.get("title", "")
     scene_background = data.get("scene_background", "")
     absent_characters = json.dumps(data.get("absent_characters", []))
-    create_conversation(conv_id, character, conv_type, title, scene_background, absent_characters)
+    player_character = data.get("player_character", "")
+    create_conversation(conv_id, character, conv_type, title, scene_background, absent_characters, player_character)
     return {"id": conv_id}
 
 
@@ -536,6 +546,19 @@ async def websocket_endpoint(ws: WebSocket):
                     session["message_log"] = []
                     session["last_speaker"] = None
 
+                    # 创建所有角色的独立 Agent（排除用户扮演的角色）
+                    session["agents"] = {}
+                    for name in CHARACTER_NAMES:
+                        if name != char:  # 用户扮演的角色不需要 agent
+                            session["agents"][name] = CharacterAgent(
+                                name=name,
+                                session=session,
+                                call_llm_func=call_llm,
+                                get_demo_func=get_demo_response,
+                                sanitize_func=sanitize_llm_reply,
+                                broadcast_func=lambda m: manager.broadcast(m),
+                            )
+
                     if session.get("conversation_id"):
                         conv = get_conversation(session["conversation_id"])
                         if conv:
@@ -551,10 +574,9 @@ async def websocket_endpoint(ws: WebSocket):
                                 {"character": m["role"], "text": m["content"], "is_bot": bool(m["is_bot"])}
                                 for m in db_messages
                             ]
-                    await manager.broadcast({
-                        "type": "system",
-                        "text": f"{char} 加入了聊天室",
-                    })
+                            # Also restore each agent's independent message_log
+                            for agent in session.get("agents", {}).values():
+                                agent.restore_log(db_messages)
                     await ws.send_json({
                         "type": "character_ready",
                         "character": char,
@@ -675,103 +697,88 @@ async def websocket_endpoint(ws: WebSocket):
                 if session.get("conversation_id"):
                     add_message(session["conversation_id"], user_char, text, is_bot=0)
 
-                # 选择自动回复角色（已按概率降序排列）
-                existing = set()
-                responders = select_responders(
-                    last_speaker=session.get("last_speaker"),
-                    message_text=text,
-                    user_character=user_char,
-                    existing_responders=existing,
-                    conversation_history=session.get("message_log", []),
-                    absent=session.get("absent_characters", []),
-                )
+                # ── 准备 Agent ──
+                agents = session.get("agents", {})
+                if not agents:
+                    continue
 
-                # 按对话对象过滤（单人聊天只让指定角色回复，群聊不过滤）
-                partner = session.get("partner", "")
                 absent = session.get("absent_characters", [])
-                if partner in CHARACTER_NAMES:
-                    if partner not in absent:
-                        responders = [r for r in responders if r == partner]
-                        if not responders:
-                            responders = [partner]
-                    else:
-                        responders = []
+                active_agents = {
+                    name: agent for name, agent in agents.items()
+                    if name not in absent
+                }
 
-                # 串行回复：每个响应者依次思考、回复，
-                # 先回复的人的输出作为后面回复者的语料
-                for responder in responders:
-                    existing.add(responder)
+                partner = session.get("partner", "")
+                if partner in CHARACTER_NAMES and partner in active_agents:
+                    active_agents = {partner: active_agents[partner]}
 
-                    # 1. 广播思考中提示
-                    await manager.broadcast({
-                        "type": "thinking",
-                        "character": responder,
-                    })
+                if not active_agents:
+                    continue
 
-                    style_instruction = build_style_instruction(responder, user_char)
-                    # Get character-specific custom instructions from config
-                    char_cfg = session.get("character_api_config", {}).get(responder, {})
-                    custom_instructions = char_cfg.get("custom_instructions", "")
+                from engine.trigger import get_character_probs
+                novel_probs = get_character_probs(session.get("last_speaker"))
+                user_msg_obj = {"character": session["character"], "text": text, "is_bot": False}
 
-                    system_prompt = build_system_prompt(
-                        responder,
-                        scene_background=session.get("scene_background", ""),
-                        custom_instructions=custom_instructions,
-                    )
-                    if style_instruction:
-                        system_prompt += f"\n\n{style_instruction}"
+                # ── Round 1：所有 agent 回复用户消息 ──
+                coros = [
+                    agent.observe_and_reply(user_msg_obj, novel_probs)
+                    for agent in active_agents.values()
+                ]
+                round1 = await asyncio.gather(*coros, return_exceptions=True)
 
-                    # 2. 构建 context —— 角色信息嵌入在每条消息 content 中
-                    ctx = build_conversation_context(session["message_log"])
+                # 处理 Round 1 回复
+                round1_replies = []
+                agent_names = list(active_agents.keys())
+                for i, result in enumerate(round1):
+                    agent_name = agent_names[i]
+                    if isinstance(result, Exception):
+                        print(f"[agent] {agent_name} error: {result}")
+                        continue
+                    if result is None:
+                        continue
 
-                    # 检查角色独立API配置（优先级：会话>DB>文件配置>全局默认）
-                    char_api = get_character_api_config(responder)
-                    session_char = session.get("character_api_config", {}).get(responder, {})
-                    db_char_cfg = get_character_config(responder) or {}
-                    char_api_url = (session_char.get("api_url")
-                                    or db_char_cfg.get("api_url")
-                                    or char_api.get("api_url")
-                                    or session["api_url"])
-                    char_model = (session_char.get("model")
-                                  or db_char_cfg.get("model")
-                                  or char_api.get("model")
-                                  or session["model"])
-
-                    reply = await call_llm(
-                        session["api_key"], char_api_url, char_model,
-                        system_prompt, ctx,
-                    )
-                    if reply is None:
-                        await manager.broadcast({
-                            "type": "system",
-                            "text": f"AI 回复失败（{responder}），已切换为演示模式回复",
-                        })
-                        reply = get_demo_response(responder, text)
-                    else:
-                        reply = sanitize_llm_reply(reply)
-
-                    # 3. 清除思考中
-                    await manager.broadcast({
-                        "type": "thinking_clear",
-                        "character": responder,
-                    })
-
-                    # 4. 追加到历史（后续响应者能看到这条回复）
-                    bot_msg = {"character": responder, "text": reply, "is_bot": True}
-                    session["message_log"].append(bot_msg)
-                    session["last_speaker"] = responder
-
-                    # 5. 广播最终回复
-                    await manager.broadcast({
-                        "type": "message",
-                        "character": responder,
-                        "text": reply,
-                        "is_bot": True,
-                    })
-
-                    # 持久化机器人回复
+                    round1_replies.append(result)
+                    await manager.broadcast(result)
                     if session.get("conversation_id"):
-                        add_message(session["conversation_id"], responder, reply, is_bot=1)
+                        add_message(session["conversation_id"], agent_name, result["text"], is_bot=1)
+
+                # ── Round 2：agent 之间互相反应 ──
+                if round1_replies:
+                    round2_replies = []
+                    # 每条 Round 1 回复，发给所有 agent 观察
+                    for reply in round1_replies:
+                        reply_msg = {
+                            "character": reply["character"],
+                            "text": reply["text"],
+                            "is_bot": True,
+                        }
+                        sub_coros = [
+                            agent.observe_and_reply(reply_msg, novel_probs)
+                            for agent in active_agents.values()
+                        ]
+                        sub_results = await asyncio.gather(*sub_coros, return_exceptions=True)
+
+                        for sr in sub_results:
+                            if sr is not None and not isinstance(sr, Exception):
+                                round2_replies.append(sr)
+
+                    # Round 2 广播 + 持久化
+                    for result in round2_replies:
+                        await manager.broadcast(result)
+                        if session.get("conversation_id"):
+                            add_message(session["conversation_id"], result["character"], result["text"], is_bot=1)
+
+                # ── 兜底：无人回复 ──
+                if not round1_replies and active_agents:
+                    top_agent = max(
+                        active_agents.values(),
+                        key=lambda a: novel_probs.get(a.name, 0)
+                    )
+                    forced_reply = await top_agent._generate_reply(user_msg_obj)
+                    if forced_reply:
+                        await manager.broadcast(forced_reply)
+                        if session.get("conversation_id"):
+                            add_message(session["conversation_id"], top_agent.name, forced_reply["text"], is_bot=1)
 
             # ── 更新场景设置 ──
             elif msg_type == "update_scene":

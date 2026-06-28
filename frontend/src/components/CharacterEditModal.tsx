@@ -26,6 +26,7 @@ export default function CharacterEditModal({ characterName, onClose, onSaved }: 
     description: "",
     api_url: "",
     model: "",
+    api_key: "",
   });
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
@@ -263,6 +264,18 @@ export default function CharacterEditModal({ characterName, onClose, onSaved }: 
             placeholder="deepseek-v4-flash"
             value={config.model}
             onChange={(e) => setConfig({ ...config, model: e.target.value })}
+          />
+        </div>
+
+        {/* API Key */}
+        <div className="mb-4">
+          <label className="text-[11px] text-black/40 font-medium block mb-1">API Key（留空=使用全局 Key）</label>
+          <input
+            type="password"
+            className="w-full border border-black/10 rounded-lg px-3 py-2 text-sm focus:border-purple-400 focus:outline-none"
+            placeholder="sk-..."
+            value={config.api_key || ''}
+            onChange={(e) => setConfig({ ...config, api_key: e.target.value })}
           />
         </div>
 
