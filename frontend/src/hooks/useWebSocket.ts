@@ -7,6 +7,7 @@ export function useWebSocket(onMessage: Listener) {
   const wsRef = useRef<WebSocket | null>(null);
   const onMessageRef = useRef<Listener>(onMessage);
   onMessageRef.current = onMessage;
+  const lastJoinRef = useRef<object | null>(null);
 
   const connect = useCallback(() => {
     if (wsRef.current?.readyState === WebSocket.OPEN) return;
@@ -30,6 +31,13 @@ export function useWebSocket(onMessage: Listener) {
       setTimeout(connect, 2000);
     };
 
+    ws.onopen = () => {
+      // Re-send last join params after reconnect
+      if (lastJoinRef.current) {
+        ws.send(JSON.stringify(lastJoinRef.current));
+      }
+    };
+
     ws.onerror = () => {
       ws.close();
     };
@@ -43,10 +51,14 @@ export function useWebSocket(onMessage: Listener) {
   }, [connect]);
 
   const send = useCallback((msg: object) => {
+    // Track join messages for re-send on reconnect
+    if ((msg as any).type === "join") {
+      lastJoinRef.current = msg;
+    }
     if (wsRef.current?.readyState === WebSocket.OPEN) {
       wsRef.current.send(JSON.stringify(msg));
     }
   }, []);
 
-  return { send, isConnected: !!wsRef.current?.readyState };
+  return { send, isConnected: wsRef.current?.readyState === WebSocket.OPEN };
 }

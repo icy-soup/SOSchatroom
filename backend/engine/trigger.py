@@ -199,5 +199,7 @@ def select_responders(
         for c in CHARACTER_NAMES:
             if c != user_character and c not in absent and c not in existing_responders:
                 return [c]
+        # ALL characters absent — no one responds
+        return []
 
     return [c for c, _ in selected]

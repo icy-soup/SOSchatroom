@@ -14,3 +14,15 @@ frontend/dist/
 # Python 缓存
 __pycache__/
 *.pyc
+
+# 项目技术栈原理讲解
+原理科普.md
+
+# 本地规划文档，不公开
+docs/superpowers/
+
+# SQLite 数据库文件
+*.db
+*.db-shm
+*.db-wal
+

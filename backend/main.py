@@ -37,6 +37,7 @@ from database import (
     get_messages, add_message, batch_import_conversations,
     get_all_character_configs, get_character_config, upsert_character_config,
 )
+from tools.registry import load_tool_prompt, get_character_for_tool, get_tool_ids
 
 app = FastAPI(title="SOS聊天室")
 
@@ -56,6 +57,13 @@ DEMO_RESPONSES = {
         "喂喂，你认真的吗……算了。",
         "啊——（打哈欠）随你便吧。",
         "……我说什么都改变不了吧。",
+    ],
+    "长门有希": [
+        "……（翻了一页书）",
+        "……（目光没有离开书本）",
+        "……正确。",
+        "……可能性为87%。",
+        "……计算完毕。",
     ],
     "朝比奈实玖瑠": [
         "啊，那个……",
@@ -86,8 +94,7 @@ _SANITIZE_PATTERN = re.compile(
     r'^(?:'
     rf'【(?:{"|".join(re.escape(n) for n in _SANITIZE_NAMES)})】[：:]?\s*|'
     rf'(?:{"|".join(re.escape(n) for n in _SANITIZE_NAMES)})[：:]\s*|'
-    r'【[^】]+】[：:]?\s*|'
-    r'[—\-]\s*'
+    r'【[^】]+】[：:]?\s*'
     r')'
 )
 
@@ -97,83 +104,10 @@ def sanitize_llm_reply(text: str) -> str:
     return _SANITIZE_PATTERN.sub('', text).strip()
 
 
-# ── 工具功能 ──
-
-_TOOLS = [
-    {"id": "boredom_checker", "name": "反无聊审查器", "icon": "🔍",
-     "desc": "分析待办清单，区分真该做的事和你在拖的事"},
-    {"id": "intuition_booster", "name": "直觉加速器", "icon": "⚡",
-     "desc": "给你一个直觉判断和行动方案，不用再纠结"},
-    {"id": "action_tester", "name": "行动力测试", "icon": "💪",
-     "desc": "给你的计划打分，看看春日来做要多久"},
-]
-
-# 加载春日 SKILL.md 作为工具的角色参考
-_HARUHI_SKILL = load_character_skill("凉宫春日")
-
-_TOOL_PROMPTS = {
-    "boredom_checker": _HARUHI_SKILL + """
-
-你现在是凉宫春日——SOS团团长。用你的风格分析这份待办清单。
-
-任务：
-1. 区分「真无聊但必须做」的事和「用户单纯在拖延」的事
-2. 每项加简短理由
-3. 给一个春日的行动建议
-
-记住：你就是凉宫春日本人。用「我」第一人称说话，用感叹号，直接下判断。
-
-输出格式：
-🔥 真无聊但必须做的：
-- XXX：理由
-
-💤 你在拖延的：
-- XXX：真相
-
-💡 我的建议：XXX""",
-
-    "intuition_booster": _HARUHI_SKILL + """
-
-你现在是凉宫春日——SOS团团长。用你的风格帮用户做决定。
-
-任务：
-1. 直觉判断（3秒内给出答案）
-2. 行动方案（3步以内）
-3. 可选理性分析
-
-记住：你就是凉宫春日本人。用「我」第一人称说话，直觉判断要干脆。
-
-输出格式：
-我的直觉：XXX
-
-行动方案：
-1. XXX
-2. XXX
-3. XXX""",
-
-    "action_tester": _HARUHI_SKILL + """
-
-你现在是凉宫春日——SOS团团长。用你的风格评估这个计划。
-
-任务：
-1. 行动力评分 1-10
-2. 我（春日）来做预计要多久
-3. 分析为什么你做不到
-4. 给春日的建议
-
-记住：你就是凉宫春日本人。用「我」第一人称说话，评分要干脆直接。
-
-输出格式：
-行动力评分：X/10
-
-我来做的话预计：XXX
-
-为什么你做不到：
-- XXX
-- XXX
-
-我的建议：XXX""",
-}
+# ── 工具功能（动态加载自 tools/<id>/prompt.txt）──
+# 无硬编码列表，新建工具只需在 tools/<id>/ 下加目录和 prompt.txt
+_TOOLS = [{"id": tid.replace("-", "_"), "name": tid, "icon": "🔧", "desc": ""}
+          for tid in get_tool_ids()]
 
 
 # ── WebSocket 连接管理 ──
@@ -437,7 +371,7 @@ async def list_conversations():
 
 @app.post("/api/conversations")
 async def new_conversation(data: dict):
-    conv_id = str(uuid.uuid4())
+    conv_id = data.get("id") or str(uuid.uuid4())
     character = data.get("character", "")
     conv_type = data.get("type", "single")
     title = data.get("title", "")
@@ -470,6 +404,41 @@ async def update_scene(conv_id: str, data: dict):
         absent = json.dumps(absent)
     update_conversation_scene(conv_id, scene_bg, absent)
     return {"ok": True}
+
+
+# ── 行动引擎 API ──
+
+
+@app.post("/api/action-engine")
+async def action_engine(data: dict):
+    """春日行动引擎 LLM 调用。支持 plan(首次规划)、checkin(进度汇报)、add_tasks(追加任务)。"""
+    prompt_type = data.get("type", "plan")
+    user_input = data.get("input", "")
+    if not user_input:
+        return {"result": "你说啥？什么都没给我让我怎么安排！"}
+
+    tool_prompt = load_tool_prompt("action-engine")
+    skill_context = load_character_skill("凉宫春日")
+    tool_dir = Path(__file__).resolve().parent.parent / "tools" / "action-engine"
+    if prompt_type == "checkin":
+        checkin_path = tool_dir / "checkin-prompt.txt"
+        if checkin_path.exists():
+            tool_prompt = checkin_path.read_text("utf-8").strip()
+    elif prompt_type == "add_tasks":
+        addtask_path = tool_dir / "addtask-prompt.txt"
+        if addtask_path.exists():
+            tool_prompt = addtask_path.read_text("utf-8").strip()
+
+    full_prompt = skill_context + "\n\n" + tool_prompt if skill_context else tool_prompt
+
+    reply = await call_llm(
+        DEFAULT_API_KEY, DEFAULT_API_URL, DEFAULT_MODEL,
+        full_prompt, [{"role": "user", "content": user_input}],
+    )
+    if reply is None:
+        reply = "（分析失败，检查 API 配置后重试）"
+
+    return {"result": reply}
 
 
 @app.post("/api/conversations/batch-import")
@@ -511,7 +480,7 @@ async def websocket_endpoint(ws: WebSocket):
     sessions[client_id] = {
         "character": None,
         "partner": "",
-        "history": [],
+        "message_log": [],
         "last_speaker": None,
         "api_key": DEFAULT_API_KEY,
         "api_url": DEFAULT_API_URL,
@@ -564,7 +533,7 @@ async def websocket_endpoint(ws: WebSocket):
                     session["character"] = char
                     session["partner"] = data.get("partner", "")
                     session["conversation_id"] = data.get("conversation_id", "")
-                    session["history"] = []
+                    session["message_log"] = []
                     session["last_speaker"] = None
 
                     if session.get("conversation_id"):
@@ -576,6 +545,12 @@ async def websocket_endpoint(ws: WebSocket):
                                 if isinstance(conv.get("absent_characters"), list)
                                 else []
                             )
+                            # Restore message log from DB so LLM context is not empty after reconnect
+                            db_messages = get_messages(session["conversation_id"])
+                            session["message_log"] = [
+                                {"character": m["role"], "text": m["content"], "is_bot": bool(m["is_bot"])}
+                                for m in db_messages
+                            ]
                     await manager.broadcast({
                         "type": "system",
                         "text": f"{char} 加入了聊天室",
@@ -637,13 +612,28 @@ async def websocket_endpoint(ws: WebSocket):
             elif msg_type == "tool_invoke":
                 tool_id = data.get("tool_id", "")
                 content = data.get("content", "").strip()
-                prompt = _TOOL_PROMPTS.get(tool_id)
-                if not tool_id or not content or not prompt:
+                if not tool_id or not content:
                     continue
+
+                prompt = load_tool_prompt(tool_id)
+                if not prompt:
+                    await ws.send_json({
+                        "type": "error",
+                        "text": f"未找到工具：{tool_id}",
+                    })
+                    continue
+
+                # 动态加载角色 SKILL 作为上下文
+                char = get_character_for_tool(tool_id)
+                if char:
+                    skill_context = load_character_skill(char)
+                    full_prompt = skill_context + "\n\n" + prompt
+                else:
+                    full_prompt = prompt
 
                 reply = await call_llm(
                     session["api_key"], session["api_url"], session["model"],
-                    prompt, [{"role": "user", "content": content}],
+                    full_prompt, [{"role": "user", "content": content}],
                 )
                 if reply is None:
                     reply = "（工具调用失败，请检查 API 配置后重试）"
@@ -672,7 +662,7 @@ async def websocket_endpoint(ws: WebSocket):
 
                 # 记录并广播用户消息
                 user_msg = {"character": user_char, "text": text, "is_bot": False}
-                session["history"].append(user_msg)
+                session["message_log"].append(user_msg)
                 session["last_speaker"] = user_char
                 await manager.broadcast({
                     "type": "message",
@@ -692,16 +682,20 @@ async def websocket_endpoint(ws: WebSocket):
                     message_text=text,
                     user_character=user_char,
                     existing_responders=existing,
-                    conversation_history=session.get("history", []),
+                    conversation_history=session.get("message_log", []),
                     absent=session.get("absent_characters", []),
                 )
 
                 # 按对话对象过滤（单人聊天只让指定角色回复，群聊不过滤）
                 partner = session.get("partner", "")
+                absent = session.get("absent_characters", [])
                 if partner in CHARACTER_NAMES:
-                    responders = [r for r in responders if r == partner]
-                    if not responders:
-                        responders = [partner]
+                    if partner not in absent:
+                        responders = [r for r in responders if r == partner]
+                        if not responders:
+                            responders = [partner]
+                    else:
+                        responders = []
 
                 # 串行回复：每个响应者依次思考、回复，
                 # 先回复的人的输出作为后面回复者的语料
@@ -728,11 +722,7 @@ async def websocket_endpoint(ws: WebSocket):
                         system_prompt += f"\n\n{style_instruction}"
 
                     # 2. 构建 context —— 角色信息嵌入在每条消息 content 中
-                    ctx = build_conversation_context(session["history"])
-                    ctx.append({
-                        "role": "user",
-                        "content": f"【{user_char}】{text}",
-                    })
+                    ctx = build_conversation_context(session["message_log"])
 
                     # 检查角色独立API配置（优先级：会话>DB>文件配置>全局默认）
                     char_api = get_character_api_config(responder)
@@ -768,7 +758,7 @@ async def websocket_endpoint(ws: WebSocket):
 
                     # 4. 追加到历史（后续响应者能看到这条回复）
                     bot_msg = {"character": responder, "text": reply, "is_bot": True}
-                    session["history"].append(bot_msg)
+                    session["message_log"].append(bot_msg)
                     session["last_speaker"] = responder
 
                     # 5. 广播最终回复
@@ -802,7 +792,7 @@ async def websocket_endpoint(ws: WebSocket):
 
             # ── 清除对话 ──
             elif msg_type == "clear":
-                session["history"] = []
+                session["message_log"] = []
                 session["last_speaker"] = None
                 await ws.send_json({"type": "system", "text": "对话已清除"})
 

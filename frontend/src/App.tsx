@@ -11,30 +11,16 @@ import ContactDetail from "./components/ContactDetail";
 import InputArea from "./components/InputArea";
 import SettingsModal from "./components/SettingsModal";
 import SceneSettingsPanel from "./components/SceneSettingsPanel";
+import MarketView from "./components/MarketView";
 import { CHARACTERS } from "./characters";
+import { ALL_TOOLS, getTool } from "./tools/registry";
+import LlmToolView from "./tools/llm-view";
+import { saveToolHistory } from "./tools/storage";
 
 let msgCounter = 0;
 function nextId() {
   return `msg_${++msgCounter}`;
 }
-
-const TOOL_DESC: Record<string, { icon: string; name: string; desc: string; placeholder: string }> = {
-  boredom_checker: {
-    icon: "🔍", name: "反无聊审查器",
-    desc: "喂！把你的待办清单交出来！我一眼就能看出哪些是你真的该做、哪些是你光在那边拖拖拉拉的！别想糊弄我！",
-    placeholder: "把待办发过来吧：\n1. 写周报\n2. 健身\n3. 回邮件\n...",
-  },
-  intuition_booster: {
-    icon: "⚡", name: "直觉加速器",
-    desc: "哼！纠结来纠结去的最烦人了！给我三秒钟，一个直觉判断加行动方案——你有意见吗？",
-    placeholder: "说说你在纠结什么……",
-  },
-  action_tester: {
-    icon: "💪", name: "行动力测试",
-    desc: "有个计划拖了很久是吧？拿来让我打分！我倒要看看你磨蹭个什么劲——这种事情换我来十分钟就搞定了！",
-    placeholder: "把那个一直拖着没做的计划告诉我……",
-  },
-};
 
 export default function App() {
   /* ── 对话存储（前端本地管理） ── */
@@ -78,6 +64,14 @@ export default function App() {
   } | null>(null);
   const [isStylizing, setIsStylizing] = useState(false);
 
+  /* ── 深色模式 ── */
+  const [darkMode, setDarkMode] = useState(() => localStorage.getItem("darkMode") === "true");
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", darkMode);
+    localStorage.setItem("darkMode", String(darkMode));
+  }, [darkMode]);
+
   /* ── 面板状态 ── */
   const [activePanel, setActivePanel] = useState<PanelView>("chat");
   const [selectedContact, setSelectedContact] = useState<string | null>(null);
@@ -90,6 +84,22 @@ export default function App() {
   const [toolDraft, setToolDraft] = useState("");
   const [toolResult, setToolResult] = useState("");
   const [toolLoading, setToolLoading] = useState(false);
+  const toolDraftRef = useRef(toolDraft);
+  toolDraftRef.current = toolDraft;
+  const selectedToolRef = useRef(selectedTool);
+  selectedToolRef.current = selectedTool;
+  const toolSaveSkipRef = useRef(false);
+
+  // 工具结果到达时自动保存历史（跳过从历史加载的场景）
+  useEffect(() => {
+    if (toolSaveSkipRef.current) {
+      toolSaveSkipRef.current = false;
+      return;
+    }
+    if (toolResult && selectedToolRef.current && toolDraftRef.current) {
+      saveToolHistory(selectedToolRef.current, toolDraftRef.current, toolResult);
+    }
+  }, [toolResult]);
 
   /* ── 当前对话派生状态 ── */
   const activeConv = conversations.find((c) => c.id === activeConvId) ?? null;
@@ -203,6 +213,7 @@ export default function App() {
 
       case "error":
         addSystemMsg(`⚠ ${msg.text}`);
+        setToolLoading(false);  // 防止工具调用出错后卡死「分析中」
         break;
 
       case "tool_result":
@@ -249,6 +260,7 @@ export default function App() {
           title: newConv.title,
           scene_background: sceneBackground || undefined,
           absent_characters: absentCharacters?.length ? absentCharacters : undefined,
+          id,
         });
       } catch (e) {
         console.error("Failed to create conversation on server", e);
@@ -299,7 +311,7 @@ export default function App() {
       setConversations((prev) => {
         const conv = prev.find((c) => c.id === convId);
         if (conv && conv.playerCharacter !== myCharRef.current) {
-          pendingRestoreRef.current = [];
+          pendingRestoreRef.current = null;
           send({
             type: "join",
             character: conv.playerCharacter,
@@ -426,7 +438,7 @@ export default function App() {
     send({ type: "tool_invoke", tool_id: selectedTool, content: toolDraft.trim() });
   }, [selectedTool, toolDraft, send]);
   const handleToolRetry = useCallback(() => {
-    setToolResult(""); setToolDraft(""); setToolLoading(false);
+    setToolResult(""); setToolLoading(false);
   }, []);
 
   /* ───────────────────────────────────────
@@ -483,56 +495,38 @@ export default function App() {
       }
 
       case "tools": {
-        const info = selectedTool ? TOOL_DESC[selectedTool] : null;
-        if (!info) {
+        const toolDef = selectedTool ? getTool(selectedTool) : null;
+        if (!toolDef) {
           return (
             <div className="flex-1 flex items-center justify-center text-black/20 bg-white/30">
               <div className="text-center"><div className="text-3xl mb-3">🛠</div><div className="text-sm">选择一个工具</div></div>
             </div>
           );
         }
+
+        // control 型工具 → 渲染自定义组件
+        if (toolDef.kind === "control" && toolDef.component) {
+          const ToolComponent = toolDef.component;
+          return <ToolComponent onBack={handleToolBack} />;
+        }
+
+        // llm 型工具 → 通用界面
         return (
-          <div className="flex-1 flex flex-col min-w-0 bg-white/30">
-            <div className="flex items-center justify-between px-5 py-3 border-b border-black/5 bg-white/60 backdrop-blur-sm shrink-0">
-              <div className="flex items-center gap-2.5">
-                <button onClick={handleToolBack} className="text-xs text-black/40 hover:text-black/70 transition px-2 py-1 rounded hover:bg-black/5">← 返回</button>
-                <span className="text-black/20">|</span>
-                <span className="text-lg leading-none">{info.icon}</span>
-                <h2 className="text-sm font-semibold text-[#2c2c2c]">{info.name}</h2>
-              </div>
-            </div>
-            <div className="flex-1 overflow-y-auto px-6 py-5 max-w-2xl mx-auto w-full">
-              {toolResult ? (
-                <><div className="mb-4"><div className="text-xs text-black/30 mb-1.5 font-medium">你的输入</div>
-                  <div className="bg-white/80 border border-black/5 rounded-xl px-4 py-3 text-sm text-[#2c2c2c]/70 whitespace-pre-wrap leading-relaxed">{toolDraft}</div></div>
-                  <div><div className="text-xs text-black/30 mb-1.5 font-medium">结果</div>
-                    {toolLoading ? (
-                      <div className="bg-white/80 border border-black/5 rounded-xl px-4 py-12 flex flex-col items-center gap-2">
-                        <span className="inline-block w-6 h-6 border-2 border-purple-200 border-t-purple-600 rounded-full animate-spin" />
-                        <span className="text-xs text-black/30">分析中...</span>
-                      </div>
-                    ) : (
-                      <div className="bg-white border border-black/5 rounded-xl px-4 py-4 text-sm text-[#2c2c2c]/80 whitespace-pre-wrap leading-relaxed">{toolResult}</div>
-                    )}</div></>
-              ) : (
-                <><p className="text-sm text-black/40 mb-4">{info.desc}</p>
-                  <textarea value={toolDraft} onChange={(e) => setToolDraft(e.target.value)}
-                    placeholder={info.placeholder} rows={8}
-                    className="w-full bg-white border border-black/10 rounded-xl px-4 py-3 text-sm resize-none focus:border-purple-400 focus:outline-none placeholder-black/20" /></>
-              )}
-            </div>
-            <div className="px-6 py-3 border-t border-black/5 bg-white/60 shrink-0 max-w-2xl mx-auto w-full flex justify-end gap-2">
-              {toolResult && !toolLoading ? (
-                <><button onClick={handleToolRetry} className="text-xs bg-black/5 hover:bg-black/10 text-black/50 px-3 py-1.5 rounded-lg font-medium transition">重新输入</button>
-                  <button onClick={handleToolSubmit} className="text-xs bg-purple-600 hover:bg-purple-500 text-white px-3 py-1.5 rounded-lg font-medium transition">再次分析</button></>
-              ) : (
-                <button onClick={handleToolSubmit} disabled={!toolDraft.trim() || toolLoading}
-                  className="bg-purple-600 hover:bg-purple-500 disabled:bg-purple-300 text-white px-5 py-2 rounded-lg text-sm font-medium transition">
-                  {toolLoading ? "分析中..." : "分析"}
-                </button>
-              )}
-            </div>
-          </div>
+          <LlmToolView
+            tool={toolDef}
+            draft={toolDraft}
+            result={toolResult}
+            loading={toolLoading}
+            onChange={setToolDraft}
+            onSubmit={handleToolSubmit}
+            onBack={handleToolBack}
+            onRetry={handleToolRetry}
+            onLoadHistory={(input, output) => {
+              toolSaveSkipRef.current = true;
+              setToolDraft(input);
+              setToolResult(output);
+            }}
+          />
         );
       }
 
@@ -543,12 +537,15 @@ export default function App() {
               <div className="text-xs mt-1 text-black/15">SQLite 持久化后可用</div></div>
           </div>
         );
+
+      case "market":
+        return <MarketView onSelectTool={(id) => { setSelectedTool(id); setActivePanel("tools"); }} />;
     }
   }
 
   return (
     <div className="h-screen flex bg-white/40">
-      <IconBar activeView={activePanel} onSelect={handlePanelSelect} onSettings={() => setSettingsOpen(true)} />
+      <IconBar activeView={activePanel} onSelect={handlePanelSelect} onSettings={() => setSettingsOpen(true)} darkMode={darkMode} onToggleDark={() => setDarkMode(!darkMode)} />
 
       <MiddlePanel
         activePanel={activePanel}
@@ -565,7 +562,7 @@ export default function App() {
         onDeleteChat={handleDeleteChat}
       />
 
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {renderRightPanel()}
       </div>
 

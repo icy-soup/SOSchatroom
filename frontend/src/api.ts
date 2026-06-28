@@ -55,6 +55,7 @@ export async function createConversation(data: {
   title?: string;
   scene_background?: string;
   absent_characters?: string[];
+  id?: string;
 }): Promise<{ id: string }> {
   return fetchJSON(`${BASE}/conversations`, {
     method: "POST",

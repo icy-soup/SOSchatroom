@@ -1,6 +1,8 @@
 import { useState } from "react";
 import type { PanelView, Conversation } from "../types";
 import { CHARACTERS } from "../characters";
+import { ALL_TOOLS } from "../tools/registry";
+import { isToolEnabled } from "../tools/preferences";
 
 /* ───────────────────────────────────────────
    Props
@@ -229,11 +231,10 @@ function ContactListView({
    Tool List
    ─────────────────────────────────────────── */
 
-const TOOL_LIST = [
-  { id: "boredom_checker", icon: "🔍", name: "反无聊审查器" },
-  { id: "intuition_booster", icon: "⚡", name: "直觉加速器" },
-  { id: "action_tester", icon: "💪", name: "行动力测试" },
-];
+// 工具列表自动发现自 tools/ 目录，按启用状态过滤
+const TOOL_LIST = ALL_TOOLS
+  .filter((t) => isToolEnabled(t.id))
+  .map((t) => ({ id: t.id, icon: t.icon, name: t.name }));
 
 function ToolListView({ selectedTool, onSelectTool }: {
   selectedTool: string | null;

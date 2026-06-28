@@ -1,5 +1,47 @@
 @import "tailwindcss";
 
+/* dark mode: toggle via .dark class on <html> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* CSS variables for dark mode overrides */
+:root {
+  --body-bg: #f5f0e8;
+  --panel-bg: rgba(255, 255, 255, 0.3);
+  --panel-solid: rgba(255, 255, 255, 0.6);
+  --panel-solid-hover: rgba(255, 255, 255, 0.7);
+  --panel-solid-strong: rgba(255, 255, 255, 0.8);
+  --text-primary: #2c2c2c;
+  --text-secondary: rgba(0, 0, 0, 0.3);
+  --text-muted: rgba(0, 0, 0, 0.2);
+  --border: rgba(0, 0, 0, 0.05);
+  --border-strong: rgba(0, 0, 0, 0.1);
+  --scrollbar-thumb: rgba(0, 0, 0, 0.1);
+}
+
+.dark {
+  --body-bg: #1a1a2e;
+  --panel-bg: rgba(26, 26, 46, 0.85);
+  --panel-solid: rgba(40, 40, 65, 0.75);
+  --panel-solid-hover: rgba(50, 50, 75, 0.85);
+  --panel-solid-strong: rgba(55, 55, 85, 0.9);
+  --text-primary: #d0d0e0;
+  --text-secondary: rgba(255, 255, 255, 0.3);
+  --text-muted: rgba(255, 255, 255, 0.15);
+  --border: rgba(255, 255, 255, 0.06);
+  --border-strong: rgba(255, 255, 255, 0.12);
+  --scrollbar-thumb: rgba(255, 255, 255, 0.15);
+}
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--body-bg);
+  transition: background-color 0.3s;
+}
+
 /* 全局默认光标 = 箭头，不覆盖 Tailwind 工具类 (用 :where 零优先级) */
 :where(*) {
   cursor: default;
@@ -15,10 +57,6 @@
   * {
     font-family: "Noto Sans SC", "PingFang SC", sans-serif;
   }
-  html, body, #root {
-    margin: 0;
-    padding: 0;
-  }
   ::-webkit-scrollbar {
     width: 5px;
   }
@@ -26,7 +64,96 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.1);
+    background: var(--scrollbar-thumb);
     border-radius: 3px;
   }
+}
+
+/* ── Dark mode overrides for common patterns ── */
+/* Using !important is pragmatic here to override inline Tailwind classes */
+.dark .bg-white,
+.dark .bg-white\/30,
+.dark .bg-white\/40,
+.dark .bg-white\/50,
+.dark .bg-white\/60,
+.dark .bg-white\/70,
+.dark .bg-white\/80,
+.dark .bg-white\/90 {
+  background-color: var(--panel-solid) !important;
+}
+
+.dark .bg-white {
+  background-color: var(--panel-solid-strong) !important;
+}
+
+.dark .bg-black\/5,
+.dark .bg-black\/10 {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+.dark .text-\[\\#2c2c2c\] {
+  color: var(--text-primary) !important;
+}
+
+.dark .text-black\/50,
+.dark .text-black\/60 {
+  color: rgba(255, 255, 255, 0.55) !important;
+}
+
+.dark [class*="text-\\[\\#2c2c2c\\]"] {
+  color: var(--text-primary) !important;
+}
+
+.dark .text-black\/20,
+.dark .text-black\/25,
+.dark .text-black\/30,
+.dark .text-black\/40 {
+  color: var(--text-secondary) !important;
+}
+
+.dark .text-black\/15 {
+  color: var(--text-muted) !important;
+}
+
+.dark .border-black\/10,
+.dark .border-black\/5 {
+  border-color: var(--border) !important;
+}
+
+.dark .ring-1 {
+  --tw-ring-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.dark .hover\:bg-black\/4:hover {
+  background-color: rgba(255, 255, 255, 0.04) !important;
+}
+
+.dark .hover\:bg-black\/5:hover {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+.dark .hover\:bg-black\/10:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.dark .placeholder-black\/20::placeholder {
+  color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* ── Dark mode: purple accent overrides ── */
+.dark .bg-purple-50,
+.dark .bg-purple-50\/80,
+.dark .bg-purple-50\/30 {
+  background-color: rgba(80, 60, 120, 0.25) !important;
+}
+.dark .hover\:bg-purple-50\/30:hover {
+  background-color: rgba(80, 60, 120, 0.25) !important;
+}
+.dark .border-purple-100,
+.dark .border-purple-100\/50,
+.dark .border-purple-200\/50 {
+  border-color: rgba(120, 90, 180, 0.2) !important;
+}
+.dark .bg-red-50\/50 {
+  background-color: rgba(120, 30, 30, 0.3) !important;
 }

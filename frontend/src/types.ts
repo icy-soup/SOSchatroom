@@ -1,4 +1,4 @@
-export type PanelView = "chat" | "contacts" | "tools" | "history";
+export type PanelView = "chat" | "contacts" | "tools" | "history" | "market";
 
 export interface Character {
   name: string;
