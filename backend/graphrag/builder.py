@@ -114,17 +114,41 @@ EXTRACT_PROMPT = """你是一个凉宫春日系列小说的实体关系抽取器
 STATUS_FILE = os.path.join(os.path.dirname(__file__), "build_status.json")
 _status_lock = threading.Lock()
 
-def _write_status(data: dict):
+def _write_status(graph_id: str, data: dict):
+    """写入 nested 状态。graph_id 为 None 时只更新 active_graph_id。"""
     with _status_lock:
+        try:
+            with open(STATUS_FILE, "r", encoding="utf-8") as f:
+                full = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            full = {"active_graph_id": None, "graphs": {}}
+        if "graphs" not in full:
+            # 旧格式迁移
+            old = {k: full[k] for k in full if k not in ("active_graph_id",)}
+            full = {"active_graph_id": None, "graphs": {"haruhi_novel": old}}
+        if graph_id:
+            full["graphs"][graph_id] = data
+        if data.get("status") == "building":
+            full["active_graph_id"] = graph_id
+        elif data.get("status") in ("completed", "error", "idle") and full.get("active_graph_id") == graph_id:
+            full["active_graph_id"] = None
         with open(STATUS_FILE, "w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
+            json.dump(full, f, ensure_ascii=False, indent=2)
 
-def read_status() -> dict:
+def read_status(graph_id: str = None) -> dict:
+    """读取状态。graph_id=None 返回完整结构，否则返回该图状态。"""
     try:
         with open(STATUS_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
+            full = json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
-        return {"status": "idle", "progress": 0, "message": "", "nodes": 0, "edges": 0}
+        full = {"active_graph_id": None, "graphs": {}}
+    if "graphs" not in full:
+        # 旧格式迁移：flat dict → nested
+        old = {k: full[k] for k in full if k != "active_graph_id"}
+        full = {"active_graph_id": None, "graphs": {"haruhi_novel": old}}
+    if graph_id:
+        return full["graphs"].get(graph_id, {"status": "idle", "progress": 0, "message": "", "nodes": 0, "edges": 0})
+    return full
 
 # ============================================================
 # 构建器
@@ -178,7 +202,7 @@ class GraphBuilder:
     def build_async(self, text: str, skip_chunks: int = 0):
         """后台线程构建。skip_chunks>0 时跳过已处理的块，用于跨重启继续构建。"""
         now = time.strftime("%Y-%m-%dT%H:%M:%S")
-        _write_status({"status":"building","progress":0,"message":"初始化...",
+        _write_status(self.graph_id, {"status":"building","progress":0,"message":"初始化...",
                        "nodes":0,"edges":0,"total_chunks":0,"current_chunk":skip_chunks,"started_at":now})
         print(f"[builder] 构建开始 · {len(text):,} 字符 · 跳过前 {skip_chunks} 块")
         thread = threading.Thread(target=self._build_worker, args=(text, skip_chunks), daemon=True)
@@ -195,7 +219,7 @@ class GraphBuilder:
             if skip_chunks > 0:
                 chunks = chunks[skip_chunks:]  # 跳过已处理的块
             total = len(chunks) + skip_chunks
-            _write_status({**read_status(), "status":"building", "total_chunks":total, "message":f"文本已分 {total} 块（跳过 {skip_chunks} 块）"})
+            _write_status(self.graph_id, {"status":"building", "total_chunks":total, "message":f"文本已分 {total} 块（跳过 {skip_chunks} 块）"})
 
             # 逐块提取（MiroFish 模式：每 10 块 merge 一次别名）
             written_nodes: set = set()
@@ -242,7 +266,7 @@ class GraphBuilder:
             touched_nodes = set()  # 被新边触及的节点，用于增量摘要更新
 
             for i, chunk in enumerate(chunks):
-                while read_status().get("status") == "paused":
+                while read_status(self.graph_id).get("status") == "paused":
                     time.sleep(1)
                 if i % 10 == 0:
                     print(f"[builder] {i}/{total} chunks · {len(written_nodes)} nodes · {len(written_edge_keys)} edges")
@@ -319,9 +343,9 @@ class GraphBuilder:
                         print(f"[builder]   摘要更新: {updated} 节点")
                     touched_nodes.clear()
 
-                _cur = read_status()
+                _cur = read_status(self.graph_id)
                 _db_stats = self.store.get_statistics()
-                _write_status({
+                _write_status(self.graph_id, {
                     "status": "paused" if _cur.get("status") == "paused" else "building",
                     "progress": round(0.05 + (i+1+skip_chunks)/total*0.9, 3),
                     "current_chunk": i+1+skip_chunks, "total_chunks": total,
@@ -330,7 +354,6 @@ class GraphBuilder:
                     "message": f"块 {i+1+skip_chunks}/{total} · {_db_stats['total_nodes']} 节点 · {_db_stats['total_edges']} 边",
                     "chunk_entities": chunk_entities[:8],
                     "chunk_edges": chunk_edges[:4],
-                    "started_at": read_status().get("started_at", ""),
                 })
             flush_batch()
             run_merge()  # 最后一轮别名合并
@@ -356,7 +379,7 @@ class GraphBuilder:
 
             stats = self.store.get_statistics()
             print(f"[builder] 完成 · {stats['total_nodes']}·{stats['total_edges']}边")
-            _write_status({
+            _write_status(self.graph_id, {
                 "status":"completed","progress":1.0,"current_chunk":total,"total_chunks":total,
                 "nodes":stats["total_nodes"],"edges":stats["total_edges"],
                 "message":f"构建完成 · {stats['total_nodes']} 节点 · {stats['total_edges']} 边",
@@ -366,7 +389,7 @@ class GraphBuilder:
             tb = traceback.format_exc()
             print(f"[builder] 错误: {e}")
             print(tb)
-            _write_status({**read_status(), "status":"error",
+            _write_status(self.graph_id, {"status":"error",
                           "message":f"失败: {str(e)}", "error": tb})
 
     @staticmethod
@@ -490,7 +513,7 @@ class GraphBuilder:
         for start in range(0, len(all_entries), batch_size):
             batch = all_entries[start:start + batch_size]
             total_batches = (len(all_entries) - 1) // batch_size + 1
-            _write_status({**read_status(), "message": f"关系推断中 ({start//batch_size+1}/{total_batches})..."})
+            _write_status(self.graph_id, {"message": f"关系推断中 ({start//batch_size+1}/{total_batches})..."})
             try:
                 llm = self._get_llm()
                 r = llm["client"].chat.completions.create(

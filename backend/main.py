@@ -27,11 +27,7 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi import File, UploadFile
 from fastapi.staticfiles import StaticFiles
 
-<<<<<<< HEAD
-from config import CHARACTER_NAMES, load_character_skill, get_character_api_config
-=======
 from config import CHARACTER_NAMES, load_persona, get_character_api_config
->>>>>>> 4984133 (feat: GraphRAG 图谱构建管线完成 + 旧文件清理)
 from engine.character import build_system_prompt, build_conversation_context
 from engine.style import build_style_instruction
 from database import (

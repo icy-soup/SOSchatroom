@@ -49,20 +49,6 @@ cd frontend && npx vite            # 前端 :5173
 ## 项目结构
 
 ```
-<<<<<<< HEAD
-├── backend/                     # FastAPI + WebSocket 后端
-│   ├── main.py                  # 服务入口、LLM、WebSocket、REST API
-│   ├── database.py              # SQLite 持久化层
-│   ├── config.py                # 角色映射、SKILL 加载
-│   ├── tools/                   # 工具注册表（自动扫描根目录 tools/）
-│   │   └── registry.py
-│   ├── character_agent.py         # 多 Agent：每个角色独立决策+回复
-│   └── engine/                    # 响应引擎
-│       ├── trigger.py             #   概率矩阵加载
-│       ├── character.py           #   system prompt 构建
-│       └── style.py               #   对象别语气调整
-├── frontend/                    # React + TypeScript + Vite 前端
-=======
 ├── backend/                        # Python 后端
 │   ├── main.py                     # 聊天室 API + WebSocket (:8000)
 │   ├── server_graphrag.py          # 图谱构建独立服务器 (:8001)
@@ -78,7 +64,6 @@ cd frontend && npx vite            # 前端 :5173
 │   ├── config/chatroom.json       # 运行时配置
 │   └── scripts/                   # 后端 CLI 工具（build_graph / finalize_graph / dedup_graph）
 ├── frontend/                       # React + TypeScript + Vite 前端
->>>>>>> 4984133 (feat: GraphRAG 图谱构建管线完成 + 旧文件清理)
 │   └── src/
 │       ├── components/           #   UI 组件
 │       ├── hooks/                #   useWebSocket

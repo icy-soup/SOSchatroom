@@ -1,9 +1,9 @@
 """独立的图谱构建服务器（端口 8001），不干扰主聊天室（8000）。"""
-import sys, os, json
+import sys, os, json, glob
 from pathlib import Path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, Query
 from fastapi.responses import HTMLResponse, Response
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
@@ -26,26 +26,31 @@ HTML_CONTENT = HTML_PATH.read_text(encoding="utf-8") if HTML_PATH.exists() else 
 
 # 导入 graphrag
 from graphrag.builder import GraphBuilder, read_status, _write_status
+from graphrag.store import GraphStore, GRAPH_DATA_DIR
 
 # 启动时同步 DB 状态（服务器重启后线程已死）
-from graphrag.store import GraphStore
-_store = GraphStore("haruhi_novel")
-_stats = _store.get_statistics()
-_current = read_status()
-if _current.get("status") in ("building", "paused"):
-    # 保留暂停状态，加 stale 标记让前端可以继续
-    _write_status({**_current, "stale": True, "nodes": _stats["total_nodes"], "edges": _stats["total_edges"]})
-    print(f"[server] 检测到 stale 构建状态 (status={_current['status']}, chunk={_current.get('current_chunk',0)})，保留继续功能")
-elif _stats["total_nodes"] > 0:
-    _write_status({"status":"completed","progress":1.0,"nodes":_stats["total_nodes"],"edges":_stats["total_edges"],"message":"图谱就绪"})
-    print(f"[server] 已有图谱: {_stats['total_nodes']} 节点 · {_stats['total_edges']} 边")
-else:
-    _write_status({"status":"idle","progress":0,"nodes":0,"edges":0,"message":"就绪"})
+db_files = glob.glob(os.path.join(GRAPH_DATA_DIR, "*.db"))
+for fp in db_files:
+    gid = os.path.splitext(os.path.basename(fp))[0]
+    if gid.endswith("-wal") or gid.endswith("-shm"):
+        continue
+    _store = GraphStore(gid)
+    _stats = _store.get_statistics()
+    _current = read_status(gid)
+    if _current.get("status") in ("building", "paused"):
+        _write_status(gid, {**_current, "stale": True, "nodes": _stats["total_nodes"], "edges": _stats["total_edges"]})
+        print(f"[server] stale 构建 (graph_id={gid}, status={_current['status']})")
+    elif _stats["total_nodes"] > 0:
+        _write_status(gid, {"status": "completed", "progress": 1.0,
+                           "nodes": _stats["total_nodes"], "edges": _stats["total_edges"],
+                           "message": "图谱就绪"})
+    else:
+        _write_status(gid, {"status": "idle", "progress": 0, "nodes": 0, "edges": 0, "message": "空图谱"})
 
 # 数据源
 NOVELS_DIR = Path(__file__).resolve().parent.parent / "data" / "novels"
 DEFAULT_FILE = NOVELS_DIR / "txt全卷.txt"
-_current_source = "default"  # "default" 或上传的文件名
+_current_source = "default"
 
 
 @app.get("/favicon.ico")
@@ -75,17 +80,93 @@ async def upload_file(file: UploadFile = File(...)):
     return {"success": True, "filename": file.filename, "size": len(content)}
 
 
+# ─── 图谱管理 ────────────────────────────────────────────────────
+
+@app.get("/api/graphrag/graphs")
+async def list_graphs():
+    """列出 data/graphs/ 下所有 .db 文件，返回元信息。"""
+    files = sorted(glob.glob(os.path.join(GRAPH_DATA_DIR, "*.db")))
+    graphs = []
+    for fp in files:
+        gid = os.path.splitext(os.path.basename(fp))[0]
+        store = GraphStore(gid)
+        stats = store.get_statistics()
+        size_mb = os.path.getsize(fp) / 1048576
+        graphs.append({
+            "graph_id": gid,
+            "display_name": gid,
+            "nodes": stats["total_nodes"],
+            "edges": stats["total_edges"],
+            "size_mb": round(size_mb, 2),
+            "has_data": stats["total_nodes"] > 0,
+        })
+    return {"success": True, "graphs": graphs}
+
+
+from datetime import datetime
+
+@app.post("/api/graphrag/backup")
+async def backup_graph(graph_id: str = Query(..., description="要备份的图谱 ID")):
+    """安全另存为当前图谱（SQLite backup API）。"""
+    store = GraphStore(graph_id)
+    stats = store.get_statistics()
+    if stats["total_nodes"] == 0:
+        return {"success": False, "error": "当前图谱为空，无需备份"}
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    new_id = f"{graph_id}_{timestamp}"
+    store.backup(new_id)
+    new_store = GraphStore(new_id)
+    new_stats = new_store.get_statistics()
+    return {
+        "success": True,
+        "graph_id": new_id,
+        "display_name": new_id,
+        "nodes": new_stats["total_nodes"],
+        "edges": new_stats["total_edges"],
+        "size_mb": round(os.path.getsize(new_store._db_path) / 1048576, 2),
+    }
+
+
+@app.post("/api/graphrag/hide")
+async def toggle_hide_node(
+    graph_id: str = Query(..., description="图谱 ID"),
+    node_uuid: str = Query(..., description="节点 UUID"),
+    hidden: bool = Query(True, description="true=隐藏, false=恢复"),
+):
+    """持久化节点隐藏状态到 DB。"""
+    store = GraphStore(graph_id)
+    settings = store.get_settings()
+    hidden_nodes = settings.get("hidden_nodes", [])
+    if hidden:
+        if node_uuid not in hidden_nodes:
+            hidden_nodes.append(node_uuid)
+    else:
+        hidden_nodes = [u for u in hidden_nodes if u != node_uuid]
+    store.update_settings({"hidden_nodes": hidden_nodes})
+    return {"success": True, "settings": {"hidden_nodes": hidden_nodes}}
+
+
+# ─── 主页 ────────────────────────────────────────────────────────
+
 @app.get("/")
 async def index():
     return HTMLResponse(HTML_CONTENT)
 
 
+# ─── 构建 ────────────────────────────────────────────────────────
+
 @app.post("/api/graphrag/build")
-async def build():
+async def build(graph_id: str = Query("haruhi_novel", description="要构建的图谱 ID")):
     from datetime import datetime
-    current = read_status()
+    current = read_status(graph_id)
     if current.get("status") == "building":
         return {"success": False, "error": "构建正在进行中"}
+
+    # 检查是否有其他图正在构建
+    full = read_status()
+    active = full.get("active_graph_id")
+    if active and active != graph_id:
+        return {"success": False, "error": f"另一个图谱「{active}」正在构建中"}
 
     # 确定数据源
     if _current_source == "default":
@@ -99,70 +180,79 @@ async def build():
         return {"success": False, "error": f"文件不存在: {label}"}
 
     full_text = target.read_text(encoding="utf-8")
-    builder = GraphBuilder("haruhi_novel")
+    builder = GraphBuilder(graph_id)
     builder.store.clear_all()
-    _write_status({"status":"building","progress":0,"message":"初始化...","nodes":0,"edges":0,
-                   "total_chunks":0,"current_chunk":0,"started_at":str(datetime.now())})
+    _write_status(graph_id, {"status": "building", "progress": 0, "message": "初始化...",
+                             "nodes": 0, "edges": 0, "total_chunks": 0, "current_chunk": 0,
+                             "started_at": str(datetime.now())})
     builder.build_async(full_text)
     return {"success": True, "message": f"构建已启动 · {label} · {len(full_text):,} 字符"}
 
 
 @app.get("/api/graphrag/status")
-async def status():
-    return read_status()
+async def status(graph_id: str = Query(None, description="图谱 ID（不传则返回完整状态）")):
+    return read_status(graph_id)
 
 
 @app.post("/api/graphrag/pause")
 async def pause_build():
-    current = read_status()
+    full = read_status()
+    active = full.get("active_graph_id")
+    if not active:
+        return {"success": False, "error": "没有正在进行的构建"}
+    current = full["graphs"].get(active, {})
     if current.get("status") != "building":
         return {"success": False, "error": "没有正在进行的构建"}
-    _write_status({**current, "status": "paused", "message": "已暂停"})
-    print("[server] 构建已暂停")
-    return {"success": True, "message": "构建已暂停"}
+    _write_status(active, {**current, "status": "paused", "message": "已暂停"})
+    print(f"[server] 构建已暂停 (graph_id={active})")
+    return {"success": True, "message": "构建已暂停", "graph_id": active}
 
 
 @app.post("/api/graphrag/resume")
 async def resume_build():
-    current = read_status()
+    full = read_status()
+    active = full.get("active_graph_id")
+    if not active:
+        return {"success": False, "error": "没有暂停的构建"}
+    current = full["graphs"].get(active, {})
     if current.get("status") != "paused":
         return {"success": False, "error": "没有暂停的构建"}
 
     if current.get("stale"):
-        # 跨重启继续：启动新线程，跳过已处理的块
         skip = current.get("current_chunk", 0)
-        # 确定数据源
         target = DEFAULT_FILE if _current_source == "default" else NOVELS_DIR / _current_source
         if not target.exists():
             return {"success": False, "error": "数据文件不存在"}
         full_text = target.read_text(encoding="utf-8")
-        builder = GraphBuilder("haruhi_novel")
+        builder = GraphBuilder(active)
         builder.build_async(full_text, skip_chunks=skip)
-        _write_status({**current, "stale": False, "status": "building", "message": f"继续构建中（跳过 {skip} 块）..."})
-        print(f"[server] 跨重启继续构建，跳过 {skip} 块")
+        _write_status(active, {**current, "stale": False, "status": "building",
+                               "message": f"继续构建中（跳过 {skip} 块）..."})
+        print(f"[server] 跨重启继续构建 (graph_id={active}), 跳过 {skip} 块")
     else:
-        _write_status({**current, "status": "building", "message": "继续构建中..."})
-        print("[server] 构建已继续")
+        _write_status(active, {**current, "status": "building", "message": "继续构建中..."})
+        print(f"[server] 构建已继续 (graph_id={active})")
     return {"success": True, "message": "构建已继续"}
 
 
 @app.post("/api/graphrag/clear")
-async def clear():
-    from graphrag.store import GraphStore
-    store = GraphStore("haruhi_novel")
+async def clear(graph_id: str = Query("haruhi_novel", description="图谱 ID")):
+    store = GraphStore(graph_id)
     store.clear_all()
-    _write_status({"status":"idle","progress":0,"message":"已清零","nodes":0,"edges":0})
+    _write_status(graph_id, {"status": "idle", "progress": 0, "message": "已清零", "nodes": 0, "edges": 0})
     return {"success": True, "message": "图谱已清零"}
 
 
+# ─── 数据 ────────────────────────────────────────────────────────
+
 @app.get("/api/graphrag/data")
-async def data(limit: int = 1000):
+async def data(graph_id: str = Query("haruhi_novel", description="图谱 ID"), limit: int = 1000):
     try:
-        from graphrag.store import GraphStore
-        store = GraphStore("haruhi_novel")
+        store = GraphStore(graph_id)
         stats = store.get_statistics()
+        settings = store.get_settings()
         if stats["total_nodes"] == 0:
-            return {"success": True, "data": None, "message": "图谱为空"}
+            return {"success": True, "data": {"settings": settings, "stats": stats}, "message": "图谱为空"}
         all_nodes = store.get_all_nodes()
         all_edges = store.get_all_edges()
         node_map = {n["uuid"]: n for n in all_nodes}
@@ -193,7 +283,7 @@ async def data(limit: int = 1000):
                        if e["source_node_uuid"] in sample_uuids
                        and e["target_node_uuid"] in sample_uuids]
 
-        # 最高度节点（基于当前显示的节点）
+        # 最高度节点
         display_degree = {uid: sum(1 for e in edges_sample if e["source_node_uuid"]==uid or e["target_node_uuid"]==uid) for uid in sample_uuids}
         max_deg_uuid = max(display_degree, key=display_degree.get) if display_degree else None
         max_deg_node = node_map.get(max_deg_uuid, {}).get("name", "") if max_deg_uuid else ""
@@ -202,6 +292,7 @@ async def data(limit: int = 1000):
         return {
             "success": True,
             "data": {
+                "settings": settings,
                 "stats": stats,
                 "displayed_nodes": len(nodes_sample),
                 "displayed_edges": len(edges_sample),
@@ -224,53 +315,53 @@ async def data(limit: int = 1000):
         return {"success": False, "error": str(e)}
 
 
+# ─── 编辑 ────────────────────────────────────────────────────────
+
 @app.post("/api/graphrag/edge/add")
-async def add_edge(source_uuid: str = "", target_uuid: str = "", name: str = "认识", fact: str = ""):
-    """手动添加一条边。"""
+async def add_edge(
+    graph_id: str = Query("haruhi_novel", description="图谱 ID"),
+    source_uuid: str = Query(""), target_uuid: str = Query(""),
+    name: str = Query("认识"), fact: str = Query(""),
+):
     if not source_uuid or not target_uuid:
         return {"success": False, "error": "需要 source_uuid 和 target_uuid"}
-    from graphrag.store import GraphStore
-    store = GraphStore("haruhi_novel")
-    # 检查节点是否存在
+    store = GraphStore(graph_id)
     src = store.get_node(source_uuid)
     tgt = store.get_node(target_uuid)
     if not src or not tgt:
         return {"success": False, "error": "节点不存在"}
     import uuid
     edge_uuid = uuid.uuid4().hex
-    from datetime import datetime
     now = datetime.now().isoformat()
     store._execute("INSERT INTO edges (uuid, graph_id, name, fact, source_node_uuid, target_node_uuid, created_at) VALUES (?,?,?,?,?,?,?)",
-                   (edge_uuid, "haruhi_novel", name, fact[:200], source_uuid, target_uuid, now))
+                   (edge_uuid, graph_id, name, fact[:200], source_uuid, target_uuid, now))
     return {"success": True, "message": f"已添加: {src['name']} →{name}→ {tgt['name']}", "uuid": edge_uuid}
 
 
 @app.post("/api/graphrag/edge/delete")
-async def delete_edge(uuid: str = ""):
-    """按 UUID 删除一条边。"""
+async def delete_edge(uuid: str = Query(""), graph_id: str = Query("haruhi_novel", description="图谱 ID")):
     if not uuid:
         return {"success": False, "error": "需要边 uuid"}
-    from graphrag.store import GraphStore
-    store = GraphStore("haruhi_novel")
-    store._execute("DELETE FROM edges WHERE uuid = ? AND graph_id = ?", (uuid, "haruhi_novel"))
+    store = GraphStore(graph_id)
+    store._execute("DELETE FROM edges WHERE uuid = ? AND graph_id = ?", (uuid, graph_id))
     return {"success": True, "message": "边已删除"}
 
 
 @app.post("/api/graphrag/node/merge")
-async def merge_nodes(source_uuid: str = "", target_uuid: str = ""):
-    """LLM 判断两个节点是否为同一实体，是则合并。"""
+async def merge_nodes(
+    source_uuid: str = Query(""), target_uuid: str = Query(""),
+    graph_id: str = Query("haruhi_novel", description="图谱 ID"),
+):
     if not source_uuid or not target_uuid:
         return {"success": False, "error": "需要 source_uuid 和 target_uuid"}
     if source_uuid == target_uuid:
         return {"success": False, "error": "不能合并到自身"}
-    from graphrag.store import GraphStore
-    store = GraphStore("haruhi_novel")
+    store = GraphStore(graph_id)
     src = store.get_node(source_uuid)
     tgt = store.get_node(target_uuid)
     if not src or not tgt:
         return {"success": False, "error": "节点不存在"}
 
-    # 收集两个节点的所有边
     all_nodes = {n["uuid"]: n for n in store.get_all_nodes()}
     all_edges = store.get_all_edges()
     def node_edges(uuid):
@@ -298,8 +389,7 @@ async def merge_nodes(source_uuid: str = "", target_uuid: str = ""):
 
     prompt = f"你是凉宫春日系列图谱的实体合并专家。判断以下两个节点是否为同一实体。\n{info}\n如果是同一实体，输出规范名称和合并后的简介。\n输出JSON: {{\"should_merge\":true/false,\"canonical_name\":\"规范名\",\"summary\":\"合并后的简介\",\"reason\":\"判断理由(一句话)\"}}"
     try:
-        from graphrag.builder import GraphBuilder
-        builder = GraphBuilder("haruhi_novel")
+        builder = GraphBuilder(graph_id)
         llm = builder._get_llm()
         r = llm["client"].chat.completions.create(
             model=llm["model"],
@@ -314,10 +404,8 @@ async def merge_nodes(source_uuid: str = "", target_uuid: str = ""):
 
     name = result.get("canonical_name", tgt["name"])
     summary = result.get("summary", tgt.get("summary", ""))
-    # 重命名目标节点 + 更新摘要 → 合并源节点
     ok = store.merge_nodes(source_uuid, target_uuid)
     if ok:
-        # 更新名字和摘要
         store.update_node_name(target_uuid, name)
         store.update_node_summary(target_uuid, summary)
         print(f"[server] LLM合并: {src['name']}({src.get('uuid','')[:8]}) → {name}({target_uuid[:8]})")
@@ -329,7 +417,6 @@ async def merge_nodes(source_uuid: str = "", target_uuid: str = ""):
 async def shutdown():
     """关闭后端服务器。"""
     print("[server] 收到关闭指令，服务器即将停止")
-    # 延迟退出，让响应先返回
     import threading
     threading.Timer(0.5, lambda: os._exit(0)).start()
     return {"success": True, "message": "服务器正在关闭"}

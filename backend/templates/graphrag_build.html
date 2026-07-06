@@ -116,6 +116,28 @@ body{font-family:'Space Grotesk','Noto Sans SC',system-ui,sans-serif;background:
 .log-line{font-size:11px;display:flex;gap:12px;line-height:1.6}
 .log-time{color:#666;min-width:75px}
 .log-msg{color:#CCC;word-break:break-all}
+.graph-select{font-family:'JetBrains Mono',monospace;font-size:12px;padding:4px 8px;border:1px solid #E0E0E0;border-radius:4px;background:#FFF;color:#333;cursor:pointer;min-width:180px;font-weight:600}
+.graph-select:disabled{opacity:.5;cursor:not-allowed}
+
+/* ===== Modal ===== */
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.4);z-index:100;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(2px)}
+.modal-dialog{background:#FFF;border-radius:10px;width:480px;box-shadow:0 8px 40px rgba(0,0,0,.15);overflow:hidden}
+.modal-header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px 0}
+.modal-title{font-weight:700;font-size:15px}
+.modal-body{padding:16px 20px}
+.modal-desc{font-size:13px;color:#666;margin-bottom:8px}
+.modal-stats{font-size:24px;font-weight:700;color:#000;margin-bottom:16px;font-family:'JetBrains Mono',monospace}
+.modal-stat-value{color:#FF5722}
+.modal-options{display:flex;flex-direction:column;gap:8px}
+.modal-option{border:2px solid #EAEAEA;border-radius:8px;padding:12px 14px;cursor:pointer;transition:all .15s}
+.modal-option.selected{border-color:#FF5722;background:#FFF8F5}
+.modal-option input[type="radio"]{display:none}
+.option-content{display:flex;flex-direction:column;gap:4px}
+.option-title{font-weight:600;font-size:13px;color:#000}
+.option-desc{font-size:11px;color:#999}
+.option-name-row{display:flex;align-items:center;gap:6px;margin-top:4px;font-size:12px;color:#666}
+.option-input{flex:1;padding:4px 8px;border:1px solid #E0E0E0;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11px}
+.modal-footer{display:flex;justify-content:flex-end;gap:8px;padding:12px 20px 16px}
 </style>
 </head>
 <body>
@@ -125,7 +147,14 @@ body{font-family:'Space Grotesk','Noto Sans SC',system-ui,sans-serif;background:
     <div class="header-left">
       <div class="brand">SOSCHATROOM · 图谱构建</div>
     </div>
-    <div class="header-center"></div>
+    <div class="header-center">
+      <select id="graphSelector" class="graph-select" onchange="onGraphChange(this.value)">
+        <option value="">加载中...</option>
+      </select>
+      <button class="tool-btn" id="btnBackup" onclick="onBackupClick()" title="另存为">
+        <span class="btn-text">📋 另存为</span>
+      </button>
+    </div>
     <div class="header-right">
       <div class="workflow-step">
         <span class="step-num-label">Step 1/5</span>
@@ -286,16 +315,94 @@ body{font-family:'Space Grotesk','Noto Sans SC',system-ui,sans-serif;background:
   </div>
 </div>
 
+<!-- Build Confirmation Modal -->
+<div id="buildConfirmOverlay" class="modal-overlay" style="display:none">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <span class="modal-title">构建确认</span>
+      <button class="detail-close" onclick="closeBuildConfirm()">×</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-desc">当前图谱「<span id="confirmGraphName"></span>」已有数据：</p>
+      <div class="modal-stats">
+        <span id="confirmNodes" class="modal-stat-value">0</span> 节点 ·
+        <span id="confirmEdges" class="modal-stat-value">0</span> 边
+      </div>
+      <div class="modal-options">
+        <label class="modal-option selected" id="optBackupFirst" onclick="selectBuildOption('backup')">
+          <input type="radio" name="buildOption" value="backup" checked>
+          <div class="option-content">
+            <div class="option-title">另存为新图谱后再构建</div>
+            <div class="option-desc">备份当前图谱，然后清空当前图重建</div>
+            <div class="option-name-row">
+              <span>新图谱名: </span>
+              <input type="text" id="newGraphName" class="option-input" onclick="event.stopPropagation()">
+            </div>
+          </div>
+        </label>
+        <label class="modal-option" id="optClearDirect" onclick="selectBuildOption('clear')">
+          <input type="radio" name="buildOption" value="clear">
+          <div class="option-content">
+            <div class="option-title">直接清空并构建</div>
+            <div class="option-desc">当前图谱数据将丢失，不可恢复</div>
+          </div>
+        </label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-sm" onclick="closeBuildConfirm()">取消</button>
+      <button class="action-btn" id="btnConfirmBuild" style="width:auto;padding:10px 24px" onclick="executeBuild()">确认构建</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const _zhLabels={'KNOWS':'认识','MEMBER_OF':'属于','INTERACTS_WITH':'互动','MENTIONS':'提及','LOCATED_AT':'位于','CREATES':'创造','OPPOSES':'反对','TRUSTS':'信任'};
 function zhLabel(l){return _zhLabels[l]||l;}
-let simulation=null, pollTimer=null, _showEdgeLabels=false, _lastNodeCount=0, _nodePositions={}, _lastLogChunk=0, _selectedNodeIdx=null, _graphEdges=[], _hiddenNodeIds=new Set(JSON.parse(localStorage.getItem('graphrag_hidden')||'[]')), _addEdgeSource=null, _mergeSource=null, _buildStatus='idle';
+let simulation=null, pollTimer=null, _showEdgeLabels=false, _lastNodeCount=0, _nodePositions={}, _lastLogChunk=0, _selectedNodeIdx=null, _graphEdges=[], _hiddenNodeIds=new Set(), _addEdgeSource=null, _mergeSource=null, _buildStatus='idle', _currentGraphId=localStorage.getItem('graphrag_last_graph')||'haruhi_novel';
 
 function addLog(msg){
   const d=new Date(), t=d.toLocaleTimeString('en-US',{hour12:false})+'.'+String(d.getMilliseconds()).padStart(3,'0');
   const el=document.getElementById('logContent');
-  el.innerHTML+=`<div class="log-line"><span class="log-time">${t}</span><span class="log-msg">${msg}</span></div>`;
+  el.innerHTML+='<div class="log-line"><span class="log-time">'+t+'</span><span class="log-msg">'+msg+'</span></div>';
   el.scrollTop=el.scrollHeight;
+}
+
+async function loadGraphList(){
+  const r=await api('/api/graphrag/graphs');
+  if(!r.success||!r.graphs) return;
+  const sel=document.getElementById('graphSelector');
+  sel.innerHTML='';
+  r.graphs.forEach(function(g){
+    const opt=document.createElement('option');
+    opt.value=g.graph_id;
+    opt.textContent=g.display_name+(g.has_data?' ('+g.nodes+'N·'+g.edges+'E)':' (空)');
+    if(g.graph_id===_currentGraphId) opt.selected=true;
+    sel.appendChild(opt);
+  });
+  sel.disabled=false;
+}
+
+function onGraphChange(newId){
+  if(newId===_currentGraphId) return;
+  if(_currentGraphId && typeof _nodePositions!=='undefined'){
+    localStorage.setItem('graphrag_positions_'+_currentGraphId, JSON.stringify(_nodePositions));
+  }
+  localStorage.setItem('graphrag_edge_labels_'+_currentGraphId, JSON.stringify(_showEdgeLabels));
+  _currentGraphId=newId;
+  localStorage.setItem('graphrag_last_graph', newId);
+  const saved=localStorage.getItem('graphrag_positions_'+newId);
+  _nodePositions=saved?JSON.parse(saved):{};
+  const edgeSaved=localStorage.getItem('graphrag_edge_labels_'+newId);
+  _showEdgeLabels=edgeSaved?JSON.parse(edgeSaved):false;
+  if(document.getElementById('lblToggle')) document.getElementById('lblToggle').textContent=_showEdgeLabels?'标签开':'标签关';
+  _lastNodeCount=-1;
+  _hiddenNodeIds=new Set();
+  _hiddenNames={};
+  closeDetail();
+  refreshStatus();
+  refreshData(true);
+  addLog('切换图谱: '+newId);
 }
 
 async function api(url,opts){
@@ -310,7 +417,7 @@ function setHeader(status,nodes,edges){
 }
 
 async function refreshStatus(){
-  const s=await api('/api/graphrag/status');
+  const s=await api('/api/graphrag/status?graph_id='+_currentGraphId);
   const pct=(s.progress||0)*100;
   const paused=s.status==='paused', building=s.status==='building', done=s.status==='completed', err=s.status==='error';
 
@@ -326,6 +433,8 @@ async function refreshStatus(){
   document.getElementById('progressMsg').textContent=paused?'已暂停':(s.message||'');
   _buildStatus=s.status;
   setHeader(s.status, s.nodes, s.edges);
+  document.getElementById('graphSelector').disabled=(s.status==='building');
+  if(document.getElementById('btnBackup')) document.getElementById('btnBackup').disabled=(s.status==='building');
   // 按钮状态
   const btn=document.getElementById('btnBuild');
   btn.textContent=paused?'继续':building?'暂停':done?'重新构建':'开始构建';
@@ -356,8 +465,15 @@ async function refreshStatus(){
 
 async function refreshData(force){
   const limit=document.getElementById('nodeLimit').value||200;
-  const d=await api('/api/graphrag/data?limit='+limit);
+  const d=await api('/api/graphrag/data?graph_id='+_currentGraphId+'&limit='+limit);
   if(!d.success || !d.data) return;
+  if(d.data.settings && d.data.settings.hidden_nodes){
+    _hiddenNodeIds=new Set(d.data.settings.hidden_nodes);
+    // also rebuild _hiddenNames by matching against nodes_sample
+    if(d.data.nodes_sample){
+      d.data.nodes_sample.forEach(function(n){if(_hiddenNodeIds.has(n.uuid))_hiddenNames[n.uuid]=n.name;});
+    }
+  }
   document.getElementById('statTypes').textContent=Object.keys(d.data.by_type||d.data.by_category||{}).length||0;
   if(d.data.nodes_sample){
     const visibleCount=Math.min(parseInt(document.getElementById('nodeLimit').value)||9999, d.data.nodes_sample.filter(n=>!_hiddenNodeIds.has(n.uuid)).length);
@@ -650,14 +766,18 @@ function showDetail(node,idx){
 
 let _hiddenNames={}; // uuid→name
 
-function hideNode(uuid,name){
-  if(_hiddenNodeIds.has(uuid)){_hiddenNodeIds.delete(uuid);delete _hiddenNames[uuid];}
-  else{_hiddenNodeIds.add(uuid);_hiddenNames[uuid]=name;}
-  localStorage.setItem('graphrag_hidden',JSON.stringify([..._hiddenNodeIds]));
-  localStorage.setItem('graphrag_hidden_names',JSON.stringify(_hiddenNames));
-  refreshHiddenBtn();
-  _lastNodeCount=-1;
-  refreshData(true);
+async function hideNode(uuid,name){
+  const currentlyHidden=_hiddenNodeIds.has(uuid);
+  const r=await api('/api/graphrag/hide?graph_id='+_currentGraphId+'&node_uuid='+uuid+'&hidden='+(!currentlyHidden),{method:'POST'});
+  if(r.success){
+    if(currentlyHidden){_hiddenNodeIds.delete(uuid);delete _hiddenNames[uuid];addLog('已恢复: '+name);}
+    else{_hiddenNodeIds.add(uuid);_hiddenNames[uuid]=name;addLog('已隐藏: '+name);}
+    refreshHiddenBtn();
+    _lastNodeCount=-1;
+    refreshData(true);
+  }else{
+    addLog('操作失败: '+(r.error||''));
+  }
 }
 
 function refreshHiddenBtn(){
@@ -666,9 +786,6 @@ function refreshHiddenBtn(){
   if(n>0){btn.style.display='';document.getElementById('lblHidden').textContent='已隐藏 '+n;}
   else btn.style.display='none';
 }
-
-// 从 localStorage 恢复 name 映射
-try{var _saved=JSON.parse(localStorage.getItem('graphrag_hidden_names')||'{}');Object.assign(_hiddenNames,_saved);}catch(e){}
 
 function manageHidden(){
   closeHiddenList();
@@ -700,7 +817,7 @@ function showDetailByUUID(uuid){
     showDetail(found[0].raw,found[0].id);
   }else{
     // 节点不在当前视图里，从 API 查
-    api('/api/graphrag/data?limit=9999').then(function(d){
+    api('/api/graphrag/data?graph_id='+_currentGraphId+'&limit=9999').then(function(d){
       if(!d.success||!d.data)return;
       var n=d.data.nodes_sample.find(function(n){return n.uuid===uuid;});
       if(n)showDetail(n,-1);
@@ -714,7 +831,7 @@ function closeHiddenList(){
 
 function showNodeList(){
   closeHiddenList();
-  api('/api/graphrag/data?limit=9999').then(function(d){
+  api('/api/graphrag/data?graph_id='+_currentGraphId+'&limit=9999').then(function(d){
     if(!d.success||!d.data)return;
     var nodes=d.data.nodes_sample||[];
     // 按度排序（从 API 返回的 degree 顺序）
@@ -742,21 +859,24 @@ function closeNodeList(){
   if(el)el.style.display='none';
 }
 
-function unhideNode(uuid){
-  _hiddenNodeIds.delete(uuid);
-  delete _hiddenNames[uuid];
-  localStorage.setItem('graphrag_hidden',JSON.stringify([..._hiddenNodeIds]));
-  localStorage.setItem('graphrag_hidden_names',JSON.stringify(_hiddenNames));
-  manageHidden();
-  _lastNodeCount=-1;
-  refreshData(true);
+async function unhideNode(uuid){
+  const r=await api('/api/graphrag/hide?graph_id='+_currentGraphId+'&node_uuid='+uuid+'&hidden=false',{method:'POST'});
+  if(r.success){
+    _hiddenNodeIds.delete(uuid);
+    delete _hiddenNames[uuid];
+    manageHidden();
+    _lastNodeCount=-1;
+    refreshData(true);
+  }
 }
 
-function unhideAll(){
+async function unhideAll(){
+  const ids=[..._hiddenNodeIds];
+  for(const uuid of ids){
+    await api('/api/graphrag/hide?graph_id='+_currentGraphId+'&node_uuid='+uuid+'&hidden=false',{method:'POST'});
+  }
   _hiddenNodeIds.clear();
   _hiddenNames={};
-  localStorage.setItem('graphrag_hidden','[]');
-  localStorage.setItem('graphrag_hidden_names','{}');
   closeHiddenList();
   refreshHiddenBtn();
   _lastNodeCount=-1;
@@ -818,7 +938,7 @@ function closeAddEdgeForm(){var el=document.getElementById('addEdgePanel');if(el
 async function doAddEdge(srcUuid,tgtUuid){
   var name=document.getElementById('addEdgeName').value.trim()||'认识';
   var fact=document.getElementById('addEdgeFact').value.trim();
-  var r=await api('/api/graphrag/edge/add?source_uuid='+srcUuid+'&target_uuid='+tgtUuid+'&name='+encodeURIComponent(name)+'&fact='+encodeURIComponent(fact),{method:'POST'});
+  var r=await api('/api/graphrag/edge/add?graph_id='+_currentGraphId+'&source_uuid='+srcUuid+'&target_uuid='+tgtUuid+'&name='+encodeURIComponent(name)+'&fact='+encodeURIComponent(fact),{method:'POST'});
   addLog(r.message||(r.error||'添加失败'));
   var el=document.getElementById('addEdgePanel');if(el)el.remove();
   if(r.success)refreshAll();
@@ -831,7 +951,7 @@ function startMerge(srcUuid,srcName){
 }
 async function doMerge(srcUuid,tgtUuid,tgtName){
   addLog('LLM 判断中...');
-  var r=await api('/api/graphrag/node/merge?source_uuid='+srcUuid+'&target_uuid='+tgtUuid,{method:'POST'});
+  var r=await api('/api/graphrag/node/merge?graph_id='+_currentGraphId+'&source_uuid='+srcUuid+'&target_uuid='+tgtUuid,{method:'POST'});
   if(r.success){
     addLog('✓ '+r.message+(r.reason?' ('+r.reason+')':''));
     _lastNodeCount=-1;
@@ -843,7 +963,7 @@ async function doMerge(srcUuid,tgtUuid,tgtName){
 }
 async function deleteEdge(uuid){
   if(!confirm('确定删除此边？'))return;
-  var r=await api('/api/graphrag/edge/delete?uuid='+uuid,{method:'POST'});
+  var r=await api('/api/graphrag/edge/delete?graph_id='+_currentGraphId+'&uuid='+uuid,{method:'POST'});
   addLog(r.message||(r.error||'删除失败'));
   if(r.success){closeDetail();refreshAll();}
 }
@@ -862,7 +982,7 @@ async function shutdownServer(){
 async function clearGraph(){
   if(!confirm('清零将删除所有图谱数据，确定？')) return;
   addLog('清零中...');
-  const r=await api('/api/graphrag/clear',{method:'POST'});
+  const r=await api('/api/graphrag/clear?graph_id='+_currentGraphId,{method:'POST'});
   if(r.success){
     document.getElementById('statNodes').textContent='0';
     document.getElementById('statEdges').textContent='0';
@@ -876,8 +996,6 @@ async function clearGraph(){
     document.getElementById('btnBuild').disabled=false;
     _lastNodeCount=0; _nodePositions={};
     _hiddenNodeIds.clear(); _hiddenNames={};
-    localStorage.setItem('graphrag_hidden','[]');
-    localStorage.setItem('graphrag_hidden_names','{}');
     refreshHiddenBtn();
     addLog('图谱已清零 ✓');
   }else{
@@ -886,41 +1004,73 @@ async function clearGraph(){
   refreshStatus();
 }
 
+let _buildOption='backup';
+
+function selectBuildOption(opt){
+  _buildOption=opt;
+  document.getElementById('optBackupFirst').className='modal-option'+(opt==='backup'?' selected':'');
+  document.getElementById('optClearDirect').className='modal-option'+(opt==='clear'?' selected':'');
+}
+
+function closeBuildConfirm(){
+  document.getElementById('buildConfirmOverlay').style.display='none';
+}
+
+async function executeBuild(){
+  closeBuildConfirm();
+  if(_buildOption==='backup'){
+    var newName=document.getElementById('newGraphName').value.trim();
+    addLog('另存为: '+newName+'...');
+    var bk=await api('/api/graphrag/backup?graph_id='+_currentGraphId,{method:'POST'});
+    if(!bk.success){addLog('✗ 备份失败: '+(bk.error||''));return;}
+    addLog('✓ 已备份为: '+bk.graph_id);
+  }
+  startBuild();
+}
+
 async function startBuild(){
   document.getElementById('btnBuild').disabled=true;
   document.getElementById('statNodes').textContent='0';
   document.getElementById('statEdges').textContent='0';
   document.getElementById('statTypes').textContent='0';
-  const r=await api('/api/graphrag/build',{method:'POST'});
+  const r=await api('/api/graphrag/build?graph_id='+_currentGraphId,{method:'POST'});
   if(r.success){addLog('开始构建 · '+(r.message||''));refreshStatus();}
   else{addLog('错误: '+(r.error||''));document.getElementById('btnBuild').disabled=false;}
 }
 
 async function onBuildClick(){
-  const s=await api('/api/graphrag/status');
+  const s=await api('/api/graphrag/status?graph_id='+_currentGraphId);
   if(s.status==='building'){
-    // 暂停
     const r=await api('/api/graphrag/pause',{method:'POST'});
     if(r.success) addLog('已暂停');
     else addLog('暂停失败: '+(r.error||''));
     refreshStatus();
   }else if(s.status==='paused'){
-    // 继续
     addLog('继续 · '+s.nodes+' 节点 '+s.edges+' 边 · 块 '+(s.current_chunk||'?')+'/'+(s.total_chunks||'?'));
     const r=await api('/api/graphrag/resume',{method:'POST'});
     if(r.success) addLog('继续构建');
     else addLog('继续失败: '+(r.error||''));
     refreshStatus();
   }else{
-    // 开始或重新构建
-    if(s.status==='completed'||s.status==='error'){
-      await api('/api/graphrag/clear',{method:'POST'});
+    if(s.nodes>0||s.edges>0){
+      // Show confirmation modal
+      document.getElementById('confirmGraphName').textContent=_currentGraphId;
+      document.getElementById('confirmNodes').textContent=s.nodes||0;
+      document.getElementById('confirmEdges').textContent=s.edges||0;
+      var now=new Date();
+      var ts=now.getFullYear()+String(now.getMonth()+1).padStart(2,'0')+String(now.getDate()).padStart(2,'0')+'_'+String(now.getHours()).padStart(2,'0')+String(now.getMinutes()).padStart(2,'0')+String(now.getSeconds()).padStart(2,'0');
+      document.getElementById('newGraphName').value=_currentGraphId+'_'+ts;
+      document.getElementById('buildConfirmOverlay').style.display='flex';
+    }else{
+      if(s.status==='completed'||s.status==='error'){
+        await api('/api/graphrag/clear?graph_id='+_currentGraphId,{method:'POST'});
+      }
+      startBuild();
     }
-    startBuild();
   }
 }
 
-function refreshAll(){refreshStatus();refreshData();}
+function refreshAll(){loadGraphList();refreshStatus();refreshData();}
 
 // ── Edge Label Toggle ──
 function toggleEdgeLabels(){
@@ -970,6 +1120,7 @@ async function loadDefaultFileInfo(){
 }
 
 loadDefaultFileInfo();
+loadGraphList();
 
 refreshStatus();
 refreshData();

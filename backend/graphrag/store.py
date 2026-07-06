@@ -90,6 +90,11 @@ class GraphStore:
                 CREATE INDEX IF NOT EXISTS idx_edges_src  ON edges(source_node_uuid);
                 CREATE INDEX IF NOT EXISTS idx_edges_tgt  ON edges(target_node_uuid);
             """)
+            # settings 列迁移（幂等）
+            try:
+                conn.execute("ALTER TABLE graphs ADD COLUMN settings TEXT DEFAULT '{}'")
+            except sqlite3.OperationalError:
+                pass
         finally:
             conn.close()
 
@@ -348,6 +353,45 @@ class GraphStore:
         except Exception as e:
             print(f"[store] get_statistics error: {e}")
             return {"graph_id": self.graph_id, "total_nodes": 0, "total_edges": 0}
+
+    # ------------------------------------------------------------------
+    # Settings (persisted in graphs.settings JSON column)
+    # ------------------------------------------------------------------
+
+    def get_settings(self) -> Dict[str, Any]:
+        """读取 graphs 表的 settings JSON 字段。"""
+        try:
+            with self._conn() as conn:
+                row = conn.execute(
+                    "SELECT settings FROM graphs WHERE graph_id = ?", (self.graph_id,)
+                ).fetchone()
+            if row and row[0]:
+                return json.loads(row[0])
+        except Exception as e:
+            print(f"[store] get_settings error: {e}")
+        return {"hidden_nodes": []}
+
+    def update_settings(self, settings: dict) -> dict:
+        """合并写入 settings（保留未在传入 dict 中的旧字段）。"""
+        old = self.get_settings()
+        old.update(settings)
+        with self._conn() as conn:
+            conn.execute(
+                "UPDATE graphs SET settings = ? WHERE graph_id = ?",
+                (self._j(old), self.graph_id),
+            )
+        return old
+
+    def backup(self, dest_graph_id: str) -> str:
+        """SQLite backup API 安全复制 DB。返回目标路径。"""
+        import sqlite3 as _sqlite3
+        dest_path = os.path.join(GRAPH_DATA_DIR, f"{dest_graph_id}.db")
+        src_conn = _sqlite3.connect(self._db_path)
+        dst_conn = _sqlite3.connect(dest_path)
+        src_conn.backup(dst_conn)
+        dst_conn.close()
+        src_conn.close()
+        return dest_path
 
     def merge_nodes(self, source_uuid: str, target_uuid: str) -> bool:
         """将源节点合并到目标节点：重映射所有边 → 删除重复边 → 删除源节点。"""
