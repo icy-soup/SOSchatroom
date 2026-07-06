@@ -40,10 +40,15 @@ class GraphStore:
     def _conn(self) -> sqlite3.Connection:
         conn = sqlite3.connect(self._db_path)
         conn.row_factory = sqlite3.Row
-        conn.execute("PRAGMA journal_mode=WAL")
+        conn.execute("PRAGMA journal_mode=DELETE")
         conn.execute("PRAGMA busy_timeout=5000")
         conn.execute("PRAGMA foreign_keys=ON")
         return conn
+
+    def _execute(self, sql: str, params=()):
+        """执行 SQL（对外暴露，供 server 等外部调用）。"""
+        with self._conn() as conn:
+            conn.execute(sql, params)
 
     def _init_schema(self) -> None:
         conn = sqlite3.connect(self._db_path)
@@ -389,12 +394,31 @@ class GraphStore:
         src_conn = _sqlite3.connect(self._db_path)
         dst_conn = _sqlite3.connect(dest_path)
         src_conn.backup(dst_conn)
+        # 更新目标 DB 中的 graph_id（复制后所有行的 graph_id 还是源值）
+        dst_conn.executescript(f"""
+            UPDATE graphs SET graph_id = '{dest_graph_id}', name = '{dest_graph_id}' WHERE graph_id = '{self.graph_id}';
+            UPDATE nodes SET graph_id = '{dest_graph_id}' WHERE graph_id = '{self.graph_id}';
+            UPDATE edges SET graph_id = '{dest_graph_id}' WHERE graph_id = '{self.graph_id}';
+            UPDATE episodes SET graph_id = '{dest_graph_id}' WHERE graph_id = '{self.graph_id}';
+        """)
+        dst_conn.commit()
         dst_conn.close()
         src_conn.close()
         return dest_path
 
+    def delete_node(self, node_uuid: str) -> bool:
+        """删除节点（级联删除关联边）。"""
+        try:
+            with self._conn() as conn:
+                conn.execute("DELETE FROM nodes WHERE uuid = ? AND graph_id = ?",
+                            (node_uuid, self.graph_id))
+            return True
+        except Exception as e:
+            print(f"[store] delete_node error: {e}")
+            return False
+
     def merge_nodes(self, source_uuid: str, target_uuid: str) -> bool:
-        """将源节点合并到目标节点：重映射所有边 → 删除重复边 → 删除源节点。"""
+        """将源节点合并到目标节点：重映射所有边 → 合并重复边的 fact → 删除源节点。"""
         try:
             with self._conn() as conn:
                 # 1. 重映射所有从源节点出发的边
@@ -406,7 +430,20 @@ class GraphStore:
                 # 3. 删除自指边（合并后 source==target 的边无意义）
                 conn.execute("DELETE FROM edges WHERE source_node_uuid = target_node_uuid AND graph_id = ?",
                             (self.graph_id,))
-                # 4. 删除重复边（相同 source/target/name 的只留一条）
+                # 4. 合并重复边的 fact（同 source/target/name 的 fact 用 ； 拼接再删多余行）
+                conn.execute("""
+                    UPDATE edges SET fact = (
+                        SELECT GROUP_CONCAT(fact, '；') FROM edges e2
+                        WHERE e2.graph_id = ?
+                        AND e2.source_node_uuid = edges.source_node_uuid
+                        AND e2.target_node_uuid = edges.target_node_uuid
+                        AND e2.name = edges.name
+                    ) WHERE rowid IN (
+                        SELECT MIN(rowid) FROM edges
+                        WHERE graph_id = ?
+                        GROUP BY source_node_uuid, target_node_uuid, name
+                    )
+                """, (self.graph_id, self.graph_id))
                 conn.execute("""
                     DELETE FROM edges WHERE rowid NOT IN (
                         SELECT MIN(rowid) FROM edges

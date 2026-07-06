@@ -106,15 +106,26 @@ async def list_graphs():
 from datetime import datetime
 
 @app.post("/api/graphrag/backup")
-async def backup_graph(graph_id: str = Query(..., description="要备份的图谱 ID")):
+async def backup_graph(
+    graph_id: str = Query(..., description="要备份的图谱 ID"),
+    new_graph_id: str = Query(None, description="新图谱名称（可选，默认加时间戳）"),
+):
     """安全另存为当前图谱（SQLite backup API）。"""
     store = GraphStore(graph_id)
     stats = store.get_statistics()
     if stats["total_nodes"] == 0:
         return {"success": False, "error": "当前图谱为空，无需备份"}
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    new_id = f"{graph_id}_{timestamp}"
+    if new_graph_id:
+        new_id = new_graph_id.strip()
+    else:
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        new_id = f"{graph_id}_{timestamp}"
+    if os.path.exists(os.path.join(GRAPH_DATA_DIR, f"{new_id}.db")):
+        return {"success": False, "error": f"图谱「{new_id}」已存在"}
     store.backup(new_id)
+    _write_status(new_id, {"status": "completed", "progress": 1.0,
+                           "nodes": stats["total_nodes"], "edges": stats["total_edges"],
+                           "message": "图谱就绪（备份）"})
     new_store = GraphStore(new_id)
     new_stats = new_store.get_statistics()
     return {
@@ -246,7 +257,7 @@ async def clear(graph_id: str = Query("haruhi_novel", description="图谱 ID")):
 # ─── 数据 ────────────────────────────────────────────────────────
 
 @app.get("/api/graphrag/data")
-async def data(graph_id: str = Query("haruhi_novel", description="图谱 ID"), limit: int = 1000):
+async def data(graph_id: str = Query("haruhi_novel", description="图谱 ID"), limit: int = 1000, bottom: int = 0):
     try:
         store = GraphStore(graph_id)
         stats = store.get_statistics()
@@ -256,6 +267,14 @@ async def data(graph_id: str = Query("haruhi_novel", description="图谱 ID"), l
         all_nodes = store.get_all_nodes()
         all_edges = store.get_all_edges()
         node_map = {n["uuid"]: n for n in all_nodes}
+        # 清理 settings 中残留的隐藏节点 UUID（被合并/删除的节点）
+        hidden = settings.get("hidden_nodes", [])
+        if hidden:
+            all_uuids = set(node_map.keys())
+            clean = [u for u in hidden if u in all_uuids]
+            if len(clean) != len(hidden):
+                store.update_settings({"hidden_nodes": clean})
+                settings["hidden_nodes"] = clean
         cat_count = {}
         type_count = {}
         for n in all_nodes:
@@ -275,9 +294,19 @@ async def data(graph_id: str = Query("haruhi_novel", description="图谱 ID"), l
             degree[e["source_node_uuid"]] += 1
             degree[e["target_node_uuid"]] += 1
 
-        # 按度数排序，取关联最多的前 N 个节点
+        # 按度数排序
         sorted_by_degree = sorted(all_nodes, key=lambda n: degree.get(n["uuid"], 0), reverse=True)
-        nodes_sample = sorted_by_degree[:limit]
+        top_nodes = sorted_by_degree[:limit]
+        if bottom > 0:
+            bottom_nodes = sorted_by_degree[-bottom:] if len(sorted_by_degree) > bottom else []
+            # 合并去重（按原始顺序，top 优先）
+            seen = {n["uuid"] for n in top_nodes}
+            extra = [n for n in bottom_nodes if n["uuid"] not in seen]
+            nodes_sample = top_nodes + extra
+            top_limit = len(top_nodes)
+        else:
+            nodes_sample = top_nodes
+            top_limit = len(nodes_sample)
         sample_uuids = {n["uuid"] for n in nodes_sample}
         edges_sample = [e for e in all_edges
                        if e["source_node_uuid"] in sample_uuids
@@ -296,6 +325,7 @@ async def data(graph_id: str = Query("haruhi_novel", description="图谱 ID"), l
                 "stats": stats,
                 "displayed_nodes": len(nodes_sample),
                 "displayed_edges": len(edges_sample),
+                "top_limit": top_limit,
                 "max_degree": {"node": max_deg_node, "count": max_deg_count},
                 "by_category": cat_count, "by_type": type_count, "by_relation": rel_count,
                 "nodes_sample": [{"name": n["name"], "labels": n.get("labels", [])[1:],
@@ -347,6 +377,26 @@ async def delete_edge(uuid: str = Query(""), graph_id: str = Query("haruhi_novel
     return {"success": True, "message": "边已删除"}
 
 
+@app.post("/api/graphrag/node/delete")
+async def delete_node(node_uuid: str = Query(""), graph_id: str = Query("haruhi_novel", description="图谱 ID")):
+    if not node_uuid:
+        return {"success": False, "error": "需要节点 uuid"}
+    store = GraphStore(graph_id)
+    ok = store.delete_node(node_uuid)
+    if not ok:
+        return {"success": False, "error": "删除失败"}
+    # 清理隐藏列表中的已删除节点
+    settings = store.get_settings()
+    hidden = settings.get("hidden_nodes", [])
+    if node_uuid in hidden:
+        hidden.remove(node_uuid)
+        store.update_settings({"hidden_nodes": hidden})
+    # 更新状态
+    stats = store.get_statistics()
+    _write_status(graph_id, {"nodes": stats["total_nodes"], "edges": stats["total_edges"]})
+    return {"success": True, "message": "节点已删除"}
+
+
 @app.post("/api/graphrag/node/merge")
 async def merge_nodes(
     source_uuid: str = Query(""), target_uuid: str = Query(""),
@@ -388,16 +438,31 @@ async def merge_nodes(
 {chr(10).join(node_edges(target_uuid))}"""
 
     prompt = f"你是凉宫春日系列图谱的实体合并专家。判断以下两个节点是否为同一实体。\n{info}\n如果是同一实体，输出规范名称和合并后的简介。\n输出JSON: {{\"should_merge\":true/false,\"canonical_name\":\"规范名\",\"summary\":\"合并后的简介\",\"reason\":\"判断理由(一句话)\"}}"
-    try:
-        builder = GraphBuilder(graph_id)
-        llm = builder._get_llm()
-        r = llm["client"].chat.completions.create(
-            model=llm["model"],
-            messages=[{"role": "system", "content": prompt}],
-            response_format={"type": "json_object"}, temperature=0.1, max_tokens=1024)
-        result = json.loads(r.choices[0].message.content)
-    except Exception as e:
-        return {"success": False, "error": f"LLM 判断失败: {e}"}
+    import httpx
+    builder = GraphBuilder(graph_id)
+    llm = builder._get_llm()
+    result = None
+    last_err = ""
+    for attempt in range(3):
+        try:
+            r = llm["client"].chat.completions.create(
+                model=llm["model"],
+                messages=[{"role": "system", "content": prompt}],
+                response_format={"type": "json_object"}, temperature=0.1, max_tokens=1024,
+                timeout=httpx.Timeout(120.0, connect=30.0))
+            raw = r.choices[0].message.content.strip()
+            result = json.loads(raw)
+            break
+        except json.JSONDecodeError:
+            last_err = f"LLM 返回非 JSON: {raw[:200]}"
+            print(f"[merge] attempt {attempt+1} JSON parse failed: {raw[:100]}")
+        except Exception as e:
+            last_err = f"LLM 请求失败: {e}"
+            print(f"[merge] attempt {attempt+1} error: {e}")
+        import time
+        time.sleep(1)
+    if not result:
+        return {"success": False, "error": f"LLM 判断失败(3次重试): {last_err}"}
 
     if not result.get("should_merge"):
         return {"success": False, "error": f"LLM 判断不是同一实体: {result.get('reason','')}", "llm_result": result}
@@ -408,6 +473,12 @@ async def merge_nodes(
     if ok:
         store.update_node_name(target_uuid, name)
         store.update_node_summary(target_uuid, summary)
+        # 清理隐藏列表中已删除的源节点 UUID
+        settings = store.get_settings()
+        hidden = settings.get("hidden_nodes", [])
+        if source_uuid in hidden:
+            hidden.remove(source_uuid)
+            store.update_settings({"hidden_nodes": hidden})
         print(f"[server] LLM合并: {src['name']}({src.get('uuid','')[:8]}) → {name}({target_uuid[:8]})")
         return {"success": True, "message": f"已合并: {src['name']} → {name}", "reason": result.get("reason","")}
     return {"success": False, "error": "合并失败"}

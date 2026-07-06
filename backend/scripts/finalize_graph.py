@@ -1,23 +1,33 @@
 """在已有图谱上补跑关系推断 + 全量摘要整理。
-使用前建议备份 DB: copy data\graphs\haruhi_novel.db data\graphs\haruhi_novel_backup.db
-用法: python backend/scripts/finalize_graph.py
+
+用法:
+    python backend/scripts/finalize_graph.py <graph_id>
+
+示例:
+    python backend/scripts/finalize_graph.py haruhi_novel
+    python backend/scripts/finalize_graph.py backup_20260706
 """
 import sys, os, shutil
 from pathlib import Path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# 备份
-DB_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "graphs" / "haruhi_novel.db"
-backup = DB_PATH.with_suffix(".db.backup")
-if not backup.exists():
-    shutil.copy2(DB_PATH, backup)
-    print(f"已备份: {backup}")
+# 解析 graph_id
+if len(sys.argv) < 2:
+    print("用法: python backend/scripts/finalize_graph.py <graph_id>")
+    print("示例: python backend/scripts/finalize_graph.py haruhi_novel")
+    sys.exit(1)
 
-from graphrag.builder import GraphBuilder
+graph_id = sys.argv[1]
 
-builder = GraphBuilder("haruhi_novel")
+from graphrag.builder import GraphBuilder, _write_status
+
+builder = GraphBuilder(graph_id)
 stats = builder.store.get_statistics()
-print(f"当前图谱: {stats['total_nodes']} 节点 · {stats['total_edges']} 边")
+print(f"图谱「{graph_id}」: {stats['total_nodes']} 节点 · {stats['total_edges']} 边")
+
+if stats["total_nodes"] == 0:
+    print("图谱为空，无需处理")
+    sys.exit(0)
 
 # 1. 关系推断
 if stats["total_nodes"] > 5:
@@ -32,4 +42,7 @@ finalized = builder._finalize_summaries()
 print(f"  更新 {finalized} 个节点摘要")
 
 stats = builder.store.get_statistics()
+_write_status(graph_id, {"status": "completed", "progress": 1.0,
+                         "nodes": stats["total_nodes"], "edges": stats["total_edges"],
+                         "message": f"已完成推断+摘要整理 · {stats['total_nodes']}节点 · {stats['total_edges']}边"})
 print(f"完成: {stats['total_nodes']} 节点 · {stats['total_edges']} 边")

@@ -1,6 +1,13 @@
 """
-已有图谱去重脚本：在 haruhi_novel.db 上直接跑别名合并 + 黑名单过滤，
+已有图谱去重脚本：对指定 graph DB 跑别名合并 + 黑名单过滤，
 不需要重新调用 LLM 构建。
+
+用法:
+    python backend/scripts/dedup_graph.py <graph_id>
+
+示例:
+    python backend/scripts/dedup_graph.py haruhi_novel
+    python backend/scripts/dedup_graph.py backup_20260706
 """
 
 import sys, os, sqlite3, json
@@ -8,22 +15,29 @@ from collections import defaultdict
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from graphrag.builder import resolve_name, BLOCKLIST
+from graphrag.store import GRAPH_DATA_DIR
 
-DB_PATH = os.path.join(os.path.dirname(__file__), "..", "..", "data", "graphs", "haruhi_novel.db")
-GRAPH_ID = "haruhi_novel"
 
 def main():
-    if not os.path.exists(DB_PATH):
-        print(f"数据库不存在: {DB_PATH}")
-        return
+    if len(sys.argv) < 2:
+        print("用法: python backend/scripts/dedup_graph.py <graph_id>")
+        print("示例: python backend/scripts/dedup_graph.py haruhi_novel")
+        sys.exit(1)
 
-    conn = sqlite3.connect(DB_PATH)
+    graph_id = sys.argv[1]
+    db_path = os.path.join(GRAPH_DATA_DIR, f"{graph_id}.db")
+
+    if not os.path.exists(db_path):
+        print(f"数据库不存在: {db_path}")
+        sys.exit(1)
+
+    conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")
 
     # 1. 读取所有节点
     nodes = conn.execute(
-        "SELECT uuid, name, labels FROM nodes WHERE graph_id = ?", (GRAPH_ID,)
+        "SELECT uuid, name, labels FROM nodes WHERE graph_id = ?", (graph_id,)
     ).fetchall()
     print(f"去重前: {len(nodes)} 节点")
 
@@ -44,7 +58,7 @@ def main():
     # 3. 读取所有边
     edges = conn.execute(
         "SELECT uuid, source_node_uuid, target_node_uuid, name, fact FROM edges WHERE graph_id = ?",
-        (GRAPH_ID,),
+        (graph_id,),
     ).fetchall()
     print(f"去重前: {len(edges)} 边")
 
@@ -54,12 +68,10 @@ def main():
 
     for canon, group in groups.items():
         if len(group) > 1:
-            # 选第一个写入的作为幸存者
             group.sort(key=lambda n: n["uuid"])
             survivor = group[0]
             dead = group[1:]
 
-            # 更新幸存者 name（如果有规范名变化）
             if survivor["name"] != canon:
                 conn.execute(
                     "UPDATE nodes SET name = ? WHERE uuid = ?", (canon, survivor["uuid"])
@@ -68,26 +80,22 @@ def main():
 
             for d in dead:
                 dead_uuid = d["uuid"]
-                # 把指向 dead 节点的边重指向 survivor
                 conn.execute(
                     "UPDATE edges SET source_node_uuid = ? WHERE source_node_uuid = ? AND graph_id = ?",
-                    (survivor["uuid"], dead_uuid, GRAPH_ID),
+                    (survivor["uuid"], dead_uuid, graph_id),
                 )
                 conn.execute(
                     "UPDATE edges SET target_node_uuid = ? WHERE target_node_uuid = ? AND graph_id = ?",
-                    (survivor["uuid"], dead_uuid, GRAPH_ID),
+                    (survivor["uuid"], dead_uuid, graph_id),
                 )
-                # 删除 self-loop（source=target 且都指向同一个人）
                 conn.execute(
                     "DELETE FROM edges WHERE source_node_uuid = target_node_uuid AND source_node_uuid = ? AND graph_id = ?",
-                    (survivor["uuid"], GRAPH_ID),
+                    (survivor["uuid"], graph_id),
                 )
-                # 删除 dead 节点
                 conn.execute("DELETE FROM nodes WHERE uuid = ?", (dead_uuid,))
                 merged_count += 1
             print(f"  合并: {survivor['name']} ({', '.join(n['name'] for n in group)}) → {canon}")
         elif group[0]["name"] != canon:
-            # 单节点但名字变了
             conn.execute(
                 "UPDATE nodes SET name = ? WHERE uuid = ?", (canon, group[0]["uuid"])
             )
@@ -99,11 +107,11 @@ def main():
         placeholders = ",".join("?" for _ in blocked)
         conn.execute(
             f"DELETE FROM edges WHERE (source_node_uuid IN ({placeholders}) OR target_node_uuid IN ({placeholders})) AND graph_id = ?",
-            blocked + blocked + [GRAPH_ID],
+            blocked + blocked + [graph_id],
         )
         conn.execute(
             f"DELETE FROM nodes WHERE uuid IN ({placeholders}) AND graph_id = ?",
-            blocked + [GRAPH_ID],
+            blocked + [graph_id],
         )
 
     # 6. 删除 source=target 的重复自环
@@ -113,27 +121,27 @@ def main():
                WHERE graph_id = ? AND source_node_uuid = target_node_uuid
                GROUP BY source_node_uuid, name, fact
            ) AND graph_id = ? AND source_node_uuid = target_node_uuid""",
-        (GRAPH_ID, GRAPH_ID),
+        (graph_id, graph_id),
     )
 
-    # 7. 删除完全重复的边（同 source/target/name/fact）
+    # 7. 删除完全重复的边
     conn.execute(
         """DELETE FROM edges WHERE rowid NOT IN (
                SELECT MIN(rowid) FROM edges
                WHERE graph_id = ?
                GROUP BY source_node_uuid, target_node_uuid, name, fact
            ) AND graph_id = ?""",
-        (GRAPH_ID, GRAPH_ID),
+        (graph_id, graph_id),
     )
 
     conn.commit()
 
     # 8. 最终统计
     final_nodes = conn.execute(
-        "SELECT COUNT(*) FROM nodes WHERE graph_id = ?", (GRAPH_ID,)
+        "SELECT COUNT(*) FROM nodes WHERE graph_id = ?", (graph_id,)
     ).fetchone()[0]
     final_edges = conn.execute(
-        "SELECT COUNT(*) FROM edges WHERE graph_id = ?", (GRAPH_ID,)
+        "SELECT COUNT(*) FROM edges WHERE graph_id = ?", (graph_id,)
     ).fetchone()[0]
 
     print(f"\n完成: 合并 {merged_count} 节点, 重命名 {rename_count} 节点, 过滤 {len(blocked)} 节点")

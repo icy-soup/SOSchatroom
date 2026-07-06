@@ -182,9 +182,12 @@ body{font-family:'Space Grotesk','Noto Sans SC',system-ui,sans-serif;background:
             <button class="tool-btn" id="btnToggleLabels" onclick="toggleEdgeLabels()" title="Toggle edge labels">
               <span class="btn-text" id="lblToggle">标签关</span>
             </button>
-            <input type="number" id="nodeLimit" value="200" min="10" max="9999"
+            <input type="number" id="nodeLimit" value="200" min="0" max="9999"
                    style="width:60px;padding:2px 6px;font-size:11px;border:1px solid #E0E0E0;border-radius:4px;font-family:'JetBrains Mono',monospace;text-align:center"
                    onchange="changeNodeLimit()" title="显示节点上限">
+            <input type="number" id="bottomLimit" value="0" min="0" max="9999"
+                   style="width:45px;padding:2px 6px;font-size:11px;border:1px solid #E0E0E0;border-radius:4px;font-family:'JetBrains Mono',monospace;text-align:center"
+                   onchange="changeNodeLimit()" title="后N个低度节点">
             <button class="tool-btn" onclick="refreshAll()">
               <span class="icon-refresh">↻</span>
               <span class="btn-text">刷新</span>
@@ -283,7 +286,7 @@ body{font-family:'Space Grotesk','Noto Sans SC',system-ui,sans-serif;background:
             <div class="stats-grid">
               <div class="stat-card"><span class="stat-value" id="statNodes">0</span><span class="stat-label">总节点</span></div>
               <div class="stat-card"><span class="stat-value" id="statEdges">0</span><span class="stat-label">总边</span></div>
-              <div class="stat-card"><span class="stat-value" id="statTypes">0</span><span class="stat-label">实体类型</span></div>
+              <div class="stat-card"><span class="stat-value" id="statUnhidden">0</span><span class="stat-label">未隐藏</span></div>
               <div class="stat-card"><span class="stat-value" id="statDispNodes">0</span><span class="stat-label">显示节点</span></div>
               <div class="stat-card"><span class="stat-value" id="statDispEdges">0</span><span class="stat-label">显示边</span></div>
               <div class="stat-card"><span class="stat-value" id="statMaxDeg">0</span><span class="stat-label">最多边节点</span></div>
@@ -405,6 +408,36 @@ function onGraphChange(newId){
   addLog('切换图谱: '+newId);
 }
 
+async function onBackupClick(){
+  if(_buildStatus==='building'){addLog('构建中不能备份');return;}
+  const s=await api('/api/graphrag/status?graph_id='+_currentGraphId);
+  if(!s||s.nodes===0){addLog('当前图谱为空，无需备份');return;}
+  // 让用户输入备份名
+  var now=new Date();
+  var defaultName=_currentGraphId+'_'+now.getFullYear()+String(now.getMonth()+1).padStart(2,'0')+String(now.getDate()).padStart(2,'0')+'_'+String(now.getHours()).padStart(2,'0')+String(now.getMinutes()).padStart(2,'0')+String(now.getSeconds()).padStart(2,'0');
+  var newName=prompt('输入新图谱名称（留空使用默认名）:', defaultName);
+  if(newName===null) return;  // 取消
+  newName=newName.trim()||defaultName;
+  addLog('正在备份: '+newName+'...');
+  const r=await api('/api/graphrag/backup?graph_id='+_currentGraphId+'&new_graph_id='+encodeURIComponent(newName), {method:'POST'});
+  if(r.success){
+    addLog('✓ 已另存为: '+r.graph_id+' ('+r.nodes+'N·'+r.edges+'E)');
+    _currentGraphId=r.graph_id;
+    if(document.getElementById('graphSelector')){
+      document.getElementById('graphSelector').value=r.graph_id;
+      await loadGraphList();
+      document.getElementById('graphSelector').value=r.graph_id;
+    }
+    localStorage.setItem('graphrag_last_graph', r.graph_id);
+    _lastNodeCount=-1;
+    _nodePositions={};
+    refreshStatus();
+    refreshData(true);
+  }else{
+    addLog('✗ 备份失败: '+(r.error||''));
+  }
+}
+
 async function api(url,opts){
   try{const r=await fetch(url,opts||{});return await r.json()}
   catch(e){return{success:false,error:e.message}}
@@ -463,28 +496,30 @@ async function refreshStatus(){
   }
 }
 
+var _refreshSeq=0;  // 请求序列号，防竞态
+
 async function refreshData(force){
-  const limit=document.getElementById('nodeLimit').value||200;
-  const d=await api('/api/graphrag/data?graph_id='+_currentGraphId+'&limit='+limit);
+  var seq=++_refreshSeq;
+  var _n=parseInt(document.getElementById('nodeLimit').value),limitVal=isNaN(_n)||_n<0?200:_n;
+  var _b=parseInt(document.getElementById('bottomLimit').value),bottomVal=isNaN(_b)||_b<0?0:_b;
+  const buffer=Math.min(_hiddenNodeIds.size+200, 1000);
+  const bottomBuffer=bottomVal>0?bottomVal+Math.min(_hiddenNodeIds.size+10,100):0;
+  const d=await api('/api/graphrag/data?graph_id='+_currentGraphId+'&limit='+(limitVal+buffer)+'&bottom='+bottomBuffer);
+  if(seq!==_refreshSeq) return;  // 旧响应，丢弃
   if(!d.success || !d.data) return;
   if(d.data.settings && d.data.settings.hidden_nodes){
     _hiddenNodeIds=new Set(d.data.settings.hidden_nodes);
-    // also rebuild _hiddenNames by matching against nodes_sample
+    _hiddenNames={};
     if(d.data.nodes_sample){
       d.data.nodes_sample.forEach(function(n){if(_hiddenNodeIds.has(n.uuid))_hiddenNames[n.uuid]=n.name;});
     }
   }
-  document.getElementById('statTypes').textContent=Object.keys(d.data.by_type||d.data.by_category||{}).length||0;
-  if(d.data.nodes_sample){
-    const visibleCount=Math.min(parseInt(document.getElementById('nodeLimit').value)||9999, d.data.nodes_sample.filter(n=>!_hiddenNodeIds.has(n.uuid)).length);
-    document.getElementById('statDispNodes').textContent=visibleCount;
-  }
-  if(d.data.displayed_edges!=null) document.getElementById('statDispEdges').textContent=d.data.displayed_edges;
-  if(d.data.max_degree) document.getElementById('statMaxDeg').textContent=d.data.max_degree.node+' ('+d.data.max_degree.count+')';
+  document.getElementById('statUnhidden').textContent=(d.data.stats?d.data.stats.total_nodes:0)-_hiddenNodeIds.size;
+  // statDispNodes/statDispEdges/statMaxDeg 由 renderGraph 设置
   const count=(d.data.nodes_sample||[]).length;
   if(force || count!==_lastNodeCount){
     _lastNodeCount=count;
-    renderGraph(d.data);
+    renderGraph(d.data, limitVal);
   }
   refreshHiddenBtn();
 }
@@ -494,13 +529,18 @@ function changeNodeLimit(){
   refreshData(true);
 }
 
-function renderGraph(data){
+function renderGraph(data, displayLimit){
   const hint=document.getElementById('graphHint');
+  if(displayLimit==null||isNaN(displayLimit)||displayLimit<0){var _dl=parseInt(document.getElementById('nodeLimit').value);displayLimit=isNaN(_dl)||_dl<0?200:_dl;}
   const svgEl=document.getElementById('graphSvg');
   if(!data.nodes_sample||data.nodes_sample.length===0){
     hint.style.display='flex';
     svgEl.style.display='none';
     document.getElementById('graphLegend').style.display='none';
+    document.getElementById('statDispNodes').textContent='0';
+    document.getElementById('statDispEdges').textContent='0';
+    document.getElementById('statMaxDeg').textContent='0';
+    document.getElementById('statUnhidden').textContent='0';
     return;
   }
   hint.style.display='none';
@@ -531,9 +571,27 @@ function renderGraph(data){
   svg.selectAll('*').remove();
   svg.attr('width',width).attr('height',height).attr('viewBox',[0,0,width,height]);
 
-  const displayLimit=parseInt(document.getElementById('nodeLimit').value)||9999;
-  const filtered=data.nodes_sample.filter(n=>!_hiddenNodeIds.has(n.uuid));
-  const nodes=filtered.slice(0,displayLimit).map((n,i)=>{
+  var _b3=parseInt(document.getElementById('bottomLimit').value),bottomVal=isNaN(_b3)||_b3<0?0:_b3;
+  var filtered=data.nodes_sample.filter(n=>!_hiddenNodeIds.has(n.uuid)).slice(0,displayLimit);
+  if(bottomVal>0 && data.top_limit){
+    // 从不隐藏的节点中取前 displayLimit 个作为前N
+    const topSect=filtered;
+    const topUuids=new Set(topSect.map(function(n){return n.uuid;}));
+    // 后 N：从 API 下半截取不在前 N 中的节点
+    var botSet={};
+    (data.nodes_sample.slice(data.top_limit)||[]).forEach(function(n){
+      if(!_hiddenNodeIds.has(n.uuid)&&!topUuids.has(n.uuid))botSet[n.uuid]=n;
+    });
+    if(Object.keys(botSet).length<bottomVal){
+      data.nodes_sample.forEach(function(n){
+        if(!_hiddenNodeIds.has(n.uuid)&&!topUuids.has(n.uuid)&&!(n.uuid in botSet))botSet[n.uuid]=n;
+      });
+    }
+    var botCandidates=Object.values(botSet).reverse();
+    // 如果 API 下半截不够，从剩余节点中补充
+    filtered=topSect.concat(botCandidates.slice(0,bottomVal));
+  }
+  const nodes=filtered.map((n,i)=>{
     const labels=n.labels||[];
     const pos=_nodePositions[n.name]||{};
     return{id:i, name:n.name, type:labels.length>1?labels[labels.length-1]:'Entity', raw:n, x:pos.x, y:pos.y};
@@ -585,6 +643,19 @@ function renderGraph(data){
     });
   });
   _graphEdges=edges;
+
+  // 在 D3 修改 source/target 之前按实际显示的节点/边更新统计
+  document.getElementById('statDispNodes').textContent=nodes.length;
+  document.getElementById('statDispEdges').textContent=edges.length;
+  var degCnt={};
+  edges.forEach(function(e){
+    var sn=nodes[e.source]?.name, tn=nodes[e.target]?.name;
+    if(sn)degCnt[sn]=(degCnt[sn]||0)+1;
+    if(tn)degCnt[tn]=(degCnt[tn]||0)+1;
+  });
+  var maxN='',maxV=0;
+  Object.keys(degCnt).forEach(function(k){if(degCnt[k]>maxV){maxN=k;maxV=degCnt[k];}});
+  document.getElementById('statMaxDeg').textContent=maxN+(maxV?' ('+maxV+')':'0');
 
   // D3 force sim
   simulation=d3.forceSimulation(nodes)
@@ -639,7 +710,7 @@ function renderGraph(data){
     });
 
   // Nodes
-  const nodeGroup=g.append('g');
+  const nodeGroup=g.append('g').attr('class','nodes');
   const node=nodeGroup.selectAll('circle').data(nodes).enter().append('circle')
     .attr('r',10).attr('fill',d=>getColor(d.type)).attr('stroke','#fff').attr('stroke-width',2.5)
     .style('cursor','pointer')
@@ -758,6 +829,7 @@ function showDetail(node,idx){
     <button class="btn-sm" onclick="hideNode('${node.uuid}','${node.name.replace(/'/g,"\\'")}')" style="flex:1;background:${hidden?'#E8F5E9':'#F5F5F5'};color:${hidden?'#2E7D32':'#333'}">${hidden?'已隐藏':'隐藏'}</button>
     <button class="btn-sm" data-uuid="${node.uuid}" data-name="${node.name.replace(/['"]/g,'')}" onclick="startAddEdge(this.dataset.uuid,this.dataset.name)" style="flex:1;opacity:${editing?'.4':'1'}" ${editing?'disabled':''}>+关系</button>
     <button class="btn-sm" onclick="startMerge('${node.uuid}','${node.name.replace(/['"]/g,'')}')" style="flex:1;opacity:${editing?'.4':'1'}" ${editing?'disabled':''}>合并</button>
+    <button class="btn-sm" onclick="deleteNode('${node.uuid}','${node.name.replace(/['"]/g,'')}')" style="background:#FFF5F5;color:#C62828">删除</button>
   </div>`;
   document.getElementById('detailSummary').textContent=node.summary||'';
   document.getElementById('detailContent').innerHTML=html;
@@ -801,7 +873,7 @@ function manageHidden(){
     panel=document.createElement('div');
     panel.id='hiddenPanel';
     panel.className='detail-panel';
-    panel.style.cssText='top:44px;right:12px;width:260px';
+    panel.style.cssText='top:44px;right:12px;width:260px;max-height:70vh;overflow-y:auto';
     panel.innerHTML='<div class="detail-panel-header"><span class="detail-title">隐藏节点</span><button class="detail-close" onclick="closeHiddenList()">×</button></div><div class="detail-content" id="hiddenContent"></div>';
     document.getElementById('graphContainer').appendChild(panel);
   }
@@ -809,18 +881,36 @@ function manageHidden(){
   panel.style.display='block';
 }
 
+function highlightNodeByUUID(uuid){
+  // 找到节点在 D3 数据中的索引
+  var circles=d3.select('#graphSvg').selectAll('g.nodes circle');
+  var idx=-1;
+  circles.each(function(d){if(d.raw.uuid===uuid){idx=d.id;}});
+  if(idx<0) return;
+  _selectedNodeIdx=idx;
+  var link=d3.select('#graphSvg').selectAll('g.links path');
+  circles.attr('stroke','#fff').attr('stroke-width',2.5);
+  link.attr('stroke','#C0C0C0').attr('stroke-width',1.5);
+  circles.filter(function(d){return d.id===idx;}).attr('stroke','#E91E63').attr('stroke-width',4);
+  link.filter(function(l){return l.source.id===idx||l.target.id===idx;})
+      .attr('stroke','#E91E63').attr('stroke-width',2.5);
+}
+
 function showDetailByUUID(uuid){
-  // 从当前 graph data 里找节点
   var nodes=d3.select('#graphSvg').selectAll('g.nodes circle').data();
   var found=nodes.filter(function(d){return d.raw.uuid===uuid;});
   if(found.length){
+    addLog('查看: '+found[0].raw.name);
+    highlightNodeByUUID(uuid);
     showDetail(found[0].raw,found[0].id);
   }else{
-    // 节点不在当前视图里，从 API 查
     api('/api/graphrag/data?graph_id='+_currentGraphId+'&limit=9999').then(function(d){
       if(!d.success||!d.data)return;
       var n=d.data.nodes_sample.find(function(n){return n.uuid===uuid;});
-      if(n)showDetail(n,-1);
+      if(n){
+        addLog('查看: '+n.name);
+        showDetail(n,-1);
+      }
     });
   }
 }
@@ -834,7 +924,14 @@ function showNodeList(){
   api('/api/graphrag/data?graph_id='+_currentGraphId+'&limit=9999').then(function(d){
     if(!d.success||!d.data)return;
     var nodes=d.data.nodes_sample||[];
-    // 按度排序（从 API 返回的 degree 顺序）
+    // 计算每个节点的度（不包含连接到隐藏节点的边）
+    var edges=d.data.edges_sample||[];
+    var deg={};
+    edges.forEach(function(e){
+      if(_hiddenNodeIds.has(e.source_node_uuid)||_hiddenNodeIds.has(e.target_node_uuid)) return;
+      deg[e.source_node_uuid]=(deg[e.source_node_uuid]||0)+1;
+      deg[e.target_node_uuid]=(deg[e.target_node_uuid]||0)+1;
+    });
     var panel=document.getElementById('nodeListPanel');
     if(!panel){
       panel=document.createElement('div');
@@ -844,11 +941,23 @@ function showNodeList(){
       panel.innerHTML='<div class="detail-panel-header"><span class="detail-title">节点列表 ('+nodes.length+')</span><button class="detail-close" onclick="closeNodeList()">×</button></div><div class="detail-content" id="nodeListContent"></div>';
       document.getElementById('graphContainer').appendChild(panel);
     }
-    var items='<div style="font-size:10px;color:#999;margin-bottom:8px">点击名称查看详情 · 点击操作按钮</div>';
+    // 按拼音排序
+    nodes.sort(function(a,b){return a.name.localeCompare(b.name,'zh-CN');});
+    // 分成可见和隐藏两组，隐藏放最后
+    var visible=[]; var hidden=[];
     nodes.forEach(function(n){
-      var hidden=_hiddenNodeIds.has(n.uuid)?' (已隐藏)':'';
+      if(_hiddenNodeIds.has(n.uuid)) hidden.push(n);
+      else visible.push(n);
+    });
+    var sorted=visible.concat(hidden);
+    var items='<div style="font-size:10px;color:#999;margin-bottom:8px">点击名称查看详情</div>';
+    sorted.forEach(function(n){
+      var isHidden=_hiddenNodeIds.has(n.uuid);
       var name=n.name||'?';
-      items+='<div class="detail-row" style="cursor:pointer" onclick="showDetailByUUID(\''+n.uuid+'\')"><span class="detail-value" style="text-align:left;color:#333;flex:1">'+name+hidden+'</span><button class="btn-sm" onclick="event.stopPropagation();hideNode(\''+n.uuid+'\',\''+name.replace(/'/g,'')+'\')" style="font-size:10px;padding:4px 6px">隐藏</button></div>';
+      var d=deg[n.uuid]||0;
+      var label=' ('+d+')'+(isHidden?' <span style="color:#999">(已隐藏)</span>':'');
+      var btnText=isHidden?'恢复':'隐藏';
+      items+='<div class="detail-row" style="cursor:pointer" onclick="event.stopPropagation();handleNodeListClick(\''+n.uuid+'\',\''+name.replace(/'/g,'')+'\')"><span class="detail-value" style="text-align:left;color:#333;flex:1">'+name+label+'</span><button class="btn-sm" onclick="event.stopPropagation();hideNode(\''+n.uuid+'\',\''+name.replace(/'/g,'')+'\')" style="font-size:10px;padding:4px 6px">'+btnText+'</button><button class="btn-sm" onclick="event.stopPropagation();deleteNode(\''+n.uuid+'\',\''+name.replace(/'/g,'')+'\')" style="font-size:10px;padding:4px 6px;background:#FFF5F5;color:#C62828;margin-left:4px">删</button></div>';
     });
     document.getElementById('nodeListContent').innerHTML=items;
     panel.style.display='block';
@@ -857,6 +966,33 @@ function showNodeList(){
 function closeNodeList(){
   var el=document.getElementById('nodeListPanel');
   if(el)el.style.display='none';
+}
+
+// 节点列表点击：动态判断是否在合并模式
+function handleNodeListClick(uuid,name){
+  if(_mergeSource && _mergeSource!==uuid){
+    doMerge(_mergeSource, uuid, name);
+  }else{
+    showDetailByUUID(uuid);
+  }
+}
+
+async function deleteNode(uuid,name){
+  if(!confirm('确认删除节点「'+name+'」？此操作不可撤销，关联的边也会被删除。')) return;
+  const r=await api('/api/graphrag/node/delete?graph_id='+_currentGraphId+'&node_uuid='+uuid,{method:'POST'});
+  if(r.success){
+    addLog('已删除: '+name);
+    _hiddenNodeIds.delete(uuid);
+    delete _hiddenNames[uuid];
+    refreshHiddenBtn();
+    _lastNodeCount=-1;
+    refreshData(true);
+    // 节点列表开着的话也刷新
+    var nl=document.getElementById('nodeListPanel');
+    if(nl&&nl.style.display!=='none')showNodeList();
+  }else{
+    addLog('删除失败: '+(r.error||''));
+  }
 }
 
 async function unhideNode(uuid){
@@ -954,6 +1090,7 @@ async function doMerge(srcUuid,tgtUuid,tgtName){
   var r=await api('/api/graphrag/node/merge?graph_id='+_currentGraphId+'&source_uuid='+srcUuid+'&target_uuid='+tgtUuid,{method:'POST'});
   if(r.success){
     addLog('✓ '+r.message+(r.reason?' ('+r.reason+')':''));
+    addLog('结果名称: '+r.message.split('→').pop().trim());
     _lastNodeCount=-1;
     refreshAll();
   }else{
@@ -986,7 +1123,7 @@ async function clearGraph(){
   if(r.success){
     document.getElementById('statNodes').textContent='0';
     document.getElementById('statEdges').textContent='0';
-    document.getElementById('statTypes').textContent='0';
+    document.getElementById('statUnhidden').textContent='0';
     document.getElementById('statDispNodes').textContent='0';
     document.getElementById('statDispEdges').textContent='0';
     document.getElementById('statMaxDeg').textContent='0';

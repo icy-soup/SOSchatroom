@@ -173,7 +173,7 @@ class GraphBuilder:
             raise ValueError("ANTHROPIC_API_KEY 未配置")
         from openai import OpenAI
         import httpx
-        http = httpx.Client(timeout=httpx.Timeout(120.0, connect=30.0))
+        http = httpx.Client(timeout=httpx.Timeout(300.0, connect=30.0))
         self._llm = {"client": OpenAI(api_key=key, base_url=url, http_client=http), "model": model}
         return self._llm
 
@@ -514,16 +514,24 @@ class GraphBuilder:
             batch = all_entries[start:start + batch_size]
             total_batches = (len(all_entries) - 1) // batch_size + 1
             _write_status(self.graph_id, {"message": f"关系推断中 ({start//batch_size+1}/{total_batches})..."})
-            try:
-                llm = self._get_llm()
-                r = llm["client"].chat.completions.create(
-                    model=llm["model"],
-                    messages=[{"role": "system", "content": prompt},
-                              {"role": "user", "content": json.dumps(batch, ensure_ascii=False)}],
-                    response_format={"type": "json_object"}, temperature=0.1, max_tokens=2048)
-                result = json.loads(r.choices[0].message.content)
-            except Exception as e:
-                print(f"[builder] 关系推断失败(batch {start}): {e}")
+            result = None
+            for attempt in range(3):
+                try:
+                    llm = self._get_llm()
+                    r = llm["client"].chat.completions.create(
+                        model=llm["model"],
+                        messages=[{"role": "system", "content": prompt},
+                                  {"role": "user", "content": json.dumps(batch, ensure_ascii=False)}],
+                        response_format={"type": "json_object"}, temperature=0.1, max_tokens=2048)
+                    result = json.loads(r.choices[0].message.content)
+                    break
+                except Exception as e:
+                    if attempt < 2:
+                        print(f"[builder] 关系推断重试(batch {start}, {attempt+1}/3): {e}")
+                        time.sleep(2 ** attempt)
+                    else:
+                        print(f"[builder] 关系推断失败(batch {start}, 已放弃): {e}")
+            if result is None:
                 continue
 
             batch_edges = []
