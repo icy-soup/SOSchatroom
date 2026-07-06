@@ -1,9 +1,3 @@
-# Claude Code 本地设置
-.claude/
-
-# Reference papers & docs — not for public upload
-reference/
-
 # 环境变量（含API Key）
 .env
 
@@ -15,14 +9,16 @@ frontend/dist/
 __pycache__/
 *.pyc
 
-# 项目技术栈原理讲解
-原理科普.md
-
-# 本地规划文档，不公开
-docs/superpowers/
-
-# SQLite 数据库文件
+# SQLite 数据库文件（图谱 DB 手动追踪）
 *.db
 *.db-shm
 *.db-wal
+!data/graphs/*.db
+
+# 旧架构分析数据（暂时保留文件，不再追踪）
+data/analysis/
+data/dialogues/
+
+# 图谱构建运行时状态
+backend/graphrag/build_status.json
 

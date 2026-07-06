@@ -27,7 +27,11 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi import File, UploadFile
 from fastapi.staticfiles import StaticFiles
 
+<<<<<<< HEAD
 from config import CHARACTER_NAMES, load_character_skill, get_character_api_config
+=======
+from config import CHARACTER_NAMES, load_persona, get_character_api_config
+>>>>>>> 4984133 (feat: GraphRAG 图谱构建管线完成 + 旧文件清理)
 from engine.character import build_system_prompt, build_conversation_context
 from engine.style import build_style_instruction
 from database import (
@@ -207,7 +211,7 @@ DEMO_PREFIXES = {
 async def style_transfer(api_key: str, api_url: str, model: str,
                          character: str, text: str) -> str:
     """Rewrite text in character's tone while preserving meaning exactly."""
-    skill_text = load_character_skill(character)
+    persona = load_persona(character)
     system = (
         f"Task: Rewrite the user's sentence as if {character} said it.\n"
         "IMPORTANT: This is a REWRITE task, not a conversation.\n"
@@ -218,7 +222,7 @@ async def style_transfer(api_key: str, api_url: str, model: str,
         "5. Output ONLY the rewritten sentence, no prefixes or explanations.\n"
         "6. Preserve the full length — don't shorten.\n"
         "7. If the sentence is already in character, return it as-is.\n\n"
-        f"Character reference:\n{skill_text[:1500]}"
+        f"Character reference:\n{persona[:1500]}"
     )
 
     if api_key:
@@ -305,8 +309,112 @@ async def get_tools():
     return {"tools": _TOOLS}
 
 
-@app.post("/api/save-config")
-async def save_config(data: dict):
+# ── GraphRAG 构建 API ──
+
+@app.post("/api/graphrag/build")
+async def trigger_graph_build():
+    """后台启动图谱构建，通过 status.json 报告进度。"""
+    from graphrag.builder import GraphBuilder, read_status, _write_status
+    from datetime import datetime
+
+    current = read_status()
+    if current.get("status") == "building":
+        return {"success": False, "error": "构建正在进行中"}
+
+    novels_dir = Path(__file__).resolve().parent.parent / "data" / "novels"
+    txt_files = sorted(novels_dir.glob("*.txt"))
+    if not txt_files:
+        return {"success": False, "error": "未找到小说文件"}
+
+    full_text = ""
+    for f in txt_files:
+        full_text += f"\n\n=== {f.stem} ===\n{f.read_text(encoding='utf-8')}"
+
+    builder = GraphBuilder("haruhi_novel")
+    # 清空旧数据，避免与上一轮构建混淆
+    builder.store.clear_all()
+    _write_status({"status":"building","progress":0,"message":"初始化...","nodes":0,"edges":0,
+                   "total_chunks":0,"current_chunk":0,"started_at":str(datetime.now())})
+    return {"success": True, "message": f"构建已启动，共 {len(full_text):,} 字符"}
+
+
+@app.get("/api/graphrag/status")
+async def get_graph_build_status():
+    """获取构建进度。"""
+    from graphrag.builder import read_status
+    return read_status()
+
+
+@app.get("/api/graphrag/data")
+async def get_graph_data():
+    """获取图谱统计和节点/边数据。"""
+    try:
+        from graphrag.store import GraphStore
+        store = GraphStore("haruhi_novel")
+        stats = store.get_statistics()
+        if stats["total_nodes"] == 0:
+            return {"success": True, "data": None, "message": "图谱为空，请先构建"}
+        all_nodes = store.get_all_nodes()
+        all_edges = store.get_all_edges()
+        cat_count = {}
+        node_map = {n["uuid"]: n for n in all_nodes}
+        for n in all_nodes:
+            labels = n.get("labels", [])
+            cat = labels[2] if len(labels) > 2 else "unknown"
+            cat_count[cat] = cat_count.get(cat, 0) + 1
+        rel_count = {}
+        for e in all_edges:
+            name = e.get("name", "UNKNOWN")
+            rel_count[name] = rel_count.get(name, 0) + 1
+
+        # 取前 80 个节点 + 关联的边
+        nodes_sample = all_nodes[:80]
+        sample_uuids = {n["uuid"] for n in nodes_sample}
+        edges_sample = [e for e in all_edges
+                       if e["source_node_uuid"] in sample_uuids
+                       and e["target_node_uuid"] in sample_uuids][:100]
+
+        return {
+            "success": True,
+            "data": {
+                "stats": stats,
+                "by_category": cat_count,
+                "by_type": rel_count,
+                "by_relation": rel_count,
+                "nodes_sample": [{
+                    "name": n["name"],
+                    "labels": n.get("labels", [])[1:],
+                    "summary": n.get("summary", ""),
+                    "uuid": n["uuid"]
+                } for n in nodes_sample],
+                "edges_sample": [{
+                    "source_node_name": node_map.get(e["source_node_uuid"], {}).get("name", ""),
+                    "target_node_name": node_map.get(e["target_node_uuid"], {}).get("name", ""),
+                    "name": e.get("name", ""),
+                    "source_node_uuid": e["source_node_uuid"],
+                    "target_node_uuid": e["target_node_uuid"],
+                } for e in edges_sample],
+            }
+        }
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+
+@app.post("/api/graphrag/clear")
+async def clear_graph():
+    """清零图谱数据。"""
+    try:
+        from graphrag.store import GraphStore
+        from graphrag.builder import _write_status
+        store = GraphStore("haruhi_novel")
+        store.clear_all()
+        _write_status({"status":"idle","progress":0,"message":"已清零","nodes":0,"edges":0})
+        return {"success": True, "message": "图谱已清零"}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+
+# ── 对话 REST API ──
     """Save API config to .env file on disk."""
     env_path = Path(__file__).resolve().parent.parent / ".env"
     existing = {}
@@ -428,7 +536,7 @@ async def action_engine(data: dict):
         return {"result": "你说啥？什么都没给我让我怎么安排！"}
 
     tool_prompt = load_tool_prompt("action-engine")
-    skill_context = load_character_skill("凉宫春日")
+    persona_core = load_persona("凉宫春日")
     tool_dir = Path(__file__).resolve().parent.parent / "tools" / "action-engine"
     if prompt_type == "checkin":
         checkin_path = tool_dir / "checkin-prompt.txt"
@@ -439,7 +547,7 @@ async def action_engine(data: dict):
         if addtask_path.exists():
             tool_prompt = addtask_path.read_text("utf-8").strip()
 
-    full_prompt = skill_context + "\n\n" + tool_prompt if skill_context else tool_prompt
+    full_prompt = persona_core + "\n\n" + tool_prompt if persona_core else tool_prompt
 
     reply = await call_llm(
         DEFAULT_API_KEY, DEFAULT_API_URL, DEFAULT_MODEL,
@@ -645,11 +753,11 @@ async def websocket_endpoint(ws: WebSocket):
                     })
                     continue
 
-                # 动态加载角色 SKILL 作为上下文
+                # 动态加载角色 Personality Core 作为上下文
                 char = get_character_for_tool(tool_id)
                 if char:
-                    skill_context = load_character_skill(char)
-                    full_prompt = skill_context + "\n\n" + prompt
+                    persona_core = load_persona(char)
+                    full_prompt = persona_core + "\n\n" + prompt
                 else:
                     full_prompt = prompt
 
@@ -810,6 +918,19 @@ async def websocket_endpoint(ws: WebSocket):
 
 
 # ── 静态文件 ──
+
+# 图谱构建页面
+GRAPH_BUILD_HTML = Path(__file__).resolve().parent / "graphrag_build.html"
+
+
+@app.get("/build-graph")
+async def graphrag_page():
+    """Serve the graphrag build frontend."""
+    if GRAPH_BUILD_HTML.exists():
+        from fastapi.responses import HTMLResponse
+        return HTMLResponse(GRAPH_BUILD_HTML.read_text(encoding="utf-8"))
+    return {"error": "page not found"}
+
 
 # Serve uploaded files (background images etc.)
 app.mount("/uploads", StaticFiles(directory=str(UPLOAD_DIR)), name="uploads")

@@ -1,22 +1,30 @@
-"""Load response engine config and character SKILL files."""
-
+"""Load response engine config and character persona files."""
 import json
 from pathlib import Path
 
-# Project root (haruhi-skill/) — config.py lives in backend/, go up one level
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-CONFIG_PATH = PROJECT_ROOT / "data" / "chatroom" / "response_engine_config.json"
-SKILL_DIR = PROJECT_ROOT / "skills" / "characters"
+CONFIG_PATH = PROJECT_ROOT / "backend" / "config" / "chatroom.json"
+PERSONA_DIR = PROJECT_ROOT / "backend" / "personas"
 
-# Character name mappings
 CHARACTER_NAMES = ["凉宫春日", "阿虚", "长门有希", "朝比奈实玖瑠", "古泉一树"]
 CHARACTER_DIR_MAP = {
     "凉宫春日": "haruhi",
     "阿虚": "kyon",
     "长门有希": "nagato",
-    "朝比奈实玖瑠": "asahina",
+    "朝比奈实玖瑠": "mikuru",
     "古泉一树": "koizumi",
 }
+
+
+def load_persona(name: str) -> str:
+    """Load a character's 200-word persona core."""
+    dir_name = CHARACTER_DIR_MAP.get(name)
+    if not dir_name:
+        return ""
+    path = PERSONA_DIR / f"{dir_name}.txt"
+    if not path.exists():
+        return ""
+    return path.read_text(encoding="utf-8").strip()
 
 
 def load_config():
@@ -24,33 +32,10 @@ def load_config():
         return json.load(f)
 
 
-def load_character_skill(name: str) -> str:
-    """Load a character's SKILL.md as system prompt text."""
-    dir_name = CHARACTER_DIR_MAP.get(name)
-    if not dir_name:
-        return ""
-    skill_path = SKILL_DIR / dir_name / "SKILL.md"
-    if not skill_path.exists():
-        return ""
-    return skill_path.read_text(encoding="utf-8")
-
-
-def build_system_prompt(name: str) -> str:
-    """Build the full system prompt for a character."""
-    skill = load_character_skill(name)
-    return (
-        f"你是{name}。请完全以{name}的身份和语气回应。\n\n"
-        f"角色设定：\n{skill}\n\n"
-        "注意：保持角色一致性，回应要符合角色的说话风格和性格特征。"
-        "每次回复控制在200字以内。"
-    )
-
-
 CONFIG = load_config()
 
 
 def get_character_api_config(name: str) -> dict:
-    """Get per-character API override (may return empty dict if not configured)."""
     api_config = CONFIG.get("character_api_config", {})
     overrides = api_config.get(name, {})
     if not overrides:

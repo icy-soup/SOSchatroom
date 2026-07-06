@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>图谱构建 · SOSchatroom</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Space Grotesk','Noto Sans SC',system-ui,sans-serif;background:#FAFAFA;color:#333;height:100vh;overflow:hidden}
+#app{height:100vh;display:flex;flex-direction:column}
+
+/* ===== Header ===== */
+.app-header{display:flex;align-items:center;padding:0 24px;height:52px;border-bottom:1px solid #EFEFEF;background:#FFF;flex-shrink:0}
+.header-left{display:flex;align-items:center;gap:12px}
+.brand{font-weight:700;font-size:13px;letter-spacing:1px;color:#000}
+.header-center{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px}
+.header-right{display:flex;align-items:center;gap:12px;margin-left:auto}
+.step-divider{width:1px;height:16px;background:#EAEAEA}
+.workflow-step{display:flex;align-items:center;gap:6px;font-size:11px}
+.step-num-label{color:#999;font-weight:500}
+.step-name{color:#000;font-weight:600}
+.status-indicator{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:500}
+.dot{width:8px;height:8px;border-radius:50%}
+.dot-green{background:#4CAF50}
+.dot-orange{background:#FF5722}
+.dot-gray{background:#CCC}
+.status-text{color:#999}
+.shutdown-btn{background:none;border:1px solid #EAEAEA;border-radius:4px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#CCC;font-size:14px;transition:all .15s}
+.shutdown-btn:hover{color:#E74C3C;border-color:#E74C3C;background:#FFF5F5}
+
+/* ===== Content Area ===== */
+.content-area{flex:1;display:flex;overflow:hidden}
+
+/* ===== Left: Graph ===== */
+.panel-wrapper{display:flex;flex-direction:column;overflow:hidden}
+.panel-wrapper.left{flex:1;border-right:1px solid #EFEFEF}
+.graph-panel{height:100%;display:flex;flex-direction:column}
+.panel-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #F3F3F3}
+.panel-title{font-size:11px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.5px}
+.header-tools{display:flex;gap:8px}
+.tool-btn{background:none;border:none;cursor:pointer;color:#999;font-size:13px;padding:4px 6px;border-radius:3px;display:flex;align-items:center;gap:4px}
+.tool-btn:hover{color:#333;background:#F5F5F5;border:none;outline:none}
+.tool-btn:disabled{opacity:.4;cursor:default}
+.btn-text{font-size:10px;font-weight:600}
+.spinning{animation:spin2 .8s linear infinite}
+@keyframes spin2{to{transform:rotate(360deg)}}
+.graph-container{flex:1;overflow:hidden;position:relative;background-color:#FAFAFA;background-image:radial-gradient(#D0D0D0 1.5px, transparent 1.5px);background-size:24px 24px}
+.graph-svg{width:100%;height:100%;display:block}
+.graph-hint{display:flex;align-items:center;justify-content:center;height:100%;color:#CCC;font-size:13px}
+.graph-hint .hint-icon{width:32px;height:32px;margin-right:12px;stroke:#DDD}
+.graph-building-hint{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:10px;background:rgba(0,0,0,.7);color:#FFF;padding:10px 18px;border-radius:6px;font-size:12px;pointer-events:none}
+.graph-building-hint .memory-icon{width:18px;height:18px;stroke:#FFF}
+
+/* ===== Legend ===== */
+.graph-legend{position:absolute;left:12px;bottom:12px;background:rgba(255,255,255,.92);border:1px solid #EFEFEF;border-radius:6px;padding:10px 14px;z-index:5;font-size:11px;backdrop-filter:blur(4px)}
+.legend-row{display:flex;align-items:center;gap:8px;margin:3px 0}
+.legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.legend-label{color:#666;font-weight:500}
+
+/* ===== Detail Panel ===== */
+.detail-panel{position:absolute;right:12px;top:12px;width:280px;background:#FFF;border:1px solid #EFEFEF;border-radius:8px;box-shadow:0 4px 24px rgba(0,0,0,0.08);z-index:10;font-size:12px}
+.detail-panel-header{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid #F3F3F3}
+.detail-title{font-weight:600;font-size:11px;color:#333}
+.detail-type-badge{font-size:9px;font-weight:700;color:#FFF;padding:2px 6px;border-radius:3px}
+.detail-close{background:none;border:none;font-size:16px;color:#999;cursor:pointer;line-height:1}
+.detail-content{padding:10px 12px}
+.detail-summary{padding:6px 12px;font-size:11px;color:#666;border-bottom:1px solid #F3F3F3;font-style:italic}
+.detail-row{display:flex;justify-content:space-between;padding:4px 0;font-size:11px;border-bottom:1px solid #F5F5F5}
+.detail-label{color:#999;font-weight:500}
+.detail-value{color:#333;font-weight:600;text-align:right;max-width:160px;word-break:break-all}
+.detail-section{margin-top:8px}
+.detail-section .section-title{font-size:10px;color:#999;font-weight:600;text-transform:uppercase;margin-bottom:4px}
+.labels-list{display:flex;flex-wrap:wrap;gap:4px}
+.label-tag{font-size:10px;background:#F5F5F5;padding:2px 6px;border-radius:3px;color:#666}
+
+/* ===== Right: Steps ===== */
+.panel-wrapper.right{width:400px;display:flex;flex-direction:column}
+.workbench-panel{height:100%;display:flex;flex-direction:column;background:#FAFAFA}
+.scroll-container{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:16px}
+.step-card{background:#FFF;border-radius:8px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.04);border:1px solid #EAEAEA;transition:all .3s ease}
+.step-card.active{border-color:#FF5722;box-shadow:0 4px 12px rgba(255,87,34,0.08)}
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.step-info{display:flex;align-items:center;gap:12px}
+.step-num{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:#E0E0E0}
+.step-card.active .step-num,.step-card.completed .step-num{color:#000}
+.step-title{font-weight:600;font-size:14px;letter-spacing:.5px}
+.badge{font-size:10px;padding:4px 8px;border-radius:4px;font-weight:600;text-transform:uppercase}
+.badge.success{background:#E8F5E9;color:#2E7D32}
+.badge.processing{background:#FF5722;color:#FFF}
+.badge.accent{background:#000;color:#FFF}
+.badge.pending{background:#F5F5F5;color:#999}
+.badge.error{background:#FFEBEE;color:#C62828}
+.api-note{font-family:'JetBrains Mono',monospace;font-size:10px;color:#999;margin-bottom:8px}
+.desc{font-size:12px;color:#666;line-height:1.5;margin-bottom:16px}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;background:#F9F9F9;padding:16px;border-radius:6px}
+.stat-card{text-align:center}
+.stat-value{display:block;font-size:20px;font-weight:700;color:#000;font-family:'JetBrains Mono',monospace}
+.stat-label{font-size:9px;color:#999;text-transform:uppercase;margin-top:4px;display:block}
+.progress-section{display:flex;align-items:center;gap:10px;font-size:12px;color:#FF5722;margin-bottom:12px}
+.spinner-sm{width:14px;height:14px;border:2px solid #FFCCBC;border-top-color:#FF5722;border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.action-btn{width:100%;background:#000;color:#FFF;border:none;padding:14px;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;transition:opacity .2s;font-family:inherit}
+.action-btn:disabled{background:#CCC;cursor:not-allowed}
+.action-btn:hover:not(:disabled){opacity:.8}
+.btn-row{display:flex;gap:8px}
+.btn-row .action-btn{flex:1}
+.btn-sm{background:#F5F5F5;color:#333;border:none;padding:8px 12px;border-radius:4px;font-size:11px;cursor:pointer;font-family:inherit}
+.btn-sm:hover{background:#E5E5E5;border:none;outline:none}
+
+/* ===== System Logs ===== */
+.system-logs{background:#000;color:#DDD;padding:14px 16px;font-family:'JetBrains Mono',monospace;flex-shrink:0}
+.log-header{display:flex;justify-content:space-between;border-bottom:1px solid #333;padding-bottom:6px;margin-bottom:6px;font-size:10px;color:#888;text-transform:uppercase}
+.log-content{height:72px;overflow-y:auto;padding-right:4px}
+.log-line{font-size:11px;display:flex;gap:12px;line-height:1.6}
+.log-time{color:#666;min-width:75px}
+.log-msg{color:#CCC;word-break:break-all}
+</style>
+</head>
+<body>
+<div id="app">
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="brand">SOSCHATROOM · 图谱构建</div>
+    </div>
+    <div class="header-center"></div>
+    <div class="header-right">
+      <div class="workflow-step">
+        <span class="step-num-label">Step 1/5</span>
+        <span class="step-divider"></span>
+        <span class="step-name">图谱构建</span>
+      </div>
+      <div class="step-divider"></div>
+      <div class="status-indicator">
+        <span class="dot dot-gray" id="headerDot"></span>
+        <span class="status-text" id="headerStatus">就绪</span>
+      </div>
+      <div class="step-divider"></div>
+      <button class="shutdown-btn" onclick="shutdownServer()" title="关闭后端服务器">⏻</button>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <div class="content-area">
+    <!-- Left: Graph -->
+    <div class="panel-wrapper left">
+      <div class="graph-panel">
+        <div class="panel-header">
+          <span class="panel-title">图谱可视化</span>
+          <div class="header-tools">
+            <button class="tool-btn" id="btnToggleLabels" onclick="toggleEdgeLabels()" title="Toggle edge labels">
+              <span class="btn-text" id="lblToggle">标签关</span>
+            </button>
+            <input type="number" id="nodeLimit" value="200" min="10" max="9999"
+                   style="width:60px;padding:2px 6px;font-size:11px;border:1px solid #E0E0E0;border-radius:4px;font-family:'JetBrains Mono',monospace;text-align:center"
+                   onchange="changeNodeLimit()" title="显示节点上限">
+            <button class="tool-btn" onclick="refreshAll()">
+              <span class="icon-refresh">↻</span>
+              <span class="btn-text">刷新</span>
+            </button>
+            <button class="tool-btn" onclick="showNodeList()" title="节点列表">
+              <span class="btn-text">节点列表</span>
+            </button>
+            <button class="tool-btn" id="btnHidden" onclick="manageHidden()" title="管理隐藏节点" style="display:none">
+              <span class="btn-text" id="lblHidden">已隐藏 0</span>
+            </button>
+          </div>
+        </div>
+        <div class="graph-container" id="graphContainer">
+          <svg class="graph-svg" id="graphSvg" style="display:none"></svg>
+          <div class="graph-hint" id="graphHint">
+            <svg class="hint-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="16"/>
+              <line x1="8" y1="12" x2="16" y2="12"/>
+            </svg>
+            点击「开始构建」启动
+          </div><input type="hidden" id="mergeSrcUuid">
+        </div>
+        <!-- Legend -->
+        <div class="graph-legend" id="graphLegend" style="display:none">
+          <div class="legend-row"><span class="legend-dot" style="background:#E74C3C"></span><span class="legend-label">人物</span></div>
+          <div class="legend-row"><span class="legend-dot" style="background:#2980B9"></span><span class="legend-label">组织</span></div>
+          <div class="legend-row"><span class="legend-dot" style="background:#8E44AD"></span><span class="legend-label">物品/概念</span></div>
+        </div>
+        <!-- Detail panel -->
+        <div class="detail-panel" id="detailPanel" style="display:none">
+          <div class="detail-panel-header">
+            <span class="detail-title" id="detailTitle">节点详情</span>
+            <span class="detail-type-badge" id="detailBadge" style="background:#999">-</span>
+            <button class="detail-close" onclick="closeDetail()">×</button>
+          </div>
+          <div class="detail-summary" id="detailSummary"></div>
+          <div class="detail-content" id="detailContent"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Steps + Logs -->
+    <div class="panel-wrapper right">
+      <div class="workbench-panel">
+        <div class="scroll-container">
+          <!-- Step 01 -->
+          <div class="step-card" id="stepBuild">
+            <div class="card-header">
+              <div class="step-info">
+                <span class="step-num">01</span>
+                <span class="step-title">图谱构建</span>
+              </div>
+              <span id="badgeBuild" class="badge pending">等待</span>
+            </div>
+            <div class="api-note">POST /api/graphrag/build</div>
+            <div class="desc">从小说文本中提取实体和关系</div>
+
+            <!-- File Source -->
+            <div style="margin-bottom:14px; padding:12px; background:#F9F9F9; border-radius:6px; font-size:12px">
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px">
+                <span style="font-weight:600; color:#333;">数据源</span>
+                <button class="btn-sm" onclick="document.getElementById('fileInput').click()" id="btnChooseFile">选择文件</button>
+              </div>
+              <div style="display:flex; align-items:center; gap:8px; color:#666;">
+                <span style="font-weight:400; color:#999;">📄</span>
+                <span id="fileName" style="font-family:'JetBrains Mono',monospace; font-size:11px; color:#333;">txt全卷.txt</span>
+                <span id="fileSize" style="color:#999; font-size:10px;"></span>
+              </div>
+              <input type="file" id="fileInput" accept=".txt" style="display:none">
+            </div>
+
+            <!-- Progress -->
+            <div id="progressSection" class="progress-section" style="display:none">
+              <div class="spinner-sm" id="spinner"></div>
+              <span id="progressMsg">构建中...</span>
+            </div>
+            <div class="btn-row">
+              <button class="action-btn" id="btnBuild" onclick="onBuildClick()">开始构建</button>
+              <button class="btn-sm" onclick="clearGraph()">清零</button>
+              <button class="btn-sm" onclick="refreshAll()">↻</button>
+            </div>
+          </div>
+
+          <!-- Step 02 -->
+          <div class="step-card" id="stepStats">
+            <div class="card-header">
+              <div class="step-info">
+                <span class="step-num">02</span>
+                <span class="step-title">图谱统计</span>
+              </div>
+              <span id="badgeStats" class="badge pending">等待</span>
+            </div>
+            <div class="api-note">GET /api/graphrag/data</div>
+            <div class="desc">节点、边、实体类型的实时统计</div>
+            <div class="stats-grid">
+              <div class="stat-card"><span class="stat-value" id="statNodes">0</span><span class="stat-label">总节点</span></div>
+              <div class="stat-card"><span class="stat-value" id="statEdges">0</span><span class="stat-label">总边</span></div>
+              <div class="stat-card"><span class="stat-value" id="statTypes">0</span><span class="stat-label">实体类型</span></div>
+              <div class="stat-card"><span class="stat-value" id="statDispNodes">0</span><span class="stat-label">显示节点</span></div>
+              <div class="stat-card"><span class="stat-value" id="statDispEdges">0</span><span class="stat-label">显示边</span></div>
+              <div class="stat-card"><span class="stat-value" id="statMaxDeg">0</span><span class="stat-label">最多边节点</span></div>
+            </div>
+          </div>
+
+          <!-- Step 03 -->
+          <div class="step-card" id="stepComplete">
+            <div class="card-header">
+              <div class="step-info">
+                <span class="step-num">03</span>
+                <span class="step-title">构建完成</span>
+              </div>
+              <span id="badgeComplete" class="badge pending">等待</span>
+            </div>
+            <div class="api-note">Graph Ready</div>
+            <div class="desc">图谱构建完成后的数据概览</div>
+            <button class="action-btn" id="btnView" disabled onclick="refreshData()">查看图谱数据 ➝</button>
+          </div>
+        </div>
+
+        <!-- System Logs -->
+        <div class="system-logs">
+          <div class="log-header"><span>SYSTEM DASHBOARD</span><span>HARUHI_NOVEL</span></div>
+          <div class="log-content" id="logContent"><div class="log-line"><span class="log-time">--:--:--</span><span class="log-msg">就绪</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const _zhLabels={'KNOWS':'认识','MEMBER_OF':'属于','INTERACTS_WITH':'互动','MENTIONS':'提及','LOCATED_AT':'位于','CREATES':'创造','OPPOSES':'反对','TRUSTS':'信任'};
+function zhLabel(l){return _zhLabels[l]||l;}
+let simulation=null, pollTimer=null, _showEdgeLabels=false, _lastNodeCount=0, _nodePositions={}, _lastLogChunk=0, _selectedNodeIdx=null, _graphEdges=[], _hiddenNodeIds=new Set(JSON.parse(localStorage.getItem('graphrag_hidden')||'[]')), _addEdgeSource=null, _mergeSource=null, _buildStatus='idle';
+
+function addLog(msg){
+  const d=new Date(), t=d.toLocaleTimeString('en-US',{hour12:false})+'.'+String(d.getMilliseconds()).padStart(3,'0');
+  const el=document.getElementById('logContent');
+  el.innerHTML+=`<div class="log-line"><span class="log-time">${t}</span><span class="log-msg">${msg}</span></div>`;
+  el.scrollTop=el.scrollHeight;
+}
+
+async function api(url,opts){
+  try{const r=await fetch(url,opts||{});return await r.json()}
+  catch(e){return{success:false,error:e.message}}
+}
+
+function setHeader(status,nodes,edges){
+  const dot=document.getElementById('headerDot');
+  dot.className='dot '+(status==='building'?'dot-orange':status==='paused'?'dot-gray':status==='completed'?'dot-green':'dot-gray');
+  document.getElementById('headerStatus').textContent=status==='building'?'构建中':status==='paused'?'已暂停':status==='completed'?'已完成':'就绪';
+}
+
+async function refreshStatus(){
+  const s=await api('/api/graphrag/status');
+  const pct=(s.progress||0)*100;
+  const paused=s.status==='paused', building=s.status==='building', done=s.status==='completed', err=s.status==='error';
+
+  document.getElementById('badgeBuild').className='badge '+(paused?'pending':building?'processing':done?'success':err?'error':'pending');
+  document.getElementById('badgeBuild').textContent=paused?'已暂停':building?Math.round(pct)+'%':done?'完成':err?'失败':'等待';
+  document.getElementById('badgeStats').className='badge '+(building||paused?'processing':done?'success':err?'error':'pending');
+  document.getElementById('badgeStats').textContent=building||paused?'构建中':done?'完成':err?'失败':'等待';
+  document.getElementById('stepBuild').className='step-card'+(building||paused?' active':'');
+  document.getElementById('stepStats').className='step-card'+(building||paused?' active':done?' completed':'');
+  document.getElementById('stepComplete').className='step-card'+(done?' completed':'');
+  document.getElementById('progressSection').style.display=(building||paused)?'flex':'none';
+  document.getElementById('spinner').style.display=building?'block':'none';
+  document.getElementById('progressMsg').textContent=paused?'已暂停':(s.message||'');
+  _buildStatus=s.status;
+  setHeader(s.status, s.nodes, s.edges);
+  // 按钮状态
+  const btn=document.getElementById('btnBuild');
+  btn.textContent=paused?'继续':building?'暂停':done?'重新构建':'开始构建';
+  btn.disabled=false;
+
+  document.getElementById('badgeComplete').className='badge '+(done?'accent':'pending');
+  document.getElementById('badgeComplete').textContent=done?'就绪':'等待';
+  document.getElementById('btnView').disabled=!done;
+  if(s.nodes!==undefined) document.getElementById('statNodes').textContent=s.nodes;
+  if(s.edges!==undefined) document.getElementById('statEdges').textContent=s.edges;
+
+  // 实时日志：块级进度（不打印节点具体内容，太吵）
+  if(building && s.current_chunk && s.current_chunk!==_lastLogChunk){
+    _lastLogChunk=s.current_chunk;
+    addLog(s.message||('块 '+s.current_chunk+'/'+(s.total_chunks||'?')));
+  }
+  if(building||paused){
+    if(building){refreshData();}
+    if(!pollTimer){pollTimer=setInterval(refreshStatus,500);addLog('构建中...');}
+  }
+  if((done||err) && pollTimer){
+    clearInterval(pollTimer); pollTimer=null;
+    if(done){addLog('构建完成 ✓');refreshData();}
+    else if(err){addLog('构建失败 ✗');}
+    document.getElementById('btnBuild').disabled=false;
+  }
+}
+
+async function refreshData(force){
+  const limit=document.getElementById('nodeLimit').value||200;
+  const d=await api('/api/graphrag/data?limit='+limit);
+  if(!d.success || !d.data) return;
+  document.getElementById('statTypes').textContent=Object.keys(d.data.by_type||d.data.by_category||{}).length||0;
+  if(d.data.nodes_sample){
+    const visibleCount=Math.min(parseInt(document.getElementById('nodeLimit').value)||9999, d.data.nodes_sample.filter(n=>!_hiddenNodeIds.has(n.uuid)).length);
+    document.getElementById('statDispNodes').textContent=visibleCount;
+  }
+  if(d.data.displayed_edges!=null) document.getElementById('statDispEdges').textContent=d.data.displayed_edges;
+  if(d.data.max_degree) document.getElementById('statMaxDeg').textContent=d.data.max_degree.node+' ('+d.data.max_degree.count+')';
+  const count=(d.data.nodes_sample||[]).length;
+  if(force || count!==_lastNodeCount){
+    _lastNodeCount=count;
+    renderGraph(d.data);
+  }
+  refreshHiddenBtn();
+}
+
+function changeNodeLimit(){
+  _lastNodeCount=-1;  // 强制刷新
+  refreshData(true);
+}
+
+function renderGraph(data){
+  const hint=document.getElementById('graphHint');
+  const svgEl=document.getElementById('graphSvg');
+  if(!data.nodes_sample||data.nodes_sample.length===0){
+    hint.style.display='flex';
+    svgEl.style.display='none';
+    document.getElementById('graphLegend').style.display='none';
+    return;
+  }
+  hint.style.display='none';
+  svgEl.style.display='block';
+  document.getElementById('graphLegend').style.display='block';
+
+  // Colors
+  const palette=['#FF6B35','#004E89','#7B2D8E','#1A936F','#C5283D','#3498db','#9b59b6','#27ae60'];
+  const colorMap={};
+  let ci=0;
+  data.nodes_sample.forEach(n=>{
+    const labels=n.labels||[];
+    const cat=labels.length>1?labels[labels.length-1]:'Entity';
+    if(!colorMap[cat])colorMap[cat]=palette[ci++%palette.length];
+  });
+  const getColor=t=>colorMap[t]||'#999';
+
+  const container=document.getElementById('graphContainer');
+  const width=container.clientWidth||800, height=container.clientHeight||500;
+
+  // 缓存旧节点位置，避免重绘时跳动
+  if(simulation){
+    simulation.nodes().forEach(function(d){if(d&&d.name&&d.x!=null)_nodePositions[d.name]={x:d.x,y:d.y};});
+    simulation.stop();
+  }
+
+  const svg=d3.select('#graphSvg');
+  svg.selectAll('*').remove();
+  svg.attr('width',width).attr('height',height).attr('viewBox',[0,0,width,height]);
+
+  const displayLimit=parseInt(document.getElementById('nodeLimit').value)||9999;
+  const filtered=data.nodes_sample.filter(n=>!_hiddenNodeIds.has(n.uuid));
+  const nodes=filtered.slice(0,displayLimit).map((n,i)=>{
+    const labels=n.labels||[];
+    const pos=_nodePositions[n.name]||{};
+    return{id:i, name:n.name, type:labels.length>1?labels[labels.length-1]:'Entity', raw:n, x:pos.x, y:pos.y};
+  });
+  const nodeIds=new Set(nodes.map(n=>n.id));
+
+  // Edges（按节点对合并：双向同关系名→一条，单向→最多三条）
+  const rawEdges=(data.edges_sample||[]).filter(e=>{
+    const si=nodes.findIndex(n=>n.name===e.source_node_name);
+    const ti=nodes.findIndex(n=>n.name===e.target_node_name);
+    return si>=0&&ti>=0;
+  }).map(e=>{
+    const si=nodes.findIndex(n=>n.name===e.source_node_name);
+    const ti=nodes.findIndex(n=>n.name===e.target_node_name);
+    return{source:si, target:ti, name:e.name||'RELATED', raw:e};
+  });
+  // 按节点对分组
+  const pairGroups={};
+  rawEdges.forEach(e=>{
+    const k=Math.min(e.source,e.target)+'_'+Math.max(e.source,e.target);
+    if(!pairGroups[k])pairGroups[k]={ab:[],ba:[]};
+    if(e.source<=e.target)pairGroups[k].ab.push(e);
+    else pairGroups[k].ba.push(e);
+  });
+  const edges=[];
+  _graphEdges=[];
+  Object.values(pairGroups).forEach(p=>{
+    const ab=p.ab, ba=p.ba;
+    const abNames=new Set(ab.map(e=>e.name));
+    const baNames=new Set(ba.map(e=>e.name));
+    // 双向（同名在两边都存在）
+    ab.forEach(e=>{
+      if(!e||!e.raw)return;
+      if(baNames.has(e.name)){
+        const match=ba.find(x=>x.name===e.name);
+        if(!match||!match.raw){edges.push({source:e.source,target:e.target,name:zhLabel(e.name),curvature:-0.4,raw:e.raw});return;}
+        edges.push({source:e.source, target:e.target, name:zhLabel(e.name)+'⇄', curvature:0,
+          raw:{merged:true, relations:[e.raw, match.raw], direction:'⇄'}});
+        ba.splice(ba.indexOf(match),1);
+      }else{
+        edges.push({source:e.source, target:e.target, name:zhLabel(e.name), curvature:-0.4,
+          raw:e.raw});
+      }
+    });
+    ba.forEach(e=>{
+      if(!e||!e.raw)return;
+      edges.push({source:e.source, target:e.target, name:zhLabel(e.name), curvature:0.4,
+        raw:e.raw});
+    });
+  });
+  _graphEdges=edges;
+
+  // D3 force sim
+  simulation=d3.forceSimulation(nodes)
+    .force('link',d3.forceLink(edges).id(d=>d.id).distance(150))
+    .force('charge',d3.forceManyBody().strength(-400))
+    .force('center',d3.forceCenter(width/2,height/2))
+    .force('collide',d3.forceCollide(50))
+    .force('x',d3.forceX(width/2).strength(0.04))
+    .force('y',d3.forceY(height/2).strength(0.04));
+
+  const g=svg.append('g');
+
+  // Zoom
+  svg.call(d3.zoom().scaleExtent([0.1,4]).on('zoom',(e)=>g.attr('transform',e.transform)));
+
+  // Links (paths)
+  const linkGroup=g.append('g').attr('class','links');
+  const link=linkGroup.selectAll('path').data(edges).enter().append('path')
+    .attr('stroke','#C0C0C0').attr('stroke-width',1.5).attr('fill','none')
+    .style('cursor','pointer')
+    .on('click',(event,d)=>{
+      event.stopPropagation();
+      link.attr('stroke','#C0C0C0').attr('stroke-width',1.5);
+      d3.select(event.target).attr('stroke','#3498db').attr('stroke-width',3);
+      showEdgeDetail(d.raw, d.name);
+    });
+
+  // Link label backgrounds
+  const linkLabelBg=linkGroup.selectAll('rect').data(edges).enter().append('rect')
+    .attr('fill','rgba(255,255,255,0.95)').attr('rx',3).attr('ry',3)
+    .style('display',_showEdgeLabels?'block':'none')
+    .style('cursor','pointer')
+    .on('click',(event,d)=>{
+      event.stopPropagation();
+      link.attr('stroke','#C0C0C0').attr('stroke-width',1.5);
+      link.filter(l=>l===d).attr('stroke','#3498db').attr('stroke-width',3);
+      showEdgeDetail(d.raw, d.name);
+    });
+
+  // Link labels
+  const linkLabels=linkGroup.selectAll('text').data(edges).enter().append('text')
+    .text(d=>zhLabel(d.name)).attr('font-size','9px').attr('fill','#666')
+    .attr('text-anchor','middle').attr('dominant-baseline','middle')
+    .style('font-family','system-ui,sans-serif')
+    .style('display',_showEdgeLabels?'block':'none')
+    .style('cursor','pointer')
+    .on('click',(event,d)=>{
+      event.stopPropagation();
+      link.attr('stroke','#C0C0C0').attr('stroke-width',1.5);
+      link.filter(l=>l===d).attr('stroke','#3498db').attr('stroke-width',3);
+      showEdgeDetail(d.raw, d.name);
+    });
+
+  // Nodes
+  const nodeGroup=g.append('g');
+  const node=nodeGroup.selectAll('circle').data(nodes).enter().append('circle')
+    .attr('r',10).attr('fill',d=>getColor(d.type)).attr('stroke','#fff').attr('stroke-width',2.5)
+    .style('cursor','pointer')
+    .call(d3.drag()
+      .on('start',(e,d)=>{d.fx=d.x;d.fy=d.y;})
+      .on('drag',(e,d)=>{d.fx=e.x;d.fy=e.y;simulation.alphaTarget(0.3).restart();})
+      .on('end',(e,d)=>{simulation.alphaTarget(0);d.fx=null;d.fy=null;}))
+    .on('click',(event,d)=>{
+      event.stopPropagation();
+      if(_addEdgeSource && _addEdgeSource!==d.raw.uuid){
+        if(_buildStatus==='building'||_buildStatus==='paused'){_addEdgeSource=null;addLog('构建中不能编辑');node.attr('stroke','#fff').attr('stroke-width',2.5);link.attr('stroke','#C0C0C0').attr('stroke-width',1.5);return;}
+        closeDetail();
+        showAddEdgeForm(_addEdgeSource, d.raw.uuid, d.name);
+        _addEdgeSource=null;
+        node.attr('stroke','#fff').attr('stroke-width',2.5);
+        link.attr('stroke','#C0C0C0').attr('stroke-width',1.5);
+        return;
+      }
+      if(_mergeSource && _mergeSource!==d.raw.uuid){
+        if(_buildStatus==='building'||_buildStatus==='paused'){_mergeSource=null;addLog('构建中不能编辑');node.attr('stroke','#fff').attr('stroke-width',2.5);link.attr('stroke','#C0C0C0').attr('stroke-width',1.5);return;}
+        _mergeSource=null;
+        node.attr('stroke','#fff').attr('stroke-width',2.5);
+        link.attr('stroke','#C0C0C0').attr('stroke-width',1.5);
+        doMerge(document.getElementById('mergeSrcUuid').value, d.raw.uuid, d.name);
+        return;
+      }
+      if(_selectedNodeIdx===d.id){
+        _selectedNodeIdx=null;
+        node.attr('stroke','#fff').attr('stroke-width',2.5);
+        link.attr('stroke','#C0C0C0').attr('stroke-width',1.5);
+        closeDetail();
+      }else{
+        _selectedNodeIdx=d.id;
+        node.attr('stroke','#fff').attr('stroke-width',2.5);
+        link.attr('stroke','#C0C0C0').attr('stroke-width',1.5);
+        d3.select(event.target).attr('stroke','#E91E63').attr('stroke-width',4);
+        link.filter(l=>l.source.id===d.id||l.target.id===d.id)
+          .attr('stroke','#E91E63').attr('stroke-width',2.5);
+        showDetail(d.raw,d.id);
+      }
+    })
+    .on('mouseenter',(e,d)=>d3.select(e.target).attr('stroke','#333').attr('stroke-width',3))
+    .on('mouseleave',(e,d)=>d3.select(e.target).attr('stroke','#fff').attr('stroke-width',2.5));
+
+  // Node labels
+  const nodeLabels=nodeGroup.selectAll('text').data(nodes).enter().append('text')
+    .text(d=>d.name.length>8?d.name.slice(0,8)+'…':d.name)
+    .attr('font-size','11px').attr('fill','#333').attr('font-weight','500')
+    .attr('dx',14).attr('dy',4).style('pointer-events','none')
+    .style('font-family','system-ui,sans-serif');
+
+  // Tick
+  const getLinkPath=d=>{
+    if(d.source.x==null)return'';
+    if(d.curvature===0)return`M${d.source.x},${d.source.y}L${d.target.x},${d.target.y}`;
+    const sx=d.source.x, sy=d.source.y, tx=d.target.x, ty=d.target.y;
+    const dx=tx-sx, dy=ty-sy, dist=Math.sqrt(dx*dx+dy*dy)||1;
+    const offset=Math.max(35,dist*0.25);
+    const ox=-dy/dist*d.curvature*offset, oy=dx/dist*d.curvature*offset;
+    const cx=(sx+tx)/2+ox, cy=(sy+ty)/2+oy;
+    return`M${sx},${sy} Q${cx},${cy} ${tx},${ty}`;
+  };
+  const getMid=d=>{
+    if(d.source.x==null)return{x:0,y:0};
+    if(d.curvature===0)return{x:(d.source.x+d.target.x)/2,y:(d.source.y+d.target.y)/2};
+    const sx=d.source.x, sy=d.source.y, tx=d.target.x, ty=d.target.y;
+    const dx=tx-sx, dy=ty-sy, dist=Math.sqrt(dx*dx+dy*dy)||1;
+    const offset=Math.max(35,dist*0.25);
+    const ox=-dy/dist*d.curvature*offset, oy=dx/dist*d.curvature*offset;
+    const cx=(sx+tx)/2+ox, cy=(sy+ty)/2+oy;
+    return{x:0.25*sx+0.5*cx+0.25*tx, y:0.25*sy+0.5*cy+0.25*ty};
+  };
+
+  simulation.on('tick',()=>{
+    link.attr('d',d=>getLinkPath(d));
+    linkLabels.each(function(d){
+      const m=getMid(d);
+      d3.select(this).attr('x',m.x).attr('y',m.y);
+    });
+    linkLabelBg.each(function(d,i){
+      const m=getMid(d);
+      const bb=linkLabels.nodes()[i]?.getBBox();
+      d3.select(this).attr('x',m.x-(bb?.width||0)/2-4).attr('y',m.y-(bb?.height||0)/2-2)
+        .attr('width',(bb?.width||0)+8).attr('height',(bb?.height||0)+4);
+    });
+    node.attr('cx',d=>d.x).attr('cy',d=>d.y);
+    nodeLabels.attr('x',d=>d.x).attr('y',d=>d.y);
+  });
+
+  // Click empty space → close detail, cancel add-edge
+  svg.on('click',()=>{
+    if(_addEdgeSource){_addEdgeSource=null;addLog('已取消添加关系');}
+    if(_mergeSource){_mergeSource=null;addLog('已取消合并');}
+    closeDetail();
+    node.attr('stroke','#fff').attr('stroke-width',2.5);
+    link.attr('stroke','#C0C0C0').attr('stroke-width',1.5);
+  });
+}
+
+function showDetail(node,idx){
+  const labels=node.labels||[];
+  const cat=labels.length>1?labels[labels.length-1]:'';
+  const colorMap={'person':'#FF5722','organization':'#1565C0','object':'#7B1FA2'};
+  document.getElementById('detailTitle').textContent=node.name;
+  const badge=document.getElementById('detailBadge');
+  badge.textContent=cat||'-';
+  badge.style.background=colorMap[cat]||'#999';
+  const edgeCount=_graphEdges.filter(e=>e.source.id===idx||e.target.id===idx).length;
+  const hidden=_hiddenNodeIds.has(node.uuid);
+  const editing=(_buildStatus==='building'||_buildStatus==='paused');
+  let html=`
+    <div class="detail-row"><span class="detail-label">名称</span><span class="detail-value">${node.name}</span></div>
+    <div class="detail-row"><span class="detail-label">类型</span><span class="detail-value">${labels[0]||'-'}</span></div>
+    <div class="detail-row"><span class="detail-label">连接</span><span class="detail-value">${edgeCount} 条边</span></div>`;
+  html+=`<div style="margin-top:12px;display:flex;gap:6px">
+    <button class="btn-sm" onclick="hideNode('${node.uuid}','${node.name.replace(/'/g,"\\'")}')" style="flex:1;background:${hidden?'#E8F5E9':'#F5F5F5'};color:${hidden?'#2E7D32':'#333'}">${hidden?'已隐藏':'隐藏'}</button>
+    <button class="btn-sm" data-uuid="${node.uuid}" data-name="${node.name.replace(/['"]/g,'')}" onclick="startAddEdge(this.dataset.uuid,this.dataset.name)" style="flex:1;opacity:${editing?'.4':'1'}" ${editing?'disabled':''}>+关系</button>
+    <button class="btn-sm" onclick="startMerge('${node.uuid}','${node.name.replace(/['"]/g,'')}')" style="flex:1;opacity:${editing?'.4':'1'}" ${editing?'disabled':''}>合并</button>
+  </div>`;
+  document.getElementById('detailSummary').textContent=node.summary||'';
+  document.getElementById('detailContent').innerHTML=html;
+  document.getElementById('detailPanel').style.display='block';
+}
+
+let _hiddenNames={}; // uuid→name
+
+function hideNode(uuid,name){
+  if(_hiddenNodeIds.has(uuid)){_hiddenNodeIds.delete(uuid);delete _hiddenNames[uuid];}
+  else{_hiddenNodeIds.add(uuid);_hiddenNames[uuid]=name;}
+  localStorage.setItem('graphrag_hidden',JSON.stringify([..._hiddenNodeIds]));
+  localStorage.setItem('graphrag_hidden_names',JSON.stringify(_hiddenNames));
+  refreshHiddenBtn();
+  _lastNodeCount=-1;
+  refreshData(true);
+}
+
+function refreshHiddenBtn(){
+  const n=_hiddenNodeIds.size;
+  const btn=document.getElementById('btnHidden');
+  if(n>0){btn.style.display='';document.getElementById('lblHidden').textContent='已隐藏 '+n;}
+  else btn.style.display='none';
+}
+
+// 从 localStorage 恢复 name 映射
+try{var _saved=JSON.parse(localStorage.getItem('graphrag_hidden_names')||'{}');Object.assign(_hiddenNames,_saved);}catch(e){}
+
+function manageHidden(){
+  closeHiddenList();
+  const ids=[..._hiddenNodeIds];
+  if(!ids.length){refreshHiddenBtn();return;}
+  let items='';
+  ids.forEach(function(uuid){
+    var name=_hiddenNames[uuid]||uuid.slice(0,8);
+    items+='<div class="detail-row" style="cursor:pointer" onclick="showDetailByUUID(\''+uuid+'\')"><span class="detail-value" style="text-align:left;color:#333">'+name+'</span><button class="btn-sm" onclick="event.stopPropagation();unhideNode(\''+uuid+'\')">恢复</button></div>';
+  });
+  var panel=document.getElementById('hiddenPanel');
+  if(!panel){
+    panel=document.createElement('div');
+    panel.id='hiddenPanel';
+    panel.className='detail-panel';
+    panel.style.cssText='top:44px;right:12px;width:260px';
+    panel.innerHTML='<div class="detail-panel-header"><span class="detail-title">隐藏节点</span><button class="detail-close" onclick="closeHiddenList()">×</button></div><div class="detail-content" id="hiddenContent"></div>';
+    document.getElementById('graphContainer').appendChild(panel);
+  }
+  document.getElementById('hiddenContent').innerHTML=items+'<div style="margin-top:8px"><button class="btn-sm" onclick="unhideAll()" style="width:100%">恢复全部</button></div>';
+  panel.style.display='block';
+}
+
+function showDetailByUUID(uuid){
+  // 从当前 graph data 里找节点
+  var nodes=d3.select('#graphSvg').selectAll('g.nodes circle').data();
+  var found=nodes.filter(function(d){return d.raw.uuid===uuid;});
+  if(found.length){
+    showDetail(found[0].raw,found[0].id);
+  }else{
+    // 节点不在当前视图里，从 API 查
+    api('/api/graphrag/data?limit=9999').then(function(d){
+      if(!d.success||!d.data)return;
+      var n=d.data.nodes_sample.find(function(n){return n.uuid===uuid;});
+      if(n)showDetail(n,-1);
+    });
+  }
+}
+function closeHiddenList(){
+  var el=document.getElementById('hiddenPanel');
+  if(el)el.style.display='none';
+}
+
+function showNodeList(){
+  closeHiddenList();
+  api('/api/graphrag/data?limit=9999').then(function(d){
+    if(!d.success||!d.data)return;
+    var nodes=d.data.nodes_sample||[];
+    // 按度排序（从 API 返回的 degree 顺序）
+    var panel=document.getElementById('nodeListPanel');
+    if(!panel){
+      panel=document.createElement('div');
+      panel.id='nodeListPanel';
+      panel.className='detail-panel';
+      panel.style.cssText='top:44px;left:12px;width:320px;max-height:80vh;overflow-y:auto';
+      panel.innerHTML='<div class="detail-panel-header"><span class="detail-title">节点列表 ('+nodes.length+')</span><button class="detail-close" onclick="closeNodeList()">×</button></div><div class="detail-content" id="nodeListContent"></div>';
+      document.getElementById('graphContainer').appendChild(panel);
+    }
+    var items='<div style="font-size:10px;color:#999;margin-bottom:8px">点击名称查看详情 · 点击操作按钮</div>';
+    nodes.forEach(function(n){
+      var hidden=_hiddenNodeIds.has(n.uuid)?' (已隐藏)':'';
+      var name=n.name||'?';
+      items+='<div class="detail-row" style="cursor:pointer" onclick="showDetailByUUID(\''+n.uuid+'\')"><span class="detail-value" style="text-align:left;color:#333;flex:1">'+name+hidden+'</span><button class="btn-sm" onclick="event.stopPropagation();hideNode(\''+n.uuid+'\',\''+name.replace(/'/g,'')+'\')" style="font-size:10px;padding:4px 6px">隐藏</button></div>';
+    });
+    document.getElementById('nodeListContent').innerHTML=items;
+    panel.style.display='block';
+  });
+}
+function closeNodeList(){
+  var el=document.getElementById('nodeListPanel');
+  if(el)el.style.display='none';
+}
+
+function unhideNode(uuid){
+  _hiddenNodeIds.delete(uuid);
+  delete _hiddenNames[uuid];
+  localStorage.setItem('graphrag_hidden',JSON.stringify([..._hiddenNodeIds]));
+  localStorage.setItem('graphrag_hidden_names',JSON.stringify(_hiddenNames));
+  manageHidden();
+  _lastNodeCount=-1;
+  refreshData(true);
+}
+
+function unhideAll(){
+  _hiddenNodeIds.clear();
+  _hiddenNames={};
+  localStorage.setItem('graphrag_hidden','[]');
+  localStorage.setItem('graphrag_hidden_names','{}');
+  closeHiddenList();
+  refreshHiddenBtn();
+  _lastNodeCount=-1;
+  refreshData(true);
+}
+function showEdgeDetail(e, edgeName){
+  closeDetail();
+  if(e.merged){
+    document.getElementById('detailTitle').textContent=edgeName||'合并关系';
+    document.getElementById('detailBadge').textContent='edge';
+    document.getElementById('detailBadge').style.background='#3498db';
+    document.getElementById('detailSummary').textContent='';
+    let html='';
+    e.relations.forEach(function(r,i){
+      html+=`<div class="detail-row"><span class="detail-label">#${i+1}</span><span class="detail-value">${zhLabel(r.name)}</span></div>
+      <div class="detail-row"><span class="detail-label">方向</span><span class="detail-value">${r.source_node_name} → ${r.target_node_name}</span></div>`;
+      if(r.fact) html+=`<div class="detail-row"><span class="detail-label">依据</span><span class="detail-value">${r.fact}</span></div>`;
+      html+='<div style="height:4px"></div>';
+    });
+    document.getElementById('detailContent').innerHTML=html;
+  }else{
+    document.getElementById('detailTitle').textContent=zhLabel(e.name)||'关系';
+    document.getElementById('detailBadge').textContent='edge';
+    document.getElementById('detailBadge').style.background='#3498db';
+    document.getElementById('detailSummary').textContent=e.fact||'';
+    let html=`
+      <div class="detail-row"><span class="detail-label">关系</span><span class="detail-value">${zhLabel(e.name)||'-'}</span></div>
+      <div class="detail-row"><span class="detail-label">来源</span><span class="detail-value">${e.source_node_name||'-'}</span></div>
+      <div class="detail-row"><span class="detail-label">目标</span><span class="detail-value">${e.target_node_name||'-'}</span></div>`;
+    if(e.fact) html+=`<div class="detail-row"><span class="detail-label">依据</span><span class="detail-value">${e.fact}</span></div>`;
+    const _edgOk=_buildStatus!=='building'&&_buildStatus!=='paused';
+    html+=`<div style="margin-top:8px"><button class="btn-sm" onclick="deleteEdge('${e.uuid}')" style="color:${_edgOk?'#C62828':'#CCC'};width:100%" ${_edgOk?'':'disabled'}>删除此边</button></div>`;
+    document.getElementById('detailContent').innerHTML=html;
+  }
+  document.getElementById('detailPanel').style.display='block';
+}
+function closeDetail(){document.getElementById('detailPanel').style.display='none';}
+
+function startAddEdge(srcUuid,srcName){
+  _addEdgeSource=srcUuid;
+  closeDetail();
+  addLog('请点击目标节点');
+}
+function showAddEdgeForm(srcUuid,tgtUuid,tgtName){
+  closeHiddenList();
+  var srcNodeName='?';
+  var allNodes=d3.select('#graphSvg').selectAll('g.nodes circle').data();
+  allNodes.forEach(function(d){if(d.raw.uuid===srcUuid)srcNodeName=d.name;});
+  var panel=document.createElement('div');
+  panel.id='addEdgePanel';
+  panel.className='detail-panel';
+  panel.style.cssText='top:44px;right:12px;width:280px';
+  var p=document.getElementById('addEdgePanel');
+  p.innerHTML='<div class="detail-panel-header"><span class="detail-title">添加关系</span><button class="detail-close" onclick="closeAddEdgeForm()">×</button></div><div class="detail-content"><div class="detail-row"><span class="detail-label">来源</span><span class="detail-value">'+srcNodeName+'</span></div><div class="detail-row"><span class="detail-label">目标</span><span class="detail-value">'+tgtName+'</span></div><div class="detail-row"><span class="detail-label">关系</span><input id="addEdgeName" value="认识" style="flex:1"></div><div class="detail-row"><span class="detail-label">依据</span><input id="addEdgeFact" style="flex:1"></div><div style="margin-top:8px;display:flex;gap:6px"><button class="btn-sm" onclick="closeAddEdgeForm()" style="flex:1">取消</button><button id="btnAddEdgeConfirm" style="flex:1;background:#000;color:#FFF;border:none;padding:8px;border-radius:4px;cursor:pointer">添加</button></div></div>';
+  document.getElementById('btnAddEdgeConfirm').onclick=function(){doAddEdge(srcUuid,tgtUuid);};
+  document.getElementById('graphContainer').appendChild(panel);
+}
+function closeAddEdgeForm(){var el=document.getElementById('addEdgePanel');if(el)el.remove();}
+async function doAddEdge(srcUuid,tgtUuid){
+  var name=document.getElementById('addEdgeName').value.trim()||'认识';
+  var fact=document.getElementById('addEdgeFact').value.trim();
+  var r=await api('/api/graphrag/edge/add?source_uuid='+srcUuid+'&target_uuid='+tgtUuid+'&name='+encodeURIComponent(name)+'&fact='+encodeURIComponent(fact),{method:'POST'});
+  addLog(r.message||(r.error||'添加失败'));
+  var el=document.getElementById('addEdgePanel');if(el)el.remove();
+  if(r.success)refreshAll();
+}
+function startMerge(srcUuid,srcName){
+  _mergeSource=srcUuid;
+  closeDetail();
+  document.getElementById('mergeSrcUuid').value=srcUuid;
+  addLog('请点击要合并到的目标节点');
+}
+async function doMerge(srcUuid,tgtUuid,tgtName){
+  addLog('LLM 判断中...');
+  var r=await api('/api/graphrag/node/merge?source_uuid='+srcUuid+'&target_uuid='+tgtUuid,{method:'POST'});
+  if(r.success){
+    addLog('✓ '+r.message+(r.reason?' ('+r.reason+')':''));
+    _lastNodeCount=-1;
+    refreshAll();
+  }else{
+    addLog('✗ '+(r.error||'合并失败'));
+    if(r.llm_result)addLog('  LLM: '+r.llm_result.reason);
+  }
+}
+async function deleteEdge(uuid){
+  if(!confirm('确定删除此边？'))return;
+  var r=await api('/api/graphrag/edge/delete?uuid='+uuid,{method:'POST'});
+  addLog(r.message||(r.error||'删除失败'));
+  if(r.success){closeDetail();refreshAll();}
+}
+
+async function shutdownServer(){
+  if(!confirm('确定要关闭服务器吗？')) return;
+  addLog('正在关闭服务器...');
+  const r=await api('/api/graphrag/shutdown',{method:'POST'});
+  if(r.success){
+    document.body.innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;color:#999;font-size:16px;gap:12px"><span style="font-size:32px">⏻</span><span>服务器已关闭，可以关闭此页面</span></div>';
+  }else{
+    addLog('关闭失败: '+(r.error||''));
+  }
+}
+
+async function clearGraph(){
+  if(!confirm('清零将删除所有图谱数据，确定？')) return;
+  addLog('清零中...');
+  const r=await api('/api/graphrag/clear',{method:'POST'});
+  if(r.success){
+    document.getElementById('statNodes').textContent='0';
+    document.getElementById('statEdges').textContent='0';
+    document.getElementById('statTypes').textContent='0';
+    document.getElementById('statDispNodes').textContent='0';
+    document.getElementById('statDispEdges').textContent='0';
+    document.getElementById('statMaxDeg').textContent='0';
+    document.getElementById('graphSvg').style.display='none';
+    document.getElementById('graphHint').style.display='flex';
+    document.getElementById('graphLegend').style.display='none';
+    document.getElementById('btnBuild').disabled=false;
+    _lastNodeCount=0; _nodePositions={};
+    _hiddenNodeIds.clear(); _hiddenNames={};
+    localStorage.setItem('graphrag_hidden','[]');
+    localStorage.setItem('graphrag_hidden_names','{}');
+    refreshHiddenBtn();
+    addLog('图谱已清零 ✓');
+  }else{
+    addLog('清零失败: '+(r.error||''));
+  }
+  refreshStatus();
+}
+
+async function startBuild(){
+  document.getElementById('btnBuild').disabled=true;
+  document.getElementById('statNodes').textContent='0';
+  document.getElementById('statEdges').textContent='0';
+  document.getElementById('statTypes').textContent='0';
+  const r=await api('/api/graphrag/build',{method:'POST'});
+  if(r.success){addLog('开始构建 · '+(r.message||''));refreshStatus();}
+  else{addLog('错误: '+(r.error||''));document.getElementById('btnBuild').disabled=false;}
+}
+
+async function onBuildClick(){
+  const s=await api('/api/graphrag/status');
+  if(s.status==='building'){
+    // 暂停
+    const r=await api('/api/graphrag/pause',{method:'POST'});
+    if(r.success) addLog('已暂停');
+    else addLog('暂停失败: '+(r.error||''));
+    refreshStatus();
+  }else if(s.status==='paused'){
+    // 继续
+    addLog('继续 · '+s.nodes+' 节点 '+s.edges+' 边 · 块 '+(s.current_chunk||'?')+'/'+(s.total_chunks||'?'));
+    const r=await api('/api/graphrag/resume',{method:'POST'});
+    if(r.success) addLog('继续构建');
+    else addLog('继续失败: '+(r.error||''));
+    refreshStatus();
+  }else{
+    // 开始或重新构建
+    if(s.status==='completed'||s.status==='error'){
+      await api('/api/graphrag/clear',{method:'POST'});
+    }
+    startBuild();
+  }
+}
+
+function refreshAll(){refreshStatus();refreshData();}
+
+// ── Edge Label Toggle ──
+function toggleEdgeLabels(){
+  _showEdgeLabels = !_showEdgeLabels;
+  document.getElementById('lblToggle').textContent = _showEdgeLabels ? '标签开' : '标签关';
+  // Toggle SVG label elements directly
+  d3.select('#graphSvg').selectAll('g.links text').style('display',_showEdgeLabels?'block':'none');
+  d3.select('#graphSvg').selectAll('g.links rect').style('display',_showEdgeLabels?'block':'none');
+}
+
+// ── File Selection ──
+let _selectedFileName = "txt全卷.txt";
+let _useDefaultFile = true;
+
+document.getElementById('fileInput').addEventListener('change', async function(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  if(!file.name.endsWith('.txt')){
+    addLog('错误: 仅支持 .txt 文件');
+    return;
+  }
+  document.getElementById('btnChooseFile').disabled = true;
+  document.getElementById('btnChooseFile').textContent = '上传中...';
+  addLog('上传文件: ' + file.name + ' (' + (file.size/1024/1024).toFixed(1) + ' MB)');
+  const form = new FormData();
+  form.append('file', file);
+  const r = await api('/api/graphrag/upload', {method:'POST', body:form});
+  if(r.success){
+    _selectedFileName = r.filename;
+    _useDefaultFile = false;
+    document.getElementById('fileName').textContent = r.filename;
+    document.getElementById('fileSize').textContent = '(' + (r.size/1024/1024).toFixed(1) + ' MB)';
+    addLog('文件上传完成: ' + r.filename);
+  }else{
+    addLog('上传失败: ' + (r.error||''));
+  }
+  document.getElementById('btnChooseFile').disabled = false;
+  document.getElementById('btnChooseFile').textContent = '选择文件';
+});
+
+async function loadDefaultFileInfo(){
+  const r = await api('/api/graphrag/default-file');
+  if(r.success){
+    document.getElementById('fileName').textContent = r.filename;
+    document.getElementById('fileSize').textContent = '(' + (r.size_mb).toFixed(1) + ' MB)';
+  }
+}
+
+loadDefaultFileInfo();
+
+refreshStatus();
+refreshData();
+</script>
+</body>
+</html>

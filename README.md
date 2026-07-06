@@ -30,6 +30,8 @@ cd frontend && npx vite            # 前端 :5173
 
 访问 `http://localhost:5173` 即可开始聊天。
 
+图谱构建服务器独立运行于 `http://localhost:8001`。
+
 ## 功能一览
 
 | 功能 | 说明 |
@@ -40,16 +42,14 @@ cd frontend && npx vite            # 前端 :5173
 | ✨ 风格化 | 输入自动转换为角色口吻，独立预览面板 |
 | 🎬 场景设置 | 自定义对话背景和出席角色 |
 | ✏️ 角色编辑 | 自定义头像/名称/签名/行为参数 |
-| ⚡ 春日行动引擎 | 待办排序，春日式"现在立刻马上" |
-| 📡 春日生命力雷达 | 能量泄漏扫描 + 逆反任务 + 活力档案 |
-| 🧹 阿虚反鸡汤净化器 | 拆穿鸡汤，缓解焦虑 |
-| 🍵 朝比奈喝茶工具 | 倒计时喝水提醒，动画占位 |
-| 📖 长门看书 | 自习室，浮动计时器+自定义背景+白噪音占位 |
 | 🌙 深色模式 | 左栏底部切换，持久化 |
+| 🕸️ 知识图谱构建 | 从小说原文自动提取实体和关系，D3.js 可视化 |
+| 🔍 图谱检索增强（开发中） | 对话时从图谱检索相关上下文注入 LLM |
 
 ## 项目结构
 
 ```
+<<<<<<< HEAD
 ├── backend/                     # FastAPI + WebSocket 后端
 │   ├── main.py                  # 服务入口、LLM、WebSocket、REST API
 │   ├── database.py              # SQLite 持久化层
@@ -62,27 +62,37 @@ cd frontend && npx vite            # 前端 :5173
 │       ├── character.py           #   system prompt 构建
 │       └── style.py               #   对象别语气调整
 ├── frontend/                    # React + TypeScript + Vite 前端
+=======
+├── backend/                        # Python 后端
+│   ├── main.py                     # 聊天室 API + WebSocket (:8000)
+│   ├── server_graphrag.py          # 图谱构建独立服务器 (:8001)
+│   ├── database.py                 # SQLite 对话历史
+│   ├── config.py                   # 应用配置
+│   ├── character_agent.py          # 多 Agent 角色引擎
+│   ├── engine/                     # 响应引擎（trigger/character/style）
+│   ├── graphrag/                   # GraphRAG 图谱构建管线
+│   │   ├── builder.py             #   LLM 提取 + 别名消解 + 增量写入
+│   │   ├── store.py               #   SQLite 图存储
+│   │   └── retriever.py           #   对话时图谱检索
+│   ├── templates/graphrag_build.html  # 图谱构建前端页面
+│   ├── config/chatroom.json       # 运行时配置
+│   └── scripts/                   # 后端 CLI 工具（build_graph / finalize_graph / dedup_graph）
+├── frontend/                       # React + TypeScript + Vite 前端
+>>>>>>> 4984133 (feat: GraphRAG 图谱构建管线完成 + 旧文件清理)
 │   └── src/
-│       ├── components/          #   UI 组件（ChatArea、InputArea 等）
-│       ├── hooks/               #   useWebSocket
-│       ├── tools/               #   工具运行框架
-│       │   ├── types.ts         #   接口规范
-│       │   ├── registry.ts      #   import.meta.glob 自动扫描
-│       │   ├── llm-view.tsx     #   LLM 工具通用界面
-│       │   └── storage.ts       #   工具历史 localStorage
-│       └── api.ts               #   REST API 客户端
-├── tools/                       # ← 工具目录，drop-in 式
-│   ├── action-engine/           #   definition.ts + prompt.txt
-│   ├── vitality-radar/
-│   ├── anti-inspiration/
-│   ├── tea-timer/               #   + component.tsx
-│   └── study-room/              #   + component.tsx
-├── skills/characters/           # 5 个角色 SKILL.md
-├── data/                        # 小说、标注对话、分析、脚本
-├── docs/                        # 文档
-│   └── README.md                #   文档索引
-├── chatroom.bat                 # Windows 一键启动
-└── chatroom.sh                  # Linux/Mac 一键启动
+│       ├── components/           #   UI 组件
+│       ├── hooks/                #   useWebSocket
+│       ├── tools/                #   工具系统
+│       └── api.ts                #   REST API
+├── tools/                         # drop-in 工具目录
+├── data/                          # 运行时数据
+│   ├── novels/txt全卷.txt        #   凉宫春日全13卷原文
+│   └── graphs/haruhi_novel.db    #   构建好的图谱（自动生成）
+├── scripts/                       # 运维脚本
+│   ├── chatroom.bat              #   聊天室一键启动
+│   ├── start_graphrag.bat        #   图谱构建服务器启动
+│   └── stop_graphrag.bat         #   图谱构建服务器停止
+├── docs/                          # 文档
 ```
 
 ## 多 Agent 架构
@@ -102,16 +112,6 @@ cd frontend && npx vite            # 前端 :5173
 - 两轮对话：第一轮回用户，第二轮 agent 之间互相反应
 - 真人小说对话数据（novel_probability_result.json）做参考概率
 ```
-
-## 5 角色 SKILL
-
-| 角色 | 心智模型 | SKILL 位置 |
-|------|---------|-----------|
-| 凉宫春日 | 4 个 | `skills/characters/haruhi/SKILL.md` |
-| 阿虚 | 5 个 | `skills/characters/kyon/SKILL.md` |
-| 长门有希 | 5 个 | `skills/characters/nagato/SKILL.md` |
-| 朝比奈实玖瑠 | 4 个 | `skills/characters/asahina/SKILL.md` |
-| 古泉一树 | 5 个 | `skills/characters/koizumi/SKILL.md` |
 
 ## 工具系统规范
 

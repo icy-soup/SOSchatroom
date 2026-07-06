@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 """Character Agent — 每个角色独立的消息处理单元。"""
+=======
+"""Character Agent — 每个角色独立的消息处理单元。
+
+改造：移除 SKILL.md 依赖，改为 Persona Core + GraphRAG 动态上下文。
+"""
+>>>>>>> 4984133 (feat: GraphRAG 图谱构建管线完成 + 旧文件清理)
 
 import random
 import re as re_module
@@ -8,6 +15,7 @@ from database import get_character_config
 from engine.character import build_system_prompt, build_conversation_context
 from engine.style import build_style_instruction
 
+<<<<<<< HEAD
 
 class CharacterAgent:
     """单个角色的 Agent 实例。
@@ -32,10 +40,38 @@ class CharacterAgent:
         self.message_log: list[dict] = []
 
         # 外部函数注入（避免循环 import main.py）
+=======
+# GraphRAG 检索器（延迟初始化，避免无数据库时报错）
+_graph_retriever = None
+
+
+def _get_retriever():
+    global _graph_retriever
+    if _graph_retriever is None:
+        try:
+            from graphrag.retriever import GraphRetriever
+            _graph_retriever = GraphRetriever("haruhi_novel")
+            # 验证数据库是否存在
+            _graph_retriever.get_node_by_name("凉宫春日")
+        except Exception:
+            _graph_retriever = None  # 无图谱时静默降级
+    return _graph_retriever
+
+
+class CharacterAgent:
+    """单个角色的 Agent 实例。"""
+
+    def __init__(self, name: str, session: dict, call_llm_func: Callable,
+                 get_demo_func: Callable, sanitize_func: Callable, broadcast_func: Callable):
+        self.name = name
+        self.session = session
+        self.message_log: list[dict] = []
+>>>>>>> 4984133 (feat: GraphRAG 图谱构建管线完成 + 旧文件清理)
         self._call_llm = call_llm_func
         self._get_demo = get_demo_func
         self._sanitize = sanitize_func
         self._broadcast = broadcast_func
+<<<<<<< HEAD
 
         self._load_config()
 
@@ -54,10 +90,23 @@ class CharacterAgent:
                        or self.session.get("api_url", ""))
         self.model = (char_cfg.get("model")
                      or db_cfg.get("model")
+=======
+        self._load_config()
+
+    def _load_config(self):
+        char_cfg = self.session.get("character_api_config", {}).get(self.name, {})
+        db_cfg = get_character_config(self.name) or {}
+        self.api_key = (char_cfg.get("api_key") or db_cfg.get("api_key")
+                       or self.session.get("api_key", ""))
+        self.api_url = (char_cfg.get("api_url") or db_cfg.get("api_url")
+                       or self.session.get("api_url", ""))
+        self.model = (char_cfg.get("model") or db_cfg.get("model")
+>>>>>>> 4984133 (feat: GraphRAG 图谱构建管线完成 + 旧文件清理)
                      or self.session.get("model", ""))
         self.temperature = db_cfg.get("temperature", 0.8)
 
     async def observe_and_reply(self, message: dict, novel_probs: dict) -> Optional[dict]:
+<<<<<<< HEAD
         """观察消息，决定是否回复，若回复则生成并广播。
 
         Args:
@@ -130,15 +179,49 @@ class CharacterAgent:
         if result is None:
             return 50
 
+=======
+        self.message_log.append(message)
+        if message["character"] == self.name:
+            return None
+        if not await self._should_respond(message, novel_probs):
+            return None
+        return await self._generate_reply(message)
+
+    async def _should_respond(self, message: dict, novel_probs: dict) -> bool:
+        for word in [self.name, self.name[:2]]:
+            if f"@{word}" in message["text"]:
+                return True
+        relevance = await self._judge_relevance(message)
+        if relevance >= 70:
+            return True
+        if relevance >= 30:
+            base_prob = novel_probs.get(self.name, 0.15)
+            return random.random() < base_prob * (relevance / 30)
+        return self._roll_for_interjection(message, novel_probs)
+
+    async def _judge_relevance(self, message: dict) -> int:
+        recent = self.message_log[-3:]
+        context_str = "\n".join([f"{m['character']}: {m['text'][:80]}" for m in recent])
+        system = f"你是{self.name}。判断这条消息是否跟你有关系。只输出数字。"
+        user_msg = f"最近的对话：\n{context_str}\n\n新消息——{message['character']}说：{message['text']}\n\n相关度 (0-100)："
+        result = await self._call_llm(self.api_key, self.api_url, self.model,
+                                       system, [{"role": "user", "content": user_msg}])
+        if result is None:
+            return 50
+>>>>>>> 4984133 (feat: GraphRAG 图谱构建管线完成 + 旧文件清理)
         match = re_module.search(r'(\d+)', result)
         return min(100, max(0, int(match.group(1)))) if match else 50
 
     def _roll_for_interjection(self, message: dict, novel_probs: dict) -> bool:
+<<<<<<< HEAD
         """低相关度时，概率决定是否插嘴。"""
+=======
+>>>>>>> 4984133 (feat: GraphRAG 图谱构建管线完成 + 旧文件清理)
         base_prob = novel_probs.get(self.name, 0.15)
         adjusted = base_prob * 1.5
         if not message.get("is_bot"):
             adjusted += 0.10
+<<<<<<< HEAD
         adjusted = min(adjusted, 0.30)  # 封顶 30%
         return random.random() < adjusted
 
@@ -152,14 +235,35 @@ class CharacterAgent:
 
         try:
             # 构建 system prompt
+=======
+        return random.random() < min(adjusted, 0.30)
+
+    async def _generate_reply(self, message: dict) -> Optional[dict]:
+        await self._broadcast({"type": "thinking", "character": self.name})
+        try:
+>>>>>>> 4984133 (feat: GraphRAG 图谱构建管线完成 + 旧文件清理)
             custom_instructions = self.session.get(
                 "character_api_config", {}
             ).get(self.name, {}).get("custom_instructions", "")
 
+<<<<<<< HEAD
+=======
+            # ★ 改造点：从图谱检索当前对话相关的上下文
+            graph_context = ""
+            retriever = _get_retriever()
+            if retriever:
+                try:
+                    context_text = message["text"]
+                    graph_context = retriever.retrieve(context_text, character=self.name)
+                except Exception:
+                    pass
+
+>>>>>>> 4984133 (feat: GraphRAG 图谱构建管线完成 + 旧文件清理)
             system_prompt = build_system_prompt(
                 self.name,
                 scene_background=self.session.get("scene_background", ""),
                 custom_instructions=custom_instructions,
+<<<<<<< HEAD
             )
 
             # 明确告知角色在和谁对话
@@ -182,11 +286,28 @@ class CharacterAgent:
                 system_prompt, ctx,
             )
 
+=======
+                graph_context=graph_context,
+            )
+
+            user_char = message["character"]
+            system_prompt += f"\n\n当前和你对话的是{user_char}。请直接对{user_char}说话。"
+            system_prompt += "\n\n【重要】每次回复严格控制在100字以内。简明扼要，像真正的对话一样。"
+
+            style_instruction = build_style_instruction(self.name, message["character"])
+            if style_instruction:
+                system_prompt += f"\n\n{style_instruction}"
+
+            ctx = build_conversation_context(self.message_log)
+            reply = await self._call_llm(self.api_key, self.api_url, self.model,
+                                          system_prompt, ctx)
+>>>>>>> 4984133 (feat: GraphRAG 图谱构建管线完成 + 旧文件清理)
             if reply is None:
                 reply = self._get_demo(self.name, message["text"])
             else:
                 reply = self._sanitize(reply)
 
+<<<<<<< HEAD
             # 截断过长的回复（保留完整句子）
             MAX_LEN = 150
             if len(reply) > MAX_LEN:
@@ -200,11 +321,22 @@ class CharacterAgent:
                     reply = trimmed + '……'
 
             # 追加到日志
+=======
+            # 截断过长回复
+            MAX_LEN = 150
+            if len(reply) > MAX_LEN:
+                trimmed = reply[:MAX_LEN]
+                last_end = max(trimmed.rfind('。'), trimmed.rfind('！'),
+                               trimmed.rfind('？'), trimmed.rfind('……'))
+                reply = (reply[:last_end + 1] if last_end > MAX_LEN // 2 else trimmed + '……')
+
+>>>>>>> 4984133 (feat: GraphRAG 图谱构建管线完成 + 旧文件清理)
             bot_msg = {"character": self.name, "text": reply, "is_bot": True}
             self.message_log.append(bot_msg)
             self.session["message_log"].append(bot_msg)
             self.session["last_speaker"] = self.name
 
+<<<<<<< HEAD
             return {
                 "type": "message",
                 "character": self.name,
@@ -220,6 +352,13 @@ class CharacterAgent:
 
     def restore_log(self, messages: list[dict]):
         """从 DB 恢复消息到 agent 的独立 message_log。"""
+=======
+            return {"type": "message", "character": self.name, "text": reply, "is_bot": True}
+        finally:
+            await self._broadcast({"type": "thinking_clear", "character": self.name})
+
+    def restore_log(self, messages: list[dict]):
+>>>>>>> 4984133 (feat: GraphRAG 图谱构建管线完成 + 旧文件清理)
         self.message_log = [
             {"character": m["role"], "text": m["content"], "is_bot": bool(m["is_bot"])}
             for m in messages
