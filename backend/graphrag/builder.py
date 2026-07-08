@@ -221,6 +221,12 @@ class GraphBuilder:
             total = len(chunks) + skip_chunks
             _write_status(self.graph_id, {"status":"building", "total_chunks":total, "message":f"文本已分 {total} 块（跳过 {skip_chunks} 块）"})
 
+            # 存储所有 chunk 原文到 episodes 表（MiroFish pattern）
+            self.store.add_episodes_batch([
+                {"type": "text", "data": chunk} for chunk in chunks
+            ])
+            print(f"[builder] episodes 已存储: {len(chunks)} 块")
+
             # 逐块提取（MiroFish 模式：每 10 块 merge 一次别名）
             written_nodes: set = set()
             written_edge_keys: set = set()

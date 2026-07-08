@@ -39,7 +39,8 @@ class GraphRetriever:
         return None
 
     def retrieve(self, message: str, character: str = "",
-                 max_nodes: int = 8, max_edges: int = 15) -> str:
+                 max_nodes: int = 8, max_edges: int = 15,
+                 max_episodes: int = 3) -> str:
         """检索与消息最相关的图谱上下文。
 
         Args:
@@ -47,6 +48,7 @@ class GraphRetriever:
             character: 当前说话的角色名（用于获取角色相关的上下文）
             max_nodes: 最大返回节点数
             max_edges: 最大返回边数
+            max_episodes: 最大返回原文段落数（通道 B）
 
         Returns:
             格式化的上下文字符串，可直接插入 system prompt
@@ -54,6 +56,13 @@ class GraphRetriever:
         self._build_node_cache()
         if not self._node_cache:
             return ""
+
+        # 0. 加载隐藏节点，后续排除
+        _settings = self.store.get_settings()
+        _hidden_uuids = set(_settings.get("hidden_nodes", []))
+
+        def _is_hidden(uuid: str) -> bool:
+            return uuid in _hidden_uuids
 
         # 1. 从消息中提取关键词
         keywords = self._extract_keywords(message)
@@ -73,10 +82,13 @@ class GraphRetriever:
                 if len(matched_nodes) >= max_nodes // 2:
                     break
 
-        # 2b. 关键词搜索
+        # 2b. 关键词搜索（排除隐藏节点）
         for kw in keywords:
             results = self.store.search_nodes(kw, limit=3)
             for r in results:
+                r_uuid = self._node_cache.get(r["name"])
+                if r_uuid and _is_hidden(r_uuid):
+                    continue
                 if r["name"] not in matched_nodes:
                     matched_nodes.add(r["name"])
 
@@ -92,6 +104,11 @@ class GraphRetriever:
 
         # 3. 收集相关边
         node_uuids = {name: uuid for name, uuid in self._node_cache.items() if name in matched_nodes}
+        # 排除隐藏节点
+        node_uuids = {name: uuid for name, uuid in node_uuids.items() if not _is_hidden(uuid)}
+        matched_nodes = set(node_uuids.keys())
+        if not matched_nodes:
+            return ""
         edge_texts: List[str] = []
         seen_edge_keys: Set[Tuple[str, str, str]] = set()
 
@@ -125,6 +142,26 @@ class GraphRetriever:
                 if len(edge_texts) >= max_edges:
                     break
 
+        # 3b. 通道 B：搜索 episodes 原文段落
+        episode_texts: List[str] = []
+        seen_episodes: Set[str] = set()
+        if max_episodes > 0:
+            ep_keywords = keywords[:5]  # 最多用 5 个关键词搜
+            if character:
+                ep_keywords.append(character)
+            for kw in ep_keywords:
+                results = self.store.search_episodes(kw, limit=2)
+                for r in results:
+                    uid = r.get("uuid", "")
+                    if uid in seen_episodes or len(episode_texts) >= max_episodes:
+                        continue
+                    seen_episodes.add(uid)
+                    data = r.get("data", "")
+                    # 截取含关键词的附近段落
+                    snippet = self._extract_snippet(data, kw, context_chars=150)
+                    if snippet:
+                        episode_texts.append(snippet)
+
         # 4. 格式化输出
         parts = ["[当前相关背景（来自小说知识图谱）]"]
 
@@ -150,7 +187,35 @@ class GraphRetriever:
             parts.append(f"\n已知关系:")
             parts.extend(edge_texts[:8])
 
+        # 原文段落
+        if episode_texts:
+            parts.append(f"\n相关原文段落:")
+            parts.extend([f"  「{t}」" for t in episode_texts])
+
         return "\n".join(parts)
+
+    @staticmethod
+    def _extract_snippet(text: str, keyword: str, context_chars: int = 150) -> str:
+        """从文本中提取包含关键词的片段，前后带 context_chars 字符上下文。"""
+        idx = text.find(keyword)
+        if idx < 0:
+            return ""
+        start = max(0, idx - context_chars)
+        end = min(len(text), idx + len(keyword) + context_chars)
+        snippet = text[start:end].strip()
+        # 截断到句子边界
+        if start > 0:
+            # 往前找句号或换行
+            prev = snippet.find('。')
+            nl = snippet.find('\n')
+            cut = max(prev, nl)
+            if cut > 0 and cut < len(snippet) // 2:
+                snippet = snippet[cut+1:].strip()
+        if end < len(text):
+            last = max(snippet.rfind('。'), snippet.rfind('\n'))
+            if last > len(snippet) // 2:
+                snippet = snippet[:last+1]
+        return snippet
 
     def get_character_context(self, character: str) -> str:
         """获取角色的完整背景（用于初始化时加载）。"""

@@ -360,6 +360,65 @@ class GraphStore:
             return {"graph_id": self.graph_id, "total_nodes": 0, "total_edges": 0}
 
     # ------------------------------------------------------------------
+    # Episode CRUD
+    # ------------------------------------------------------------------
+
+    def add_episode(self, type_: str, data: str) -> Dict[str, Any]:
+        """添加单个 episode。"""
+        try:
+            ep_uuid = self._new_uuid()
+            now = self._now()
+            with self._conn() as conn:
+                conn.execute(
+                    "INSERT INTO episodes (uuid, graph_id, type, data, created_at) VALUES (?, ?, ?, ?, ?)",
+                    (ep_uuid, self.graph_id, type_, data, now),
+                )
+            return {"uuid": ep_uuid, "graph_id": self.graph_id, "type": type_, "data": data, "created_at": now}
+        except Exception as e:
+            print(f"[store] add_episode error: {e}")
+            raise
+
+    def add_episodes_batch(self, episodes: List[Dict]) -> List[Dict[str, Any]]:
+        """批量添加 episode（单事务）。每项含 type, data。"""
+        if not episodes:
+            return []
+        try:
+            now = self._now()
+            rows = []
+            for ep in episodes:
+                ep_uuid = self._new_uuid()
+                rows.append((ep_uuid, self.graph_id, ep.get("type", ""), ep.get("data", ""), now))
+            with self._conn() as conn:
+                conn.executemany(
+                    "INSERT INTO episodes (uuid, graph_id, type, data, created_at) VALUES (?, ?, ?, ?, ?)",
+                    rows)
+            return [{"uuid": r[0], "graph_id": r[1], "type": r[2], "data": r[3], "created_at": r[4]} for r in rows]
+        except Exception as e:
+            print(f"[store] add_episodes_batch error: {e}")
+            raise
+
+    def search_episodes(self, keywords: str, limit: int = 10) -> List[Dict[str, Any]]:
+        """关键词搜索 episodes（对 data 字段做 LIKE 匹配）。"""
+        try:
+            words = [w.strip() for w in keywords.split() if w.strip()]
+            if not words:
+                return []
+            conditions = " OR ".join(["(e.data LIKE ?)" for _ in words])
+            params = [self.graph_id]
+            for w in words:
+                params.append(f"%{w}%")
+            params.append(limit)
+            with self._conn() as conn:
+                rows = conn.execute(
+                    f"SELECT e.* FROM episodes e WHERE e.graph_id = ? AND ({conditions}) LIMIT ?",
+                    params
+                ).fetchall()
+            return [dict(r) for r in rows]
+        except Exception as e:
+            print(f"[store] search_episodes error: {e}")
+            return []
+
+    # ------------------------------------------------------------------
     # Settings (persisted in graphs.settings JSON column)
     # ------------------------------------------------------------------
 

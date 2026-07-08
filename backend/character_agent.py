@@ -4,9 +4,11 @@ import random
 import re as re_module
 from typing import Optional, Callable
 
+from config import load_persona
 from database import get_character_config
 from engine.character import build_system_prompt, build_conversation_context
 from engine.style import build_style_instruction
+from graphrag.retriever import GraphRetriever
 
 
 class CharacterAgent:
@@ -26,6 +28,7 @@ class CharacterAgent:
         get_demo_func: Callable,
         sanitize_func: Callable,
         broadcast_func: Callable,
+        graph_id: str = "",
     ):
         self.name = name
         self.session = session
@@ -36,6 +39,14 @@ class CharacterAgent:
         self._get_demo = get_demo_func
         self._sanitize = sanitize_func
         self._broadcast = broadcast_func
+
+        # GraphRAG 图谱检索器（容错：图不存在时静默跳过）
+        self._retriever = None
+        if graph_id:
+            try:
+                self._retriever = GraphRetriever(graph_id)
+            except Exception as e:
+                print(f"[character_agent] GraphRetriever 初始化失败({name}, {graph_id}): {e}")
 
         self._load_config()
 
@@ -151,6 +162,20 @@ class CharacterAgent:
         })
 
         try:
+            # 图谱检索（容错：失败时静默跳过）
+            graph_context = ""
+            if self._retriever:
+                try:
+                    graph_context = self._retriever.retrieve(
+                        message.get("text", ""),
+                        character=self.name,
+                        max_nodes=6,
+                        max_edges=10,
+                        max_episodes=2,
+                    )
+                except Exception as e:
+                    print(f"[character_agent] 图谱检索失败({self.name}): {e}")
+
             # 构建 system prompt
             custom_instructions = self.session.get(
                 "character_api_config", {}
@@ -160,6 +185,7 @@ class CharacterAgent:
                 self.name,
                 scene_background=self.session.get("scene_background", ""),
                 custom_instructions=custom_instructions,
+                graph_context=graph_context,
             )
 
             # 明确告知角色在和谁对话
@@ -176,10 +202,26 @@ class CharacterAgent:
             # 构建 context
             ctx = build_conversation_context(self.message_log)
 
+            # 在对话历史最后加一个简短提醒（对抗 prompt 衰减）
+            persona = load_persona(self.name)
+            # 从人设中提取精简版提醒（前 50 字 + 知识边界）
+            reminder = f"【角色提醒】你是{self.name}。"
+            if "[知识边界]" in persona:
+                bounds = persona.split("[知识边界]")[1].strip()
+                # 取前 2 条知识边界
+                bound_lines = [l.strip() for l in bounds.split("\n") if l.strip() and not l.startswith("[")]
+                if bound_lines:
+                    reminder += "\n牢记：你不知道的事——" + "；".join(bound_lines[:2])
+            # 用单独的一条 user message 传递提醒，紧挨 LLM 输出位置
+            messages_for_llm = [
+                {"role": "user", "content": ctx},
+                {"role": "user", "content": reminder},
+            ]
+
             # 调用 LLM（用自己的 API 配置）
             reply = await self._call_llm(
                 self.api_key, self.api_url, self.model,
-                system_prompt, ctx,
+                system_prompt, messages_for_llm,
             )
 
             if reply is None:

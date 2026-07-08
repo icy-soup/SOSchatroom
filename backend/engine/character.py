@@ -13,9 +13,23 @@ def build_system_prompt(name: str, scene_background: str = "",
     """
     persona = load_persona(name)
 
+    # 分离人设核心和原话范例（如果人设文件包含 [说话风格参考]）
+    persona_core = persona
+    quote_ref = ""
+    if "[说话风格参考]" in persona:
+        segs = persona.split("[说话风格参考]", 1)
+        persona_core = segs[0].strip()
+        quote_ref = "[说话风格参考]" + segs[1]
+
     parts = [
         f"你是{name}。请完全以{name}的身份和语气回应。",
-        f"【人物核心】\n{persona}",
+        f"【人物核心】\n{persona_core}",
+    ]
+
+    if quote_ref:
+        parts.append(quote_ref)
+
+    parts.append(
         (
             "回复规则：\n"
             "1. 只说【你自己】的台词，不要替其他角色说话——你不是他们！\n"
@@ -25,7 +39,7 @@ def build_system_prompt(name: str, scene_background: str = "",
             "   - 错误：凉宫春日：今天天气真好\n"
             "   - 错误：【凉宫春日】今天天气真好\n"
             "   - 正确：今天天气真好\n"
-            "4. 输入消息中的【角色名】格式只是标注谁在说话，不要模仿——你的输出不需要任何标注\n"
+            "4. 输入消息中「角色名:」只是标注谁在说话，不要模仿——你的输出不需要任何标注\n"
             "5. 每条回复不超过100字\n"
             "6. 说人话，不要翻译腔\n"
             "7. 【致命规则】这是群聊，不是小说。禁止以下所有行为：\n"
@@ -44,6 +58,11 @@ def build_system_prompt(name: str, scene_background: str = "",
     ]
 
     if graph_context:
+        parts.append(
+            "下面是相关知识图谱中检索到的背景信息（含原文片段和人物关系）。"
+            "如果与当前话题相关就自然地提及，不相关就忽略。"
+            "不要像在背诵百科，保持对话的自然感。"
+        )
         parts.append(graph_context)
 
     if scene_background:
@@ -60,11 +79,7 @@ def build_conversation_context(messages: list, max_turns: int = 8) -> str:
     recent = messages[-max_turns:] if len(messages) > max_turns else messages
     lines = []
     for m in recent:
-        role = m.get("role", "user")
-        name = m.get("name", "")
-        content = m.get("content", "")
-        if role == "user":
-            lines.append(f"【{name}】{content}")
-        else:
-            lines.append(f"【{name}】{content}")
+        name = m.get("character", m.get("name", ""))
+        content = m.get("text", m.get("content", ""))
+        lines.append(f"{name}: {content}")
     return "\n".join(lines)

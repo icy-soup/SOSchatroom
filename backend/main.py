@@ -661,6 +661,7 @@ async def websocket_endpoint(ws: WebSocket):
                                 get_demo_func=get_demo_response,
                                 sanitize_func=sanitize_llm_reply,
                                 broadcast_func=lambda m: manager.broadcast(m),
+                                graph_id="haruhi_novel",
                             )
 
                     if session.get("conversation_id"):
@@ -819,70 +820,72 @@ async def websocket_endpoint(ws: WebSocket):
                 if not active_agents:
                     continue
 
-                from engine.trigger import get_character_probs
-                novel_probs = get_character_probs(session.get("last_speaker"))
                 user_msg_obj = {"character": session["character"], "text": text, "is_bot": False}
 
-                # ── Round 1：所有 agent 回复用户消息 ──
-                coros = [
-                    agent.observe_and_reply(user_msg_obj, novel_probs)
-                    for agent in active_agents.values()
-                ]
-                round1 = await asyncio.gather(*coros, return_exceptions=True)
+                # ── 串行 dispatch：一个主要回复 + @mention 跟随 ──
+                from engine.trigger import select_responders, check_at_mention
 
-                # 处理 Round 1 回复
-                round1_replies = []
-                agent_names = list(active_agents.keys())
-                for i, result in enumerate(round1):
-                    agent_name = agent_names[i]
-                    if isinstance(result, Exception):
-                        print(f"[agent] {agent_name} error: {result}")
-                        continue
-                    if result is None:
-                        continue
+                # Step 1: 规则快速评分（@提及 > 直接提问 > 概率）
+                candidates = select_responders(
+                    last_speaker=session.get("last_speaker"),
+                    message_text=text,
+                    user_character=session["character"],
+                    existing_responders=set(),
+                    conversation_history=session.get("message_log"),
+                    absent=absent,
+                )
 
-                    round1_replies.append(result)
-                    await manager.broadcast(result)
+                # Step 2: 按优先级尝试，直到有人回复
+                primary_reply = None
+                responder_name = None
+                for cand_name in candidates:
+                    agent = active_agents.get(cand_name)
+                    if not agent:
+                        continue
+                    agent.message_log.append(user_msg_obj)
+                    reply = await agent._generate_reply(user_msg_obj)
+                    if reply:
+                        primary_reply = reply
+                        responder_name = cand_name
+                        break
+
+                # 兜底：候选全失败，随机选一个
+                if not primary_reply and active_agents:
+                    import random
+                    fallback_name = random.choice(list(active_agents.keys()))
+                    agent = active_agents[fallback_name]
+                    agent.message_log.append(user_msg_obj)
+                    primary_reply = await agent._generate_reply(user_msg_obj)
+                    if primary_reply:
+                        responder_name = fallback_name
+
+                # 广播主要回复
+                if primary_reply:
+                    await manager.broadcast(primary_reply)
                     if session.get("conversation_id"):
-                        add_message(session["conversation_id"], agent_name, result["text"], is_bot=1)
+                        add_message(session["conversation_id"], responder_name, primary_reply["text"], is_bot=1)
 
-                # ── Round 2：agent 之间互相反应 ──
-                if round1_replies:
-                    round2_replies = []
-                    # 每条 Round 1 回复，发给所有 agent 观察
-                    for reply in round1_replies:
-                        reply_msg = {
-                            "character": reply["character"],
-                            "text": reply["text"],
+                    # Step 3: @mention 跟随（最多 1 个）
+                    mentioned = check_at_mention(primary_reply["text"])
+                    followup_name = None
+                    for m in mentioned:
+                        if m != responder_name and m in active_agents and m not in absent:
+                            followup_name = m
+                            break
+
+                    if followup_name:
+                        followup_agent = active_agents[followup_name]
+                        followup_msg = {
+                            "character": responder_name,
+                            "text": primary_reply["text"],
                             "is_bot": True,
                         }
-                        sub_coros = [
-                            agent.observe_and_reply(reply_msg, novel_probs)
-                            for agent in active_agents.values()
-                        ]
-                        sub_results = await asyncio.gather(*sub_coros, return_exceptions=True)
-
-                        for sr in sub_results:
-                            if sr is not None and not isinstance(sr, Exception):
-                                round2_replies.append(sr)
-
-                    # Round 2 广播 + 持久化
-                    for result in round2_replies:
-                        await manager.broadcast(result)
-                        if session.get("conversation_id"):
-                            add_message(session["conversation_id"], result["character"], result["text"], is_bot=1)
-
-                # ── 兜底：无人回复 ──
-                if not round1_replies and active_agents:
-                    top_agent = max(
-                        active_agents.values(),
-                        key=lambda a: novel_probs.get(a.name, 0)
-                    )
-                    forced_reply = await top_agent._generate_reply(user_msg_obj)
-                    if forced_reply:
-                        await manager.broadcast(forced_reply)
-                        if session.get("conversation_id"):
-                            add_message(session["conversation_id"], top_agent.name, forced_reply["text"], is_bot=1)
+                        followup_agent.message_log.append(followup_msg)
+                        followup_reply = await followup_agent._generate_reply(followup_msg)
+                        if followup_reply:
+                            await manager.broadcast(followup_reply)
+                            if session.get("conversation_id"):
+                                add_message(session["conversation_id"], followup_name, followup_reply["text"], is_bot=1)
 
             # ── 更新场景设置 ──
             elif msg_type == "update_scene":
